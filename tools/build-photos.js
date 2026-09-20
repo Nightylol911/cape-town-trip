@@ -79,6 +79,17 @@ if (listOnly) {
     }
   }
 
+  // Keep photos that were uploaded from the website for places you have no local pictures for.
+  // (If a place has pictures in your pictures/ folder, that folder wins for that place.)
+  let kept = 0;
+  const covered = new Set(places.filter((p) => p.files.length > 0).map((p) => p.key));
+  try {
+    const old = JSON.parse(fs.readFileSync(path.join(OUT, 'manifest.json'), 'utf8'));
+    for (const [k, f] of Object.entries(old)) {
+      if (!covered.has(k.split(':')[0]) && !(k in manifest) && fs.existsSync(path.join(OUT, f))) { manifest[k] = f; kept++; }
+    }
+  } catch (e) { /* no manifest yet */ }
+
   // remove resized files that are no longer used
   const keep = new Set(Object.values(manifest));
   let removed = 0;
@@ -89,7 +100,7 @@ if (listOnly) {
   fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(sorted, null, 1));
 
   const withPics = places.length - empty.length;
-  console.log(`\nDone. ${Object.keys(manifest).length} photos in photos/  (${made} new, ${reused} unchanged, ${removed} old removed${failed ? ', ' + failed + ' failed' : ''}).`);
+  console.log(`\nDone. ${Object.keys(manifest).length} photos in photos/  (${made} new, ${reused} unchanged, ${removed} old removed${kept ? ', ' + kept + ' from the website kept' : ''}${failed ? ', ' + failed + ' failed' : ''}).`);
   console.log(`${withPics} of ${places.length} places have pictures.  Run "npm run missing" to see the rest.`);
   if (failed) process.exitCode = 1;
 })();
