@@ -179,7 +179,7 @@ body.lb-open{overflow:hidden;}
 /* PHOTOS PANEL + TOAST */
 .pp-back{position:fixed;inset:0;z-index:1100;background:rgba(18,40,44,.5);display:flex;align-items:center;justify-content:center;padding:18px;}
 .pp-back[hidden]{display:none;}
-.pp{background:var(--paper);border-radius:16px;padding:22px 24px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.pp{background:var(--paper);border-radius:16px;padding:22px 24px;max-width:480px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.35);}
 .pp h3{margin:0 0 8px;font-size:20px;}
 .pp p{margin:0 0 12px;font-size:14px;color:#4d453c;}
 .pp .pp-count{font-weight:700;color:var(--ocean-deep);}
@@ -191,6 +191,15 @@ body.ar .pp-actions button{font-family:'Tajawal',sans-serif;}
 .pp-actions .pp-primary:hover{background:var(--ocean-deep);}
 .pp-actions .pp-danger{color:#b3473b;}
 .pp-actions button:disabled{opacity:.45;cursor:default;}
+.pp-sync{border-top:1px solid var(--line);padding-top:14px;margin-top:14px;}
+.pp-sync h4{margin:0 0 6px;font-size:15px;}
+.pp-status{font-weight:600;color:var(--ocean-deep);font-size:13px;}
+.pp-sync label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
+.pp-sync label input{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:14px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
+.pp-sync label input:focus{outline:none;border-color:var(--ocean);}
+.pp-sync > button,#ghForm > button{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--white);font:600 14px 'Inter',sans-serif;color:var(--ink);cursor:pointer;}
+#ghForm > button.pp-primary{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+body.ar .pp-sync label input,body.ar .pp-sync > button,body.ar #ghForm > button{font-family:'Tajawal',sans-serif;}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:99px;font-size:13.5px;font-weight:600;z-index:1300;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center;}
 .toast.show{opacity:1;transform:translateX(-50%);}
 @media(prefers-reduced-motion:reduce){.lb-stage.loading::after{animation-duration:2.4s;} .toast{transition:none;}}
@@ -501,13 +510,27 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
 <div class="pp-back" id="ppBack" hidden>
   <div class="pp" role="dialog" aria-modal="true" aria-labelledby="ppTitle">
     <h3 id="ppTitle" data-t="ppTitle"></h3>
-    <p data-t="ppBody"></p>
-    <p class="pp-count" id="ppCount"></p>
-    <div class="pp-actions">
-      <button type="button" class="pp-primary" id="ppExport" data-t="ppExport"></button>
-      <button type="button" class="pp-danger" id="ppClear" data-t="ppClear"></button>
-      <button type="button" id="ppClose" data-t="ppClose"></button>
-    </div>
+    <section class="pp-sync">
+      <h4 data-t="ghTitle"></h4>
+      <p data-t="ghBody"></p>
+      <p class="pp-status" id="ghStatus"></p>
+      <div id="ghForm">
+        <label><span data-t="ghOwner"></span><input id="ghOwner" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <label><span data-t="ghRepo"></span><input id="ghRepo" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <label><span data-t="ghToken"></span><input id="ghToken" type="password" autocomplete="off" spellcheck="false"></label>
+        <button type="button" class="pp-primary" id="ghConnect" data-t="ghConnect"></button>
+      </div>
+      <button type="button" id="ghDisconnect" data-t="ghDisconnect"></button>
+    </section>
+    <section class="pp-sync">
+      <p class="pp-count" id="ppCount"></p>
+      <div class="pp-actions">
+        <button type="button" class="pp-primary" id="ppUpload"></button>
+        <button type="button" id="ppExport" data-t="ppExport"></button>
+        <button type="button" class="pp-danger" id="ppClear" data-t="ppClear"></button>
+        <button type="button" id="ppClose" data-t="ppClose"></button>
+      </div>
+    </section>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -642,7 +665,7 @@ en:{
   signature:"Designed by Yazeed Alturki",
   directions:"Directions", menuBtn:"Menu", bookBadge:"Pre-booking recommended", howToBook:"How to book",
   official:"Official booking page →", findOperator:"Find operator →",
-  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
+  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Sync across devices", ghBody:"Connect your GitHub so photos you add are saved to your website and show on every device. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
   allChip:"All"
 },
 ar:{
@@ -711,7 +734,7 @@ ar:{
   signature:"صمّمه يزيد التركي",
   directions:"الاتجاهات", menuBtn:"القائمة", bookBadge:"يُنصح بالحجز المسبق", howToBook:"كيفية الحجز",
   official:"صفحة الحجز الرسمية ←", findOperator:"ابحثا عن المشغّل ←",
-  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
+  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"المزامنة بين الأجهزة", ghBody:"اربطا حساب GitHub لتُحفظ الصور التي تضيفانها في موقعكما وتظهر على كل الأجهزة. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع فقط.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
   allChip:"الكل"
 }
 };
@@ -1444,6 +1467,9 @@ const photoData = {};          // "idx:slot" -> {url, blob}   (this device)
 const sharedPhotos = {};       // "idx:slot" -> url            (published)
 let sharedManifest = {};
 const slideState = {};         // base -> slide index shown on the card
+let pendingMap = {};           // key -> filename: uploaded to GitHub, waiting for the site to rebuild
+try{ pendingMap = JSON.parse(localStorage.getItem('ctgr_pending') || '{}') || {}; }catch(e){ pendingMap = {}; }
+const savePending = ()=>{ try{ localStorage.setItem('ctgr_pending', JSON.stringify(pendingMap)); }catch(e){} };
 
 const escHtml = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -1464,7 +1490,7 @@ function photosFor(base){
   const out = [];
   for(let s=0; s<MAX_SLOTS; s++){
     const key = base+':'+s;
-    if(photoData[key]) out.push({slot:s, key, url:photoData[key].url, local:true});
+    if(photoData[key]) out.push({slot:s, key, url:photoData[key].url, local:true, pending:!!pendingMap[key]});
     else if(sharedPhotos[key]) out.push({slot:s, key, url:sharedPhotos[key], local:false});
   }
   return out;
@@ -1525,24 +1551,44 @@ async function savePhotos(base, files, replaceSlot){
   }
   if(files.length > 1 || replaceSlot != null) toast(tr('photoSaving'));
   let firstSlot = null, failed = 0;
+  const saved = [], stamp = Date.now().toString(36);
   for(let n=0; n<slots.length; n++){
     const key = base+':'+slots[n];
     try{
       const blob = await processImage(files[n]);
       if(photoData[key]) URL.revokeObjectURL(photoData[key].url);
       photoData[key] = {url: URL.createObjectURL(blob), blob};
+      delete pendingMap[key];
       await photoDB.put(key, blob);
+      saved.push({key, blob, filename: key.replace(':','_') + '-' + stamp + '.jpg'});
       if(firstSlot === null) firstSlot = slots[n];
     }catch(err){ console.error('Photo failed', err); failed++; }
   }
+  savePending();
   if(failed) toast(tr('photoFail'));
-  else if(firstSlot !== null) toast(tr('photoSaved'));
   if(firstSlot === null) return;
   try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
   const idx = Math.max(0, photosFor(base).findIndex(p=>p.slot===firstSlot));
   slideState[base] = idx;
   refreshSlideshow(base);
   if(lbOpen() && lb.base === base) lbShow(idx);
+  const cfg = ghConfig();
+  if(cfg){ await publishToGitHub(cfg, saved, base); }
+  else if(!failed){ toast(tr('ghHint')); }
+}
+
+async function publishToGitHub(cfg, adds, base){
+  toast(tr('ghUploading'));
+  try{
+    await ghCommit(cfg, {adds, message: 'Add ' + adds.length + ' photo' + (adds.length===1?'':'s')});
+    adds.forEach(a=>{ pendingMap[a.key] = a.filename; });
+    savePending();
+    toast(tr('ghDone'));
+  }catch(err){
+    console.error('GitHub upload failed', err);
+    toast(ghErrText(err));
+  }
+  if(base != null){ refreshSlideshow(base); if(lbOpen() && lb.base === base) lbShow(lb.i); }
 }
 
 async function removeLocalPhoto(base, key){
@@ -1639,7 +1685,7 @@ window.addEventListener('popstate', ()=>{ if(lbOpen()) closeLightbox(true); });
 function lbMeta(){
   const p = lb.list[lb.i]; if(!p) return;
   const dims = lbImg.naturalWidth ? ` · ${lbImg.naturalWidth} × ${lbImg.naturalHeight}` : '';
-  document.getElementById('lbMeta').textContent = `${lb.i+1} / ${lb.list.length}${dims} · ${p.local ? tr('ppLocal') : tr('ppShared')}`;
+  document.getElementById('lbMeta').textContent = `${lb.i+1} / ${lb.list.length}${dims} · ${p.pending ? tr('ppPending') : p.local ? tr('ppLocal') : tr('ppShared')}`;
 }
 function lbShow(i){
   const list = photosFor(lb.base);
@@ -1655,7 +1701,7 @@ function lbShow(i){
   lbMeta();
   const dl = document.getElementById('lbDownload');
   dl.href = p.url; dl.download = (name.replace(/[^\w]+/g,'-').replace(/^-|-$/g,'') || 'photo') + '-' + (lb.i+1) + '.jpg';
-  document.getElementById('lbRemove').style.display = p.local ? '' : 'none';
+  document.getElementById('lbRemove').style.display = (p.local || (ghConfig() && sharedManifest[p.key])) ? '' : 'none';
   document.querySelectorAll('.lb-nav').forEach(b=>b.style.display = list.length>1 ? '' : 'none');
   lbThumbs.innerHTML = list.map((q,k)=>`<button type="button" class="lb-thumb ${k===lb.i?'active':''}" data-ti="${k}" aria-label="${k+1}"><img src="${q.url}" alt=""></button>`).join('')
     + (list.length < MAX_SLOTS ? `<button type="button" class="lb-thumb add" id="lbThumbAdd" aria-label="${tr('addPhoto')}">+</button>` : '');
@@ -1741,9 +1787,19 @@ document.getElementById('lbFit').addEventListener('click', ()=>zoomAt(1, 0, 0));
 document.getElementById('lbAdd').addEventListener('click', ()=>pickFiles(lb.base));
 document.getElementById('lbReplace').addEventListener('click', ()=>pickFiles(lb.base, lb.list[lb.i].slot));
 document.getElementById('lbRemove').addEventListener('click', async ()=>{
-  const p = lb.list[lb.i]; if(!p || !p.local) return;
-  if(!confirm(tr('confirmRemove'))) return;
-  await removeLocalPhoto(lb.base, p.key);
+  const p = lb.list[lb.i]; if(!p) return;
+  const cfg = ghConfig(), published = !!sharedManifest[p.key];
+  if(cfg && published){
+    if(!confirm(tr('confirmRemoveAll'))) return;
+    try{ toast(tr('ghUploading')); await ghCommit(cfg, {removeKeys:[p.key], message:'Remove photo ' + p.key}); }
+    catch(err){ console.error(err); toast(ghErrText(err)); return; }
+    delete sharedPhotos[p.key]; delete pendingMap[p.key]; savePending();
+    if(photoData[p.key]) await removeLocalPhoto(lb.base, p.key); else refreshSlideshow(lb.base);
+    toast(tr('ghDone'));
+  }else if(p.local){
+    if(!confirm(tr('confirmRemove'))) return;
+    await removeLocalPhoto(lb.base, p.key);
+  }
   lbShow(lb.i);
 });
 lbThumbs.addEventListener('click', e=>{
@@ -1806,6 +1862,18 @@ function openPanel(){
   const n = Object.keys(photoData).length;
   document.getElementById('ppCount').textContent = n ? tr('ppCount').replace('{n}', n) : tr('ppNone');
   document.getElementById('ppExport').disabled = document.getElementById('ppClear').disabled = !n;
+  const cfg = ghConfig(), unsent = Object.keys(photoData).filter(k=>!pendingMap[k]);
+  document.getElementById('ghStatus').textContent = cfg ? tr('ghConnected').replace('{r}', cfg.owner + '/' + cfg.repo) : tr('ghNotConnected');
+  document.getElementById('ghForm').style.display = cfg ? 'none' : '';
+  document.getElementById('ghDisconnect').style.display = cfg ? '' : 'none';
+  const up = document.getElementById('ppUpload');
+  up.style.display = (cfg && unsent.length) ? '' : 'none';
+  up.textContent = tr('ppUpload').replace('{n}', unsent.length);
+  if(!cfg){
+    const g = ghGuess();
+    document.getElementById('ghOwner').value = document.getElementById('ghOwner').value || g.owner;
+    document.getElementById('ghRepo').value = document.getElementById('ghRepo').value || g.repo;
+  }
   ppBack.hidden = false;
 }
 const closePanel = ()=>{ ppBack.hidden = true; };
@@ -1814,6 +1882,28 @@ document.getElementById('ppClose').addEventListener('click', closePanel);
 ppBack.addEventListener('click', e=>{ if(e.target === ppBack) closePanel(); });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !ppBack.hidden) closePanel(); });
 document.getElementById('ppExport').addEventListener('click', exportPhotos);
+document.getElementById('ghConnect').addEventListener('click', async ()=>{
+  const cfg = {owner:document.getElementById('ghOwner').value.trim(), repo:document.getElementById('ghRepo').value.trim(), token:document.getElementById('ghToken').value.trim()};
+  if(!cfg.owner || !cfg.repo || !cfg.token) return;
+  toast(tr('ghChecking'));
+  try{
+    const info = await ghJson(cfg, '');
+    if(info.permissions && !info.permissions.push){ toast(tr('ghNoAccess')); return; }
+    ghSaveConfig(cfg);
+    document.getElementById('ghToken').value = '';
+    toast(tr('ghConnected').replace('{r}', cfg.owner + '/' + cfg.repo));
+    openPanel();
+  }catch(err){ toast(ghErrText(err)); }
+});
+document.getElementById('ghDisconnect').addEventListener('click', ()=>{ ghSaveConfig(null); openPanel(); });
+document.getElementById('ppUpload').addEventListener('click', async ()=>{
+  const cfg = ghConfig(); if(!cfg) return;
+  const stamp = Date.now().toString(36);
+  const adds = Object.keys(photoData).filter(k=>!pendingMap[k]).map(k=>({key:k, blob:photoData[k].blob, filename:k.replace(':','_') + '-' + stamp + '.jpg'}));
+  if(!adds.length) return;
+  await publishToGitHub(cfg, adds, null);
+  renderAreas(); renderGardenRoute(); openPanel();
+});
 document.getElementById('ppClear').addEventListener('click', async ()=>{
   if(!confirm(tr('ppConfirmClear'))) return;
   Object.values(photoData).forEach(v=>URL.revokeObjectURL(v.url));
@@ -1821,6 +1911,69 @@ document.getElementById('ppClear').addEventListener('click', async ()=>{
   await photoDB.clear();
   renderAreas(); renderGardenRoute(); closePanel();
 });
+
+/* ---- GitHub sync (saves photos into your repo so every device sees them) ---- */
+function ghConfig(){ try{ const c = JSON.parse(localStorage.getItem('ctgr_gh') || 'null'); return (c && c.token && c.owner && c.repo) ? c : null; }catch(e){ return null; } }
+function ghSaveConfig(c){ try{ if(c) localStorage.setItem('ctgr_gh', JSON.stringify(c)); else localStorage.removeItem('ctgr_gh'); }catch(e){} }
+function ghGuess(){
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/i), seg = location.pathname.split('/').filter(Boolean)[0] || '';
+  return {owner: m ? m[1] : '', repo: (m && seg && !/\.html?$/i.test(seg)) ? seg : ''};
+}
+async function ghFetch(cfg, path, opt){
+  opt = opt || {};
+  return fetch('https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' + encodeURIComponent(cfg.repo) + path, {
+    method: opt.method || 'GET',
+    headers: Object.assign({'Authorization':'Bearer ' + cfg.token, 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28'}, opt.headers || {}),
+    body: opt.body ? JSON.stringify(opt.body) : undefined
+  });
+}
+async function ghJson(cfg, path, opt){
+  const r = await ghFetch(cfg, path, opt);
+  if(!r.ok){ const e = new Error('GitHub ' + r.status); e.status = r.status; try{ e.detail = (await r.json()).message; }catch(_){} throw e; }
+  return r.json();
+}
+function ghErrText(err){
+  if(err && err.status === 401) return tr('ghBadToken');
+  if(err && err.status === 403) return tr('ghNoAccess');
+  if(err && err.status === 404) return tr('ghNotFound');
+  return tr('ghFail').replace('{e}', (err && (err.detail || err.message)) || '?');
+}
+const blobToB64 = b => new Promise((res, rej)=>{ const fr = new FileReader(); fr.onload = ()=>res(String(fr.result).split(',')[1]); fr.onerror = ()=>rej(fr.error); fr.readAsDataURL(b); });
+
+// One commit that adds/replaces/removes photos and rewrites photos/manifest.json
+async function ghCommit(cfg, {adds = [], removeKeys = [], message}){
+  let lastErr;
+  for(let attempt = 0; attempt < 2; attempt++){
+    try{
+      const branch = (await ghJson(cfg, '')).default_branch || 'main';
+      const head = (await ghJson(cfg, '/git/ref/heads/' + branch)).object.sha;
+      const baseTree = (await ghJson(cfg, '/git/commits/' + head)).tree.sha;
+      let manifest = {};
+      const mr = await ghFetch(cfg, '/contents/photos/manifest.json?ref=' + encodeURIComponent(branch), {headers:{'Accept':'application/vnd.github.raw+json'}});
+      if(mr.ok){ try{ manifest = JSON.parse(await mr.text()) || {}; }catch(e){ manifest = {}; } }
+      else if(mr.status !== 404){ const e = new Error('GitHub ' + mr.status); e.status = mr.status; throw e; }
+      const tree = [], deletes = [];
+      for(const a of adds){
+        if(!a.sha) a.sha = (await ghJson(cfg, '/git/blobs', {method:'POST', body:{content: await blobToB64(a.blob), encoding:'base64'}})).sha;
+        tree.push({path:'photos/' + a.filename, mode:'100644', type:'blob', sha:a.sha});
+        if(manifest[a.key] && manifest[a.key] !== a.filename) deletes.push('photos/' + manifest[a.key]);
+        manifest[a.key] = a.filename;
+      }
+      removeKeys.forEach(k=>{ if(manifest[k]){ deletes.push('photos/' + manifest[k]); delete manifest[k]; } });
+      const sorted = Object.fromEntries(Object.entries(manifest).sort((x,y)=>x[0].localeCompare(y[0], undefined, {numeric:true})));
+      tree.push({path:'photos/manifest.json', mode:'100644', type:'blob', content: JSON.stringify(sorted, null, 1)});
+      const mkTree = extra => ghJson(cfg, '/git/trees', {method:'POST', body:{base_tree: baseTree, tree: tree.concat(extra.map(p=>({path:p, mode:'100644', type:'blob', sha:null})))}});
+      let t;
+      try{ t = await mkTree(deletes); }
+      catch(e){ if(e.status === 422 && deletes.length) t = await mkTree([]); else throw e; }   // an old file was already gone
+      const c = await ghJson(cfg, '/git/commits', {method:'POST', body:{message: message || 'Update photos', tree: t.sha, parents:[head]}});
+      await ghJson(cfg, '/git/refs/heads/' + branch, {method:'PATCH', body:{sha: c.sha}});
+      sharedManifest = sorted;
+      return sorted;
+    }catch(e){ lastErr = e; if(!(e.status === 422 || e.status === 409)) break; }   // 422/409 = someone committed meanwhile: retry once
+  }
+  throw lastErr;
+}
 
 async function loadPhotos(){
   try{
@@ -1834,6 +1987,15 @@ async function loadPhotos(){
     const all = await photoDB.all();
     Object.entries(all).forEach(([k,b])=>{ photoData[k] = {url:URL.createObjectURL(b), blob:b}; });
   }catch(e){}
+  // photos uploaded to GitHub earlier: once the site's own manifest has them, drop the temporary local copy
+  let changed = false;
+  for(const [k,f] of Object.entries(pendingMap)){
+    if(sharedManifest[k] === f){
+      delete pendingMap[k]; changed = true;
+      if(photoData[k]){ URL.revokeObjectURL(photoData[k].url); delete photoData[k]; await photoDB.del(k); }
+    }
+  }
+  if(changed) savePending();
   renderAreas(); renderGardenRoute();
 }
 
