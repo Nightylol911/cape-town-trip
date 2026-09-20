@@ -352,6 +352,117 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
 .emg-num b{font-family:'JetBrains Mono',monospace;color:#a3791f;}
 
 @media(max-width:640px){#map{height:300px;}.hero{padding:36px 18px 80px;}}
+
+/* ITINERARY PDF */
+.pdf-btn{display:inline-flex;align-items:center;gap:8px;margin:0 0 6px;padding:10px 18px;border-radius:99px;border:0;background:var(--ink);color:var(--paper);font:600 14px 'Inter',sans-serif;cursor:pointer;}
+body.ar .pdf-btn{font-family:'Tajawal',sans-serif;}
+.pdf-btn:hover{background:var(--ocean-deep);}
+.pdf-btn::before{content:"⬇";font-size:13px;}
+#printDoc{display:none;}
+@media print{
+  @page{size:A4;margin:12mm 12mm 14mm;}
+  html,body{background:#fff !important;}
+  .langbar,.controls,.search-wrap,.maintabs,.budget-bar,.drawer,.drawer-backdrop,.lb,.pp-back,.toast{display:none !important;}
+  body.printing > *:not(#printDoc){display:none !important;}
+  body.printing #printDoc{display:block;}
+  #printDoc{color:#1c2b2d;font-family:'Inter',sans-serif;font-size:9.5pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body.ar #printDoc{font-family:'Tajawal',sans-serif;}
+  #printDoc h1,#printDoc h2,#printDoc h3,#printDoc h4{font-family:'Fraunces',serif;margin:0;}
+  body.ar #printDoc h1,body.ar #printDoc h2,body.ar #printDoc h3,body.ar #printDoc h4{font-family:'Tajawal',sans-serif;}
+  #printDoc a{color:inherit;text-decoration:none;}
+  #printDoc .pd-link{color:#123840;text-decoration:underline;text-underline-offset:1.5px;font-size:8.5pt;font-weight:600;margin-inline-end:10px;}
+
+  .pd-cover h1{font-size:26pt;line-height:1.1;margin:4mm 0 3mm;color:#123840;}
+  .pd-kicker{font-size:9pt;letter-spacing:.04em;color:#c9942f;font-weight:700;border-bottom:1.2pt solid #c9942f;padding-bottom:2mm;}
+  .pd-h3{font-size:11pt;color:#123840;margin:4mm 0 1.5mm !important;}
+  table.pd-glance{width:100%;border-collapse:collapse;font-size:8.4pt;}
+  table.pd-glance th{background:#1c2b2d;color:#faf6ee;text-align:start;padding:1.4mm 2.5mm;font-size:7.8pt;}
+  table.pd-glance td{padding:1.4mm 2.5mm;border-bottom:.4pt solid #d9cdb4;vertical-align:top;}
+  table.pd-glance tr:nth-child(even) td{background:#f6f0e2;}
+  table.pd-glance tr{break-inside:avoid;}
+  .pd-foot{margin-top:3mm;font-size:8pt;color:#8a7f70;}
+
+  .pd-day{break-before:page;}
+  .pd-dayhead{display:flex;align-items:center;gap:3mm;background:#123840;color:#faf6ee;padding:3mm 4mm;border-radius:2.5mm;break-after:avoid;}
+  .pd-dayhead h2{font-size:14pt;flex:1;line-height:1.2;}
+  .pd-daynum{background:#c9942f;color:#1c2b2d;font-weight:800;font-size:9pt;padding:1mm 3mm;border-radius:99px;white-space:nowrap;}
+  .pd-date{font-size:9pt;color:#bcdcd8;white-space:nowrap;}
+  .pd-tip{font-style:italic;color:#5c534a;margin:3mm 0 2mm;}
+  .pd-hotel,.pd-staying{display:flex;align-items:center;gap:3mm;background:#f1e6fa;border:.5pt solid #d9c2ee;border-radius:2.5mm;padding:2.5mm 3.5mm;margin:2mm 0 3mm;break-inside:avoid;}
+  .pd-staying{font-size:9pt;}
+  .pd-hotel-ic{font-size:14pt;}
+  .pd-hotel-main{flex:1;}
+  .pd-sub{font-size:8.5pt;color:#6b6157;}
+  .pd-slot{margin-top:3mm;}
+  .pd-slotlabel{font-size:8.5pt;font-weight:800;color:#1f5f6b;text-transform:uppercase;letter-spacing:.03em;border-bottom:.5pt dashed #d9cdb4;padding-bottom:.8mm;break-after:avoid;}
+  body.ar .pd-slotlabel{text-transform:none;letter-spacing:0;}
+
+  .pd-item{display:flex;gap:4mm;align-items:flex-start;padding:2mm 0;padding-inline-start:3mm;margin:2mm 0;border-inline-start:1.2mm solid var(--c,#6f8c5f);break-inside:avoid;}
+  .pd-plain{border-inline-start-color:#d9cdb4;}
+  .pd-main{flex:1;min-width:0;}
+  .pd-item h4{font-size:10.5pt;line-height:1.25;margin-bottom:.8mm;}
+  .pd-meta{display:flex;flex-wrap:wrap;align-items:center;gap:1.5mm 2mm;font-size:8.5pt;color:#6b6157;margin-bottom:1mm;}
+  .pd-pill{font-size:7.5pt;font-weight:700;padding:.4mm 2mm;border-radius:1.5mm;color:var(--c);background:#fff;border:.5pt solid var(--c);}
+  .pd-soft{--c:#8a7f70;}
+  .pd-about{margin:0 0 1.2mm;font-size:9pt;color:#3d362f;}
+  .pd-facts{display:flex;flex-wrap:wrap;gap:.4mm 5mm;font-size:8.5pt;margin:0 0 1.2mm;}
+  .pd-fact b{color:#8a7f70;font-weight:700;margin-inline-end:1mm;}
+  .pd-note{font-size:8.5pt;background:#fff3d9;border:.5pt dashed #e0be6f;border-radius:1.5mm;padding:.8mm 2mm;margin-bottom:1.2mm;display:inline-block;}
+  .pd-book{font-size:8.5pt;background:#fdf1ea;border-radius:1.5mm;padding:1.2mm 2.5mm;margin-bottom:1.2mm;}
+  .pd-book b{color:#c4501f;}
+  .pd-book ol{margin:.8mm 0 .8mm;padding-inline-start:4.5mm;}
+  .pd-links{margin-top:.5mm;}
+  .pd-photos{display:flex;gap:1.6mm;flex-shrink:0;}
+  .pd-photos img{width:23mm;height:17mm;object-fit:cover;border-radius:1.5mm;border:.4pt solid #cfc4ad;display:block;}
+  .pd-total{margin-top:6mm;padding:3mm 4mm;background:#1c2b2d;color:#faf6ee;border-radius:2.5mm;font-size:10pt;break-inside:avoid;}
+  .pd-total b{color:#f6c98f;}
+  .pd-total span{font-size:8pt;color:#bcdcd8;}
+}
+
+/* WEATHER (live) */
+.weather-head .wx-refresh{margin-inline-start:auto;border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:99px;padding:6px 14px;font:600 12.5px 'Inter',sans-serif;cursor:pointer;}
+body.ar .weather-head .wx-refresh{font-family:'Tajawal',sans-serif;}
+.weather-head .wx-refresh:hover{background:var(--paper-2);}
+.wx-now{display:flex;align-items:center;gap:16px 26px;flex-wrap:wrap;background:linear-gradient(135deg,var(--ocean-deep),var(--ocean));color:#fff;border-radius:14px;padding:16px 20px;margin:0 0 16px;}
+.wx-now.wx-empty{display:block;color:#dfeeec;font-size:14px;}
+.wx-now-ic{background:rgba(255,255,255,.94);border-radius:50%;width:92px;height:92px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.wx-now-place{font-size:12px;color:#bcdcd8;margin-bottom:2px;}
+.wx-now-temp{font-family:'Fraunces',serif;font-size:48px;line-height:1;font-weight:600;}
+body.ar .wx-now-temp{font-family:'Tajawal',sans-serif;}
+.wx-now-temp span{font-size:20px;font-weight:400;margin-inline-start:2px;color:#dfeeec;}
+.wx-now-cond{font-size:15px;font-weight:600;margin-top:4px;}
+.wx-now-facts{display:grid;grid-template-columns:repeat(4,auto);gap:8px 28px;margin-inline-start:auto;}
+.wx-now-facts b{display:block;font-size:17px;font-weight:700;}
+.wx-now-facts small{font-size:11px;font-weight:500;color:#bcdcd8;}
+.wx-now-facts span{font-size:11.5px;color:#bcdcd8;}
+@media(max-width:700px){.wx-now-facts{grid-template-columns:repeat(2,auto);margin-inline-start:0;width:100%;}}
+.wx-h{font-size:15px;margin:4px 0 10px;}
+.wx-strip{display:grid;grid-auto-flow:column;grid-auto-columns:112px;gap:10px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:4px;scroll-snap-type:x proximity;}
+@media(min-width:900px){.wx-strip{grid-auto-flow:row;grid-template-columns:repeat(7,1fr);grid-auto-columns:auto;overflow:visible;padding-bottom:2px;}}
+.wx-day{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 8px 9px;text-align:center;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.wx-day.is-fc{border-color:var(--ocean);box-shadow:0 0 0 1px var(--ocean) inset;}
+.wx-d1{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ocean);font-weight:500;}
+.wx-d2{font-size:12px;font-weight:700;}
+.wx-ic{height:46px;margin:2px 0;display:flex;align-items:center;}
+.wx-cond{font-size:11.5px;color:#6b6157;min-height:16px;}
+.wx-t{display:flex;align-items:baseline;gap:6px;}
+.wx-t b{font-size:17px;font-family:'Fraunces',serif;}
+body.ar .wx-t b{font-family:'Tajawal',sans-serif;}
+.wx-t span{color:#8a7f70;font-size:14px;}
+.wx-meta{display:flex;gap:10px;font-size:11.5px;color:#4d6f78;}
+.wx-meta span{display:inline-flex;align-items:center;gap:3px;}
+.wx-badge{margin-top:4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:#8a7f70;}
+.is-fc .wx-badge{background:var(--ocean);border-color:var(--ocean);color:#fff;}
+.wx-loc{font-size:10.5px;color:#a89a82;}
+.wx-note{font-size:11.5px;color:#8a7f70;margin:6px 0 16px;}
+.wx-note a{color:inherit;}
+.wstat{display:flex;gap:10px;align-items:flex-start;}
+.wstat .wi{color:var(--ocean);flex:0 0 auto;margin-top:1px;}
+@media(min-width:900px){.weather-grid{grid-template-columns:repeat(4,1fr);}}
+.wstat .wv{font-size:19px;}
+.wstat .wv,.wx-t,.wx-meta span,.wx-now-temp,.wx-now-facts b{direction:ltr;unicode-bidi:isolate;}
+body.ar .wstat .wv,body.ar .wx-now-facts b{text-align:right;}
+body.ar .wx-t,body.ar .wx-now-temp{justify-content:center;}
 </style>
 </head>
 <body id="bodyRoot">
@@ -417,17 +528,21 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
 
 <div id="tab-plan" class="tabpanel active">
 <div class="weather">
-  <div class="weather-head"><h2 data-t="weatherTitle"></h2><span class="weather-tag" data-t="weatherDate"></span></div>
+  <div class="weather-head"><h2 data-t="weatherTitle"></h2><span class="weather-tag" data-t="weatherDate"></span><button type="button" class="wx-refresh" id="wxRefresh" data-t="wxRefreshBtn"></button></div>
   <p class="weather-cap" data-t="weatherCaption"></p>
+  <div class="wx-now wx-empty" id="wxNow"></div>
+  <h3 class="wx-h" data-t="wxTripTitle"></h3>
+  <div class="wx-strip" id="wxStrip"></div>
+  <p class="wx-note"><span id="wxNote"></span> <a href="https://open-meteo.com/" target="_blank" rel="noopener" data-t="wxCredit"></a></p>
   <div class="weather-grid">
-    <div class="wstat"><div class="wv">21–24°C</div><div class="wl" data-t="wTypicalHigh"></div></div>
-    <div class="wstat"><div class="wv">13–15°C</div><div class="wl" data-t="wTypicalLow"></div></div>
-    <div class="wstat"><div class="wv">~16°C</div><div class="wl" data-t="wSea"></div></div>
-    <div class="wstat"><div class="wv">15–30 km/h</div><div class="wl" data-t="wWind"></div></div>
-    <div class="wstat"><div class="wv">~25%</div><div class="wl" data-t="wRain"></div></div>
-    <div class="wstat"><div class="wv">UV 8–9</div><div class="wl" data-t="wUV"></div></div>
-    <div class="wstat"><div class="wv">5:35–5:55 AM</div><div class="wl" data-t="wSunrise"></div></div>
-    <div class="wstat"><div class="wv">7:05–7:25 PM</div><div class="wl" data-t="wSunset"></div></div>
+    <div class="wstat" data-w="high"><div class="wt"><div class="wv">21–24°C</div><div class="wl" data-t="wTypicalHigh"></div></div></div>
+    <div class="wstat" data-w="low"><div class="wt"><div class="wv">13–15°C</div><div class="wl" data-t="wTypicalLow"></div></div></div>
+    <div class="wstat" data-w="sea"><div class="wt"><div class="wv">~16°C</div><div class="wl" data-t="wSea"></div></div></div>
+    <div class="wstat" data-w="wind"><div class="wt"><div class="wv">15–30 km/h</div><div class="wl" data-t="wWind"></div></div></div>
+    <div class="wstat" data-w="rain"><div class="wt"><div class="wv">~25%</div><div class="wl" data-t="wRain"></div></div></div>
+    <div class="wstat" data-w="uv"><div class="wt"><div class="wv">UV 8–9</div><div class="wl" data-t="wUV"></div></div></div>
+    <div class="wstat" data-w="sunrise"><div class="wt"><div class="wv">5:35–5:55 AM</div><div class="wl" data-t="wSunrise"></div></div></div>
+    <div class="wstat" data-w="sunset"><div class="wt"><div class="wv">7:05–7:25 PM</div><div class="wl" data-t="wSunset"></div></div></div>
   </div>
   <div class="pack-list" id="packList"></div>
 </div>
@@ -446,6 +561,7 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
 <div class="wrap">
   <div class="section-title"><h2 data-t="planTitle"></h2><span class="n" data-t="planTag"></span></div>
   <p class="section-sub" data-t="planSub"></p>
+  <button type="button" class="pdf-btn" id="pdfBtnPlan" data-t="pdfBtn"></button>
   <div id="transportSection"></div>
   <div class="section-title" style="margin-top:48px;"><h2 data-t="planDayTitle"></h2></div>
   <div id="planItinerary"></div>
@@ -484,6 +600,8 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
   <div id="safContent"></div>
 </div>
 </div><!-- /tab-safari -->
+
+<div id="printDoc" aria-hidden="true"></div>
 
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" dir="ltr">
   <div class="lb-top">
@@ -611,7 +729,7 @@ en:{
   heroLead:"Every place you two shortlisted — the story behind it, practical info, when to go, what to wear, real menus and booking pages where they exist. Tap ○ to shortlist, tap a photo to view it full size, tap + to add your own.",
   statPlaces:"Places curated", statAreasL:"Neighbourhoods", statBookingL:"Need pre-booking",
   weatherTitle:"Weather & what to pack", weatherDate:"28 Oct – 10 Nov 2026",
-  weatherCaption:"Your travel window is still too far out for a day-specific forecast (reliable forecasts only go ~10–14 days ahead) — these are Cape Town's typical late-spring conditions for this exact stretch (per AccuWeather's climate data), plus real sunrise/sunset times for the period. Check a live forecast again about a week before you fly.",
+  weatherCaption:"Live weather from Open-Meteo. Trip days within the next 16 days show the real forecast; days further out show typical weather for the same dates (average of the last 5 years). Sea temperature, UV, sunrise and sunset are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
   wTypicalHigh:"Typical daytime high", wTypicalLow:"Typical overnight low", wSea:"Sea temperature (cold!)",
   wWind:"Wind (\"Cape Doctor\" SE wind is common)", wRain:"Chance of rain on a given day", wUV:"UV index — sun protection needed",
   wSunrise:"Sunrise (28 Oct → 10 Nov)", wSunset:"Sunset (28 Oct → 10 Nov)",
@@ -660,7 +778,7 @@ en:{
   grItinTitle:"Suggested 10-day Garden Route itinerary", grItinTag:"10 days", grItinSub:"In travel order, Cape Town → Tsitsikamma — each day keeps you in one or two neighbouring towns so you're not backtracking. Includes a dedicated safari day near Mossel Bay. Treat it as a flexible skeleton, not a fixed script.",
   safTitle:"Safari — which lodge to book", safTag:"5 compared", safSub:"All five you shortlisted, compared side by side, with official booking sites and what to expect. None of these are on the Garden Route route itself except Garden Route Game Lodge, Gondwana and Botlierskop — Aquila is near Cape Town, best done as a separate day trip or on the way out.",
   mapTitle:"Overview map", mapSub:"Pins grouped by neighbourhood so you plan efficient days. Click a pin for the name, use \"Directions\" on any card for exact navigation.",
-  drawerTitle:"Our itinerary", printBtn:"Print / save this list",
+  drawerTitle:"Our itinerary", printBtn:"Download itinerary as PDF", pdfBtn:"Download itinerary as PDF", pdfPreparing:"Preparing PDF… photos {a}/{b}", pdfFail:"Couldn't prepare the PDF. Try again.", pdfGlance:"Trip at a glance", pdfColDay:"Day", pdfColDate:"Date", pdfColPlan:"Plan", pdfColStay:"Where you stay", pdfStayingAt:"Staying at", pdfEmergency:"Emergency & key numbers", pdfHospitals:"Nearest hospital by area", pdfPractical:"Practical information", pdfMap:"Google Maps", pdfHowBook:"How to book", pdfShortlist:"Your shortlist", pdfAlready:"Already in the day-by-day plan", pdfFoot:"Prices are rough per-person estimates in SAR. Hours, prices and weather closures change, so check the official page before you go.",
   footerText:"Built for your Cape Town trip · Coordinates are approximate per neighbourhood for map orientation — use \"Directions\" on each card for the exact pin. Prices, hours, menus, booking links and weather are all subject to change, so double-check close to your trip.",
   signature:"Designed by Yazeed Alturki",
   directions:"Directions", menuBtn:"Menu", bookBadge:"Pre-booking recommended", howToBook:"How to book",
@@ -680,7 +798,7 @@ ar:{
   heroLead:"كل مكان اخترتماه — قصته، معلومات عملية، أفضل وقت للزيارة، ماذا ترتديان، قوائم طعام حقيقية، وروابط حجز فعلية إن وُجدت. اضغطا على ○ لإضافته لقائمتكما، واضغطا على الصورة لعرضها بالحجم الكامل، وعلى + لإضافة صورتكما.",
   statPlaces:"مكانًا منسقًا", statAreasL:"حيًا", statBookingL:"يحتاج حجزًا مسبقًا",
   weatherTitle:"الطقس وماذا تحضران", weatherDate:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦",
-  weatherCaption:"فترة رحلتكما لا تزال بعيدة جدًا للتنبؤ الدقيق ليوم محدد (التنبؤات الموثوقة تغطي فقط ١٠-١٤ يومًا مقدمًا) — هذه هي أحوال الطقس المعتادة في كيب تاون أواخر الربيع لهذه الفترة تحديدًا (حسب بيانات مناخ AccuWeather)، بالإضافة لأوقات شروق وغروب حقيقية للفترة. تحققا من توقعات حيّة قبل السفر بأسبوع تقريبًا.",
+  weatherCaption:"طقس مباشر من Open-Meteo. أيام الرحلة خلال الـ١٦ يومًا القادمة تعرض التنبؤ الفعلي، أما الأيام الأبعد فتعرض الطقس المعتاد لنفس التواريخ (متوسط آخر ٥ سنوات). حرارة البحر ومؤشر الأشعة فوق البنفسجية والشروق والغروب تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
   wTypicalHigh:"الحرارة العظمى المعتادة نهارًا", wTypicalLow:"الحرارة الصغرى المعتادة ليلاً", wSea:"حرارة البحر (باردة!)",
   wWind:"الرياح (رياح \"الطبيب الكيبي\" الجنوبية الشرقية شائعة)", wRain:"احتمال هطول المطر في يوم معين", wUV:"مؤشر الأشعة فوق البنفسجية — الحماية من الشمس ضرورية",
   wSunrise:"الشروق (٢٨ أكتوبر ← ١٠ نوفمبر)", wSunset:"الغروب (٢٨ أكتوبر ← ١٠ نوفمبر)",
@@ -729,7 +847,7 @@ ar:{
   grItinTitle:"خطة مقترحة لـ١٠ أيام على طريق الحدائق", grItinTag:"١٠ أيام", grItinSub:"بترتيب الرحلة، من كيب تاون إلى تسيتسيكاما — كل يوم يبقيكما في بلدة أو بلدتين متجاورتين حتى لا ترجعا للخلف. يشمل يومًا مخصصًا للسفاري قرب موسيل باي. اعتبراها هيكلاً مرنًا لا نصًا ثابتًا.",
   safTitle:"السفاري — أي نُزل تحجزان", safTag:"مقارنة بين ٥", safSub:"الخمسة التي اخترتماها، مقارنة جنبًا إلى جنب، مع مواقع الحجز الرسمية وما يمكن توقعه. لا شيء منها على طريق الحدائق نفسه سوى Garden Route Game Lodge وGondwana وBotlierskop — أما Aquila فقريبة من كيب تاون، والأفضل زيارتها كرحلة يوم منفصلة أو في الطريق.",
   mapTitle:"خريطة عامة", mapSub:"الدبابيس مجمّعة حسب الحي لتخطيط أيام فعالة. اضغطي على أي دبوس لرؤية الاسم، واستخدمي \"الاتجاهات\" في أي بطاقة للملاحة الدقيقة.",
-  drawerTitle:"خطة رحلتنا", printBtn:"طباعة / حفظ هذه القائمة",
+  drawerTitle:"خطة رحلتنا", printBtn:"تنزيل خطة الرحلة PDF", pdfBtn:"تنزيل خطة الرحلة PDF", pdfPreparing:"جارٍ تجهيز الملف… الصور {a}/{b}", pdfFail:"تعذّر تجهيز الملف. حاولا مرة أخرى.", pdfGlance:"الرحلة في لمحة", pdfColDay:"اليوم", pdfColDate:"التاريخ", pdfColPlan:"الخطة", pdfColStay:"مكان الإقامة", pdfStayingAt:"الإقامة في", pdfEmergency:"أرقام الطوارئ والأرقام المهمة", pdfHospitals:"أقرب مستشفى حسب المنطقة", pdfPractical:"معلومات عملية", pdfMap:"خرائط جوجل", pdfHowBook:"طريقة الحجز", pdfShortlist:"قائمتكما المختارة", pdfAlready:"موجودة أصلًا في الخطة اليومية", pdfFoot:"الأسعار تقديرات تقريبية للشخص بالريال السعودي. الأوقات والأسعار وإغلاقات الطقس تتغير، فتحققا من الصفحة الرسمية قبل الذهاب.",
   footerText:"صُمم لرحلتكما إلى كيب تاون · الإحداثيات تقريبية لكل حي لأغراض توجيه الخريطة — استخدما \"الاتجاهات\" في كل بطاقة للموقع الدقيق. الأسعار وأوقات العمل والقوائم وروابط الحجز والطقس كلها عرضة للتغيير، فتحققا منها قبل رحلتكما.",
   signature:"صمّمه يزيد التركي",
   directions:"الاتجاهات", menuBtn:"القائمة", bookBadge:"يُنصح بالحجز المسبق", howToBook:"كيفية الحجز",
@@ -2008,6 +2126,7 @@ function areaLabel(k){ return AREAS_META[k][LANG]; }
 
 function setLang(lang){
   LANG = lang;
+  try{ localStorage.setItem('ctgr_lang', lang); }catch(e){}
   document.getElementById('htmlRoot').setAttribute('lang', lang);
   document.getElementById('htmlRoot').setAttribute('dir', lang==='ar'?'rtl':'ltr');
   document.getElementById('bodyRoot').classList.toggle('ar', lang==='ar');
@@ -2024,7 +2143,7 @@ function setLang(lang){
   document.getElementById('packList').innerHTML = UI[lang].pack.map(t=>`<div class="pack-item"><span class="ic">✔</span><span>${t}</span></div>`).join('');
   const searchEl = document.getElementById('searchInput');
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
-  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget();
+  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather();
 }
 function updateHeroTitle(){
   const el = document.querySelector('[data-html="heroTitle"]');
@@ -2896,6 +3015,429 @@ function wireCardEvents(areasEl){
     btn.addEventListener('click', ()=>{ const el=document.getElementById('steps-'+btn.dataset.toggle); el.classList.toggle('open'); btn.textContent=(el.classList.contains('open')?tr('howToBook')+' ▾':tr('howToBook')+' ▸'); });
   });
 }
+/* ================= ITINERARY PDF =================
+   Builds a clean, print-only document (#printDoc) from the 14-day plan (+ your shortlist),
+   with up to 3 small photos per place, then opens the browser's print dialog ("Save as PDF"). */
+const thumbData = new Map();       // photo url -> small JPEG data URL (keeps the PDF light)
+const thumbJobs = new Map();
+let pdfBusy = false;
+const CAT_BY_COLOR = {'#e2622e':'restaurant','#8a4fae':'coffee','#1f5f6b':'activity','#c9942f':'shop','#2f9e8f':'icecream'};
+const pt = (o,k)=> (LANG==='ar' ? (o[k+'_ar'] || o[k]) : o[k]) || '';
+const BIG5_AR = {Elephant:'الفيل', Lion:'الأسد', Leopard:'النمر', Rhino:'وحيد القرن', Buffalo:'الجاموس'};
+
+function clipText(s, n){
+  s = String(s || ''); if(s.length <= n) return s;
+  const cut = s.slice(0, n), dot = cut.lastIndexOf('. ');
+  return dot > n*0.55 ? cut.slice(0, dot+1) : cut.replace(/\s+\S*$/, '') + '…';
+}
+const shortUrl = u => String(u||'').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+
+function makeThumb(url){
+  if(thumbJobs.has(url)) return thumbJobs.get(url);
+  const job = new Promise(resolve=>{
+    const img = new Image(); let done = false;
+    const finish = v=>{ if(done) return; done = true; if(v) thumbData.set(url, v); resolve(v); };
+    setTimeout(()=>finish(null), 20000);
+    img.onload = ()=>{
+      try{
+        const k = Math.min(1, 480 / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(img.naturalWidth*k)); c.height = Math.max(1, Math.round(img.naturalHeight*k));
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        finish(c.toDataURL('image/jpeg', 0.75));
+      }catch(e){ finish(null); }
+    };
+    img.onerror = ()=>finish(null);
+    img.src = url;
+  });
+  thumbJobs.set(url, job); return job;
+}
+async function runPool(list, limit, fn){
+  let i = 0;
+  await Promise.all(Array.from({length: Math.min(limit, list.length)}, async ()=>{ while(i < list.length){ const x = list[i++]; await fn(x); } }));
+}
+
+/* turn a name / custom pick / hotel into one uniform record */
+function resolveRef(ref){
+  if(!ref) return null;
+  if(typeof ref === 'object'){
+    if(ref.hotel) return {kind:'hotel', id:ref.n, name:pt(ref,'n'), g:ref.g, rating:ref.rating, ratingCount:ref.ratingCount, note:pt(ref,'note')};
+    const cat = CAT_BY_COLOR[ref.color] || null;
+    return {kind:'pick', id:ref.n, name:pt(ref,'n'), cat, g:ref.g, rating:ref.rating, ratingCount:ref.ratingCount, facts:[]};
+  }
+  const bookOf = (b, phone)=>{
+    if(b && typeof b === 'object') return {bookFlag:true, bookNote:pt(b,'note'), steps:(LANG==='ar' ? (b.steps_ar||b.steps) : b.steps) || [], bookLink:b.link || ''};
+    return {bookFlag:!!b, bookNote:'', steps:[], bookLink:''};
+  };
+  const idx = PLACES.findIndex(p=>p.n === ref);
+  if(idx >= 0){
+    const p = PLACES[idx];
+    return Object.assign({kind:'place', id:p.n, base:String(idx), name:pt(p,'n'), cat:p.c, area:AREAS_META[p.a] ? AREAS_META[p.a][LANG] : '',
+      about:clipText(pt(p,'about'), 380), cuisine:pt(p,'cuisine'), rating:p.rating, ratingCount:p.ratingCount, weak:p.weak, phone:p.phone||'', g:p.g, mynote:pt(p,'mynote'),
+      priceText: p.price>0 ? 'SAR '+p.price : (p.c==='activity' ? tr('freeLabel') : ''),
+      facts:[[tr('best'),pt(p,'best')],[tr('dur'),pt(p,'dur')],[tr('wear'),pt(p,'wear')]].filter(f=>f[1])}, bookOf(p.book));
+  }
+  let flatIdx = 0;
+  for(const t of GARDEN_ROUTE){
+    for(const it of t.items){
+      if(it.n === ref){
+        return Object.assign({kind:'gr', id:it.n, base:'gr-'+flatIdx, name:pt(it,'n'), cat:it.c, area:pt(t,'town'),
+          about:clipText(pt(it,'about'), 380), rating:it.rating, ratingCount:it.ratingCount, weak:it.weak, g:it.g, mynote:pt(it,'mynote'),
+          priceText: it.price>0 ? 'SAR '+it.price : (it.c==='activity' ? tr('freeLabel') : ''), facts:[]}, {bookFlag:!!it.book, bookNote:'', steps:[], bookLink:''});
+      }
+      flatIdx++;
+    }
+  }
+  const s = SAFARI.find(x=>x.n === ref);
+  if(s){
+    const big5 = (s.big5||[]).map(b=>LANG==='ar' ? (BIG5_AR[b]||b) : b).join(LANG==='ar' ? '، ' : ', ');
+    return {kind:'safari', id:s.n, name:pt(s,'n'), area:pt(s,'location'), about:clipText(pt(s,'about'), 380), rating:s.rating, ratingCount:s.ratingCount,
+      g:s.g, mynote:pt(s,'mynote'), priceText:pt(s,'price'), bookFlag:false, steps:(LANG==='ar' ? (s.steps_ar||s.steps) : s.steps) || [], bookLink:s.site||'', bookNote:'',
+      facts:[[LANG==='ar'?'يشمل':'Includes', pt(s,'includes')],[LANG==='ar'?'الخمسة الكبار':'Big Five here', big5]].filter(f=>f[1])};
+  }
+  return {kind:'text', id:String(ref), name:String(ref)};
+}
+
+function buildPrintModel(){
+  const used = new Set(); let stay = null;
+  const days = ITINERARY14.map((d, i)=>{
+    if(d.hotel) stay = d.hotel;
+    const blocks = d.blocks.map(b=>({label:pt(b,'slot'), items:b.items.map(r=>{ const it = resolveRef(r); if(it) used.add(it.id); return it; }).filter(Boolean)}));
+    return {i, title:pt(d,'title'), tip:pt(d,'tip'), date:d.date||'', hotel:d.hotel ? resolveRef(d.hotel) : null, stay:(i === ITINERARY14.length-1) ? null : (stay ? resolveRef(stay) : null), blocks};
+  });
+  const groups = {}, already = [];
+  const add = (label, it)=>{ if(!it) return; if(used.has(it.id)){ already.push(it.name); return; } (groups[label] = groups[label] || []).push(it); };
+  [...picked].sort((a,b)=>a-b).forEach(i=>{ const p = PLACES[i]; if(p) add(AREAS_META[p.a] ? AREAS_META[p.a][LANG] : '', resolveRef(p.n)); });
+  const grFlat = GARDEN_ROUTE.flatMap(t=>t.items.map(it=>({it, t})));
+  [...grPicked].sort((a,b)=>a-b).forEach(i=>{ const x = grFlat[i]; if(x) add(pt(x.t,'town') + (LANG==='ar' ? ' (طريق الحدائق)' : ' (Garden Route)'), resolveRef(x.it.n)); });
+  return {days, groups, already, budget:computeBudget()};
+}
+
+function pdHotel(h){
+  return `<div class="pd-hotel"><span class="pd-hotel-ic">🏨</span><div class="pd-hotel-main"><b>${escHtml(h.name)}</b><div class="pd-sub">${h.rating ? `★ ${h.rating.toFixed(1)} (${h.ratingCount.toLocaleString()}) · ` : ''}${escHtml(h.note||'')}</div></div><a class="pd-link" href="${escHtml(h.g)}">${escHtml(tr('pdfMap'))}</a></div>`;
+}
+function pdItem(it){
+  if(it.kind === 'text') return `<div class="pd-item pd-plain"><div class="pd-main"><h4>${escHtml(it.name)}</h4></div></div>`;
+  const photos = it.base ? photosFor(it.base).slice(0,3).map(p=>thumbData.get(p.url)).filter(Boolean) : [];
+  const cat = it.cat && CATS[LANG][it.cat];
+  const color = cat ? cat.color : (it.kind === 'safari' ? '#8a4fae' : '#6f8c5f');
+  const pills = [];
+  if(cat) pills.push(`<span class="pd-pill" style="--c:${cat.color}">${escHtml(cat.label)}</span>`);
+  if(it.kind === 'safari') pills.push(`<span class="pd-pill" style="--c:#8a4fae">${LANG==='ar' ? 'سفاري' : 'Safari'}</span>`);
+  if(it.cuisine) pills.push(`<span class="pd-pill pd-soft">${escHtml(it.cuisine)}</span>`);
+  const meta = [];
+  if(it.area) meta.push(escHtml(it.area));
+  if(it.rating) meta.push(`★ ${it.rating.toFixed(1)}${it.ratingCount ? ` (${it.ratingCount.toLocaleString()})` : ''}`);
+  if(it.priceText) meta.push(`<b>${escHtml(it.priceText)}</b>`);
+  if(it.weak) meta.push(escHtml(tr('weakSignal')));
+  const facts = (it.facts||[]).filter(([k,v])=>!(k === tr('wear') && /^(casual|كاجوال)[.\s]*$/i.test(String(v).trim())))
+    .map(([k,v])=>`<div class="pd-fact"><b>${escHtml(k)}</b> ${escHtml(v)}</div>`).join('');
+  const steps = (it.steps||[]).slice(0,4).map(s=>`<li>${escHtml(s)}</li>`).join('');
+  const book = (it.bookFlag || it.bookLink || steps)
+    ? `<div class="pd-book">${it.bookFlag ? `<b>${escHtml(tr('bookBadge'))}</b>` : `<b>${escHtml(tr('pdfHowBook'))}</b>`}${it.bookNote ? ` — ${escHtml(it.bookNote)}` : ''}${steps ? `<ol>${steps}</ol>` : ''}${it.bookLink ? `<div><a class="pd-link" href="${escHtml(it.bookLink)}">${escHtml(shortUrl(it.bookLink))}</a></div>` : ''}</div>` : '';
+  return `<div class="pd-item" style="--c:${color}">
+    <div class="pd-main">
+      <h4>${escHtml(it.name)}</h4>
+      <div class="pd-meta">${pills.join('')}${meta.length ? `<span>${meta.join(' · ')}</span>` : ''}</div>
+      ${it.about ? `<p class="pd-about">${escHtml(it.about)}</p>` : ''}
+      ${facts ? `<div class="pd-facts">${facts}</div>` : ''}
+      ${it.mynote ? `<div class="pd-note">📝 ${escHtml(it.mynote)}</div>` : ''}
+      ${book}
+      <div class="pd-links">${it.g ? `<a class="pd-link" href="${escHtml(it.g)}">📍 ${escHtml(tr('pdfMap'))}</a>` : ''}${it.phone ? `<a class="pd-link" href="tel:${escHtml(String(it.phone).replace(/\s/g,''))}">📞 ${escHtml(it.phone)}</a>` : ''}</div>
+    </div>
+    ${photos.length ? `<div class="pd-photos">${photos.map(src=>`<img src="${src}" alt="">`).join('')}</div>` : ''}
+  </div>`;
+}
+
+function renderPrintDoc(m){
+  const ar = LANG === 'ar';
+  const dayWord = i => ar ? `اليوم ${i+1}` : `Day ${i+1}`;
+  const title = ar ? 'كيب تاون وطريق الحدائق' : 'Cape Town & Garden Route';
+  const today = new Date().toLocaleDateString(ar ? 'ar-SA-u-nu-latn' : 'en-GB', {day:'numeric', month:'short', year:'numeric'});
+  const glance = m.days.map(d=>`<tr><td><b>${dayWord(d.i)}</b></td><td>${escHtml(d.date)}</td><td>${escHtml(d.title)}</td><td>${d.stay ? escHtml(d.stay.name) : '—'}</td></tr>`).join('');
+  const num = (label, v)=>`<div class="pd-num">${escHtml(label)}: <b dir="ltr">${v}</b></div>`;
+  let html = `<section class="pd-cover">
+    <div class="pd-kicker">${escHtml(tr('eyebrow'))}</div>
+    <h1>${title}</h1>
+    <h3 class="pd-h3">${escHtml(tr('pdfGlance'))}</h3>
+    <table class="pd-glance"><thead><tr><th>${escHtml(tr('pdfColDay'))}</th><th>${escHtml(tr('pdfColDate'))}</th><th>${escHtml(tr('pdfColPlan'))}</th><th>${escHtml(tr('pdfColStay'))}</th></tr></thead><tbody>${glance}</tbody></table>
+    <p class="pd-foot">${escHtml(tr('pdfFoot'))} · ${today}</p>
+  </section>`;
+  m.days.forEach(d=>{
+    html += `<section class="pd-day"><header class="pd-dayhead"><span class="pd-daynum">${dayWord(d.i)}</span>${d.date ? `<span class="pd-date">${escHtml(d.date)}</span>` : ''}<h2>${escHtml(d.title)}</h2></header>`;
+    if(d.tip) html += `<p class="pd-tip">${escHtml(d.tip)}</p>`;
+    if(d.hotel) html += pdHotel(d.hotel);
+    else if(d.stay) html += `<div class="pd-staying">🏨 ${escHtml(tr('pdfStayingAt'))} <b>${escHtml(d.stay.name)}</b></div>`;
+    d.blocks.forEach(b=>{
+      html += `<div class="pd-slot"><div class="pd-slotlabel">${escHtml(b.label)}</div>${b.items.map(pdItem).join('')}</div>`;
+    });
+    html += `</section>`;
+  });
+  const groupNames = Object.keys(m.groups);
+  if(groupNames.length || m.already.length){
+    html += `<section class="pd-day pd-short"><header class="pd-dayhead"><h2>${escHtml(tr('pdfShortlist'))}</h2></header>`;
+    if(m.already.length) html += `<p class="pd-tip">${escHtml(tr('pdfAlready'))}: ${escHtml(m.already.join(ar ? '، ' : ', '))}</p>`;
+    groupNames.forEach(g=>{ html += `<h3 class="pd-h3">${escHtml(g)}</h3>${m.groups[g].map(pdItem).join('')}`; });
+    if(m.budget.count) html += `<div class="pd-total">${escHtml(tr('budgetTotal'))} <b>≈ SAR ${m.budget.total.toLocaleString()}</b> <span>${escHtml(tr('budgetApprox'))}</span></div>`;
+    html += `</section>`;
+  }
+  return html;
+}
+
+async function printItinerary(){
+  if(pdfBusy) return; pdfBusy = true;
+  try{
+    const model = buildPrintModel();
+    const bases = new Set();
+    const collect = it=>{ if(it && it.base) bases.add(it.base); };
+    model.days.forEach(d=>d.blocks.forEach(b=>b.items.forEach(collect)));
+    Object.values(model.groups).forEach(arr=>arr.forEach(collect));
+    const urls = [...new Set([...bases].flatMap(b=>photosFor(b).slice(0,3).map(p=>p.url)))].filter(u=>!thumbData.has(u));
+    let done = 0;
+    if(urls.length){
+      toast(tr('pdfPreparing').replace('{a}', 0).replace('{b}', urls.length));
+      await runPool(urls, 4, async u=>{ await makeThumb(u); done++; toast(tr('pdfPreparing').replace('{a}', done).replace('{b}', urls.length)); });
+    }
+    const doc = document.getElementById('printDoc');
+    doc.innerHTML = renderPrintDoc(model);
+    await Promise.all([...doc.querySelectorAll('img')].map(i=>i.decode ? i.decode().catch(()=>{}) : null));
+    document.body.classList.add('printing');
+    const cleanup = ()=>{ document.body.classList.remove('printing'); window.removeEventListener('afterprint', cleanup); };
+    window.addEventListener('afterprint', cleanup);
+    setTimeout(cleanup, 180000);
+    window.print();
+  }catch(err){ console.error(err); toast(tr('pdfFail')); }
+  finally{ pdfBusy = false; }
+}
+document.getElementById('printBtn').addEventListener('click', printItinerary);
+document.getElementById('pdfBtnPlan').addEventListener('click', printItinerary);
+
+/* ================= WEATHER (Open-Meteo, free, no key) =================
+   - "Now": live conditions in Cape Town.
+   - Trip strip: real forecast for trip days that are within 16 days of today,
+     otherwise typical weather for those dates (average of the previous 5 years).
+   - Falls back to the last saved data when offline. */
+const WX_LOC = {ct:{lat:-33.9249, lon:18.4241}, gr:{lat:-34.0361, lon:23.0487}};   // Cape Town, Knysna (Garden Route)
+const TRIP_START = '2026-10-28', TRIP_DAYS = 14;
+const WX_KEY = 'ctgr_wx_v1';
+let WX = null, wxStatus = 'loading', wxBusy = false, wxLastFetch = 0;
+
+/* ---- icons (48x48, inline SVG, colours from the site palette) ---- */
+const WXC = {sun:'#f4b63a', sunEdge:'#e8961a', cloud:'#e6edf1', cloudEdge:'#a9bcc5', cloudDark:'#8fa3ad', rain:'#2f86b3', bolt:'#f2c230', wind:'#4f7f8b', moon:'#d8dfee', moonEdge:'#98a6c4'};
+const wxCloud = (dx=0, dy=0, fill=WXC.cloud)=>`<path transform="translate(${dx} ${dy})" d="M14 35a7 7 0 0 1-.7-13.96A10.5 10.5 0 0 1 33.4 19.3 8 8 0 0 1 34 35z" fill="${fill}" stroke="${WXC.cloudEdge}" stroke-width="1.4" stroke-linejoin="round"/>`;
+const wxSun = (cx, cy, r, ray=true)=>{
+  let rays = '';
+  if(ray) for(let a=0; a<8; a++){ const t=a*Math.PI/4, r1=r+3.2, r2=r+6.4; rays += `<line x1="${(cx+Math.cos(t)*r1).toFixed(1)}" y1="${(cy+Math.sin(t)*r1).toFixed(1)}" x2="${(cx+Math.cos(t)*r2).toFixed(1)}" y2="${(cy+Math.sin(t)*r2).toFixed(1)}" stroke="${WXC.sun}" stroke-width="2.6" stroke-linecap="round"/>`; }
+  return `${rays}<circle cx="${cx}" cy="${cy}" r="${r}" fill="${WXC.sun}" stroke="${WXC.sunEdge}" stroke-width="1.2"/>`;
+};
+const wxMoon = (cx, cy)=>`<path transform="translate(${cx-24} ${cy-24})" d="M29.5 10.5a14 14 0 1 0 8 25.2A11.5 11.5 0 0 1 29.5 10.5z" fill="${WXC.moon}" stroke="${WXC.moonEdge}" stroke-width="1.4" stroke-linejoin="round"/>`;
+const wxDrops = (xs, y, len=7)=>xs.map(x=>`<line x1="${x}" y1="${y}" x2="${x-2.6}" y2="${y+len}" stroke="${WXC.rain}" stroke-width="2.6" stroke-linecap="round"/>`).join('');
+function wxIcon(kind, size=44, label=''){
+  let g = '';
+  switch(kind){
+    case 'sun': g = wxSun(24, 24, 9); break;
+    case 'moon': g = wxMoon(24, 24); break;
+    case 'partly': g = wxSun(18, 17, 7.5) + wxCloud(2, 3); break;
+    case 'partlyNight': g = wxMoon(17, 17) + wxCloud(2, 3); break;
+    case 'cloud': g = wxCloud(0, -2, WXC.cloud); break;
+    case 'fog': g = wxCloud(0, -6) + [33,38,43].map((y,i)=>`<line x1="${10+i*2}" y1="${y}" x2="${38-i*2}" y2="${y}" stroke="${WXC.cloudDark}" stroke-width="2.4" stroke-linecap="round"/>`).join(''); break;
+    case 'drizzle': g = wxCloud(0, -5) + wxDrops([17,25,33], 34, 4.5); break;
+    case 'rain': g = wxCloud(0, -5, '#d5dfe5') + wxDrops([16,24,32], 33, 9) ; break;
+    case 'storm': g = wxCloud(0, -5, '#c3cfd6') + `<polygon points="25,29 18,40 24,40 22,47 31,35 25,35 28,29" fill="${WXC.bolt}" stroke="#d29a10" stroke-width="1" stroke-linejoin="round"/>`; break;
+    case 'snow': g = wxCloud(0, -5) + [[17,38],[25,42],[33,38]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.3" fill="#fff" stroke="${WXC.cloudEdge}" stroke-width="1.2"/>`).join(''); break;
+    case 'windy': g = wxSun(38, 10, 5, false)
+      + `<g fill="none" stroke="${WXC.wind}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22h23a5 5 0 1 0-4.6-7"/><path d="M6 31h31a5.5 5.5 0 1 1-5 7.6"/><path d="M6 40h14"/></g>`; break;
+    default: g = wxCloud();
+  }
+  return `<svg class="wx-svg" viewBox="0 0 48 48" width="${size}" height="${size}" role="img" aria-label="${escHtml(label)}">${g}</svg>`;
+}
+function wxKind(code, isDay, wind, forceWind){
+  let k;
+  if(code === 0 || code === 1) k = isDay ? 'sun' : 'moon';
+  else if(code === 2) k = isDay ? 'partly' : 'partlyNight';
+  else if(code === 3) k = 'cloud';
+  else if(code === 45 || code === 48) k = 'fog';
+  else if(code >= 51 && code <= 57) k = 'drizzle';
+  else if((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) k = 'rain';
+  else if((code >= 71 && code <= 77) || code === 85 || code === 86) k = 'snow';
+  else if(code >= 95) k = 'storm';
+  else k = 'cloud';
+  if(wind >= forceWind && ['sun','moon','partly','partlyNight','cloud'].includes(k)) k = 'windy';
+  return k;
+}
+const WX_LABEL = {
+  en:{sun:'Sunny', moon:'Clear night', partly:'Partly cloudy', partlyNight:'Partly cloudy', cloud:'Cloudy', fog:'Fog', drizzle:'Drizzle', rain:'Rain', storm:'Thunderstorm', snow:'Snow', windy:'Windy'},
+  ar:{sun:'مشمس', moon:'ليلة صافية', partly:'غائم جزئيًا', partlyNight:'غائم جزئيًا', cloud:'غائم', fog:'ضباب', drizzle:'رذاذ', rain:'مطر', storm:'عاصفة رعدية', snow:'ثلج', windy:'رياح قوية'}
+};
+const wxLabel = k => (WX_LABEL[LANG] || WX_LABEL.en)[k] || k;
+
+/* small stat-tile icons (stroke, currentColor) */
+const WTI = {
+  high:'<path d="M14 5a2.5 2.5 0 0 0-5 0v9.2a4.5 4.5 0 1 0 5 0z"/><path d="M11.5 9v7"/><path d="M18 6l2.5-2.5L23 6M20.5 3.5V10"/>',
+  low:'<path d="M14 5a2.5 2.5 0 0 0-5 0v9.2a4.5 4.5 0 1 0 5 0z"/><path d="M11.5 9v7"/><path d="M18 8l2.5 2.5L23 8M20.5 10.5V4"/>',
+  sea:'<path d="M2 9c2.2 0 2.2-2 4.5-2S8.7 9 11 9s2.2-2 4.5-2S17.7 9 20 9s2-2 3-2"/><path d="M2 14c2.2 0 2.2-2 4.5-2S8.7 14 11 14s2.2-2 4.5-2S17.7 14 20 14s2-2 3-2"/><path d="M2 19c2.2 0 2.2-2 4.5-2S8.7 19 11 19s2.2-2 4.5-2S17.7 19 20 19s2-2 3-2"/>',
+  wind:'<path d="M2 9h11a3 3 0 1 0-2.8-4"/><path d="M2 14h16a3.2 3.2 0 1 1-3 4.3"/><path d="M2 19h6"/>',
+  rain:'<path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/><path d="M9.5 15a2.8 2.8 0 0 0 2.5 2.4"/>',
+  uv:'<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/>',
+  sunrise:'<path d="M2 19h20"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><path d="M12 5v4.5M12 5l-2.2 2.2M12 5l2.2 2.2M4 12l1.8 1.2M20 12l-1.8 1.2"/>',
+  sunset:'<path d="M2 19h20"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><path d="M12 9.5V5M12 9.5L9.8 7.3M12 9.5l2.2-2.2M4 12l1.8 1.2M20 12l-1.8 1.2"/>'
+};
+function wxTileIcons(){
+  document.querySelectorAll('.wstat[data-w]').forEach(el=>{
+    if(el.querySelector('.wi')) return;
+    const s = document.createElement('span'); s.className = 'wi'; s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${WTI[el.dataset.w] || ''}</svg>`;
+    el.insertBefore(s, el.firstChild);
+  });
+}
+
+/* ---- data ---- */
+const wxAddDays = (iso, n)=>{ const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+async function wxJson(url){ const r = await fetch(url); if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }
+const wxFetchForecast = k => wxJson(`https://api.open-meteo.com/v1/forecast?latitude=${WX_LOC[k].lat}&longitude=${WX_LOC[k].lon}`
+  + `&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,weather_code,wind_speed_10m,wind_gusts_10m`
+  + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max`
+  + `&wind_speed_unit=kmh&timezone=Africa%2FJohannesburg&forecast_days=16`);
+async function wxFetchHist(k){
+  const tripY = +TRIP_START.slice(0, 4), tail = TRIP_START.slice(4);
+  const years = [1,2,3,4,5].map(n=>tripY - n);
+  const res = await Promise.allSettled(years.map(y=>wxJson(`https://archive-api.open-meteo.com/v1/archive?latitude=${WX_LOC[k].lat}&longitude=${WX_LOC[k].lon}`
+    + `&start_date=${wxAddDays(y + tail, -2)}&end_date=${wxAddDays(y + tail, TRIP_DAYS + 1)}`
+    + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max&wind_speed_unit=kmh&timezone=Africa%2FJohannesburg`)));
+  const ok = res.filter(r=>r.status === 'fulfilled').map(r=>r.value.daily).filter(Boolean);
+  if(!ok.length) throw new Error('no history');
+  return ok;
+}
+function wxCache(){ try{ return JSON.parse(localStorage.getItem(WX_KEY) || 'null') || {}; }catch(e){ return {}; } }
+function wxSaveCache(c){ try{ localStorage.setItem(WX_KEY, JSON.stringify(c)); }catch(e){} }
+
+/* typical weather for trip day i (uses +-2 days across the previous years for a steadier average) */
+function wxTypical(hist, i){
+  const rows = [];
+  (hist || []).forEach(d=>{
+    for(let o = i; o <= i + 4; o++){
+      if(d.temperature_2m_max && d.temperature_2m_max[o] != null){
+        rows.push({code:d.weather_code[o], hi:d.temperature_2m_max[o], lo:d.temperature_2m_min[o], pr:d.precipitation_sum[o] || 0, wind:d.wind_speed_10m_max[o] || 0});
+      }
+    }
+  });
+  if(!rows.length) return null;
+  const avg = f => rows.reduce((s, r)=>s + f(r), 0) / rows.length;
+  const rainFrac = rows.filter(r=>r.pr >= 1).length / rows.length;
+  const dry = rows.filter(r=>r.pr < 1 && r.code <= 3);
+  const counts = {}; (dry.length ? dry : rows).forEach(r=>{ const c = r.code <= 1 ? 0 : r.code; counts[c] = (counts[c] || 0) + 1; });
+  const mode = +Object.keys(counts).sort((a, b)=>counts[b] - counts[a])[0];
+  const wind = avg(r=>r.wind);
+  let kind = wxKind(mode, 1, wind, 40);
+  if(rainFrac >= 0.5) kind = 'rain';
+  return {hi:avg(r=>r.hi), lo:avg(r=>r.lo), wind, rain:Math.round(rainFrac * 100), kind};
+}
+function wxBuild(fc, hist){
+  const m = {now:null, days:[], tiles:null};
+  if(fc && fc.ct && fc.ct.current){
+    const c = fc.ct.current;
+    m.now = {temp:c.temperature_2m, feels:c.apparent_temperature, hum:c.relative_humidity_2m, wind:c.wind_speed_10m, gust:c.wind_gusts_10m, isDay:c.is_day, time:String(c.time || '').slice(11, 16), kind:wxKind(c.weather_code, c.is_day, c.wind_speed_10m, 32)};
+  }
+  const typCT = [];
+  for(let i = 0; i < TRIP_DAYS; i++){
+    const date = wxAddDays(TRIP_START, i);
+    const gr = ITINERARY14[i] && ITINERARY14[i].region === 'garden-route';
+    const loc = gr ? 'gr' : 'ct';
+    typCT.push(hist && hist.ct ? wxTypical(hist.ct, i) : null);
+    let day = null;
+    const f = fc && fc[loc] && fc[loc].daily;
+    const fi = f ? f.time.indexOf(date) : -1;
+    if(fi >= 0 && f.temperature_2m_max[fi] != null){
+      day = {src:'forecast', hi:f.temperature_2m_max[fi], lo:f.temperature_2m_min[fi], rain:f.precipitation_probability_max[fi], wind:f.wind_speed_10m_max[fi], kind:wxKind(f.weather_code[fi], 1, f.wind_speed_10m_max[fi], 40)};
+      if(f.precipitation_probability_max[fi] >= 60 && !['rain','drizzle','storm','snow'].includes(day.kind)) day.kind = 'rain';
+    }else if(hist && hist[loc]){
+      const t = wxTypical(hist[loc], i);
+      if(t) day = Object.assign({src:'typical'}, t);
+    }
+    m.days.push(Object.assign({i, date, gr}, day || {src:null}));
+  }
+  const ok = typCT.filter(Boolean);
+  if(ok.length){
+    const rng = f => { const v = ok.map(f); return [Math.round(Math.min(...v)), Math.round(Math.max(...v))]; };
+    m.tiles = {high:rng(t=>t.hi), low:rng(t=>t.lo), wind:rng(t=>t.wind), rain:Math.round(ok.reduce((s, t)=>s + t.rain, 0) / ok.length)};
+  }
+  return m;
+}
+
+async function loadWeather(force){
+  if(wxBusy) return; wxBusy = true;
+  const c = wxCache(), now = Date.now();
+  let fc = c.fc, fcT = c.fcT || 0, hist = c.hist, hT = c.hT || 0, failed = false;
+  const jobs = [];
+  if(force || !fc || now - fcT > 25*60e3){
+    jobs.push((async()=>{ const [ct, gr] = await Promise.all([wxFetchForecast('ct'), wxFetchForecast('gr')]); fc = {ct, gr}; fcT = Date.now(); })().catch(()=>{ failed = true; }));
+  }
+  if(!hist || now - hT > 14*864e5){
+    jobs.push((async()=>{ const [ct, gr] = await Promise.all([wxFetchHist('ct'), wxFetchHist('gr')]); hist = {ct, gr}; hT = Date.now(); })().catch(()=>{ failed = true; }));
+  }
+  if(jobs.length){ await Promise.all(jobs); wxSaveCache({fc, fcT, hist, hT}); }
+  wxLastFetch = Date.now();
+  wxBusy = false;
+  if(!fc && !hist){ WX = null; wxStatus = 'fail'; }
+  else{ WX = wxBuild(fc, hist); WX.updated = fcT || hT; wxStatus = failed ? 'offline' : 'ok'; }
+  renderWeather();
+}
+
+/* ---- rendering ---- */
+const wxDeg = v => Math.round(v) + '°';
+const WX_ICON_DROP = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/></svg>';
+const WX_ICON_WIND = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9h11a3 3 0 1 0-2.8-4"/><path d="M2 15h16a3.2 3.2 0 1 1-3 4.3"/></svg>';
+function renderWeather(){
+  const nowEl = document.getElementById('wxNow'), stripEl = document.getElementById('wxStrip'), noteEl = document.getElementById('wxNote');
+  if(!nowEl) return;
+  wxTileIcons();
+  if(!WX){
+    nowEl.className = 'wx-now wx-empty';
+    nowEl.textContent = tr(wxStatus === 'loading' ? 'wxLoading' : 'wxFail');
+    stripEl.innerHTML = ''; noteEl.textContent = '';
+    return;
+  }
+  const n = WX.now;
+  if(n){
+    const label = wxLabel(n.kind);
+    nowEl.className = 'wx-now';
+    nowEl.innerHTML = `<div class="wx-now-ic">${wxIcon(n.kind, 72, label)}</div>
+      <div class="wx-now-main"><div class="wx-now-place">${escHtml(tr('wxNowIn'))}</div><div class="wx-now-temp">${wxDeg(n.temp)}<span>C</span></div><div class="wx-now-cond">${escHtml(label)}</div></div>
+      <div class="wx-now-facts">
+        <div><b>${wxDeg(n.feels)}</b><span>${escHtml(tr('wxFeels'))}</span></div>
+        <div><b>${Math.round(n.wind)} <small>km/h</small></b><span>${escHtml(tr('wxWind'))}${n.gust ? ` · ${escHtml(tr('wxGusts'))} ${Math.round(n.gust)}` : ''}</span></div>
+        <div><b>${Math.round(n.hum)}%</b><span>${escHtml(tr('wxHumidity'))}</span></div>
+        <div><b dir="ltr">${escHtml(n.time)}</b><span>${escHtml(tr('wxLocalTime'))}</span></div>
+      </div>`;
+  }else{
+    nowEl.className = 'wx-now wx-empty'; nowEl.textContent = tr('wxFail');
+  }
+  const fmtDate = iso => new Date(iso + 'T00:00:00Z').toLocaleDateString(LANG === 'ar' ? 'ar-SA-u-nu-latn' : 'en-GB', {weekday:'short', day:'numeric', month:'short', timeZone:'UTC'});
+  stripEl.innerHTML = WX.days.filter(d=>d.src).map(d=>{
+    const label = wxLabel(d.kind), fcst = d.src === 'forecast';
+    return `<div class="wx-day ${fcst ? 'is-fc' : 'is-typ'}">
+      <div class="wx-d1">${escHtml(LANG === 'ar' ? 'اليوم ' + (d.i + 1) : 'Day ' + (d.i + 1))}</div>
+      <div class="wx-d2">${escHtml(fmtDate(d.date))}</div>
+      <div class="wx-ic">${wxIcon(d.kind, 46, label)}</div>
+      <div class="wx-cond">${escHtml(label)}</div>
+      <div class="wx-t"><b>${wxDeg(d.hi)}</b><span>${wxDeg(d.lo)}</span></div>
+      <div class="wx-meta"><span>${WX_ICON_DROP} ${Math.round(d.rain)}%</span><span>${WX_ICON_WIND} ${Math.round(d.wind)}</span></div>
+      <div class="wx-badge">${escHtml(tr(fcst ? 'wxForecast' : 'wxTypical'))}</div>
+      <div class="wx-loc">${escHtml(tr(d.gr ? 'wxGR' : 'wxCT'))}</div>
+    </div>`;
+  }).join('');
+  if(WX.tiles){
+    const set = (k, txt)=>{ const el = document.querySelector(`.wstat[data-w="${k}"] .wv`); if(el) el.textContent = txt; };
+    const r = a => a[0] === a[1] ? String(a[0]) : a[0] + '–' + a[1];
+    set('high', r(WX.tiles.high) + '°C'); set('low', r(WX.tiles.low) + '°C');
+    set('wind', r(WX.tiles.wind) + ' km/h'); set('rain', '~' + WX.tiles.rain + '%');
+  }
+  const t = WX.updated ? new Date(WX.updated).toLocaleTimeString(LANG === 'ar' ? 'ar-SA-u-nu-latn' : [], {hour:'2-digit', minute:'2-digit'}) : '';
+  noteEl.textContent = (wxStatus === 'offline' ? tr('wxOffline') + ' ' : '') + (t ? tr('wxUpdated').replace('{t}', t) : '');
+}
+document.getElementById('wxRefresh').addEventListener('click', ()=>{ wxStatus = 'loading'; loadWeather(true); });
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && Date.now() - wxLastFetch > 30*60e3) loadWeather(); });
+setInterval(()=>{ if(!document.hidden) loadWeather(); }, 30*60e3);
+
 const drawer = document.getElementById('drawer');
 const backdrop = document.getElementById('backdrop');
 document.getElementById('openDrawer').addEventListener('click', ()=>{drawer.classList.add('open');backdrop.classList.add('open');});
@@ -2946,6 +3488,7 @@ function computeBudget(){
   return {total, count};
 }
 function updateBudget(){
+  try{ localStorage.setItem('ctgr_picks', JSON.stringify({p:[...picked], g:[...grPicked]})); }catch(e){}
   const bar = document.getElementById('budgetBar');
   if(!bar) return;
   const {total, count} = computeBudget();
@@ -2954,25 +3497,35 @@ function updateBudget(){
   bar.innerHTML = `<span>♥ ${count} ${LANG==='ar'?'مختارة':'selected'}</span><span class="budget-total">≈ SAR ${total.toLocaleString()}</span><span class="budget-note">${tr('budgetApprox')}</span>`;
   bar.onclick = ()=>{ document.getElementById('drawer').classList.add('open'); document.getElementById('backdrop').classList.add('open'); };
 }
-document.getElementById('printBtn').addEventListener('click', ()=>window.print());
 document.getElementById('btnEn').addEventListener('click', ()=>setLang('en'));
 document.getElementById('btnAr').addEventListener('click', ()=>setLang('ar'));
 
-document.querySelectorAll('.maintab').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.maintab').forEach(b=>b.classList.toggle('active', b===btn));
-    document.querySelectorAll('.tabpanel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
-    activeTab = btn.dataset.tab;
-    updateHeroTitle();
-    if(btn.dataset.tab==='capetown' && typeof map!=='undefined'){
-      setTimeout(()=>{ map.invalidateSize(); }, 50);
-    }
-  });
-});
+const TAB_IDS = ['plan','capetown','gardenroute','safari'];
+const tabFromHash = ()=>{ const m = location.hash.match(/^#\/?([a-z]+)$/); return (m && TAB_IDS.includes(m[1])) ? m[1] : null; };
+function activateTab(tab, opts){
+  if(!TAB_IDS.includes(tab)) tab = 'plan';
+  document.querySelectorAll('.maintab').forEach(b=>b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('active', p.id === 'tab-' + tab));
+  activeTab = tab;
+  updateHeroTitle();
+  if(tab === 'capetown' && typeof map !== 'undefined') setTimeout(()=>{ map.invalidateSize(); }, 50);
+  if(!(opts && opts.noHash)){ try{ history.replaceState(history.state, '', '#/' + tab); }catch(e){} }
+}
+document.querySelectorAll('.maintab').forEach(btn=>{ btn.addEventListener('click', ()=>activateTab(btn.dataset.tab)); });
+window.addEventListener('hashchange', ()=>{ const tb = tabFromHash(); if(tb && tb !== activeTab) activateTab(tb, {noHash:true}); });
 
-setLang('en');
+/* restore what you had open before a refresh: tab (from the URL), language, hearted places */
+(function restoreState(){
+  try{
+    const s = JSON.parse(localStorage.getItem('ctgr_picks') || 'null');
+    if(s){ (s.p||[]).forEach(i=>{ if(PLACES[+i]) picked.add(+i); }); (s.g||[]).forEach(i=>grPicked.add(+i)); }
+  }catch(e){}
+})();
+let savedLang = 'en'; try{ savedLang = localStorage.getItem('ctgr_lang') === 'ar' ? 'ar' : 'en'; }catch(e){}
+setLang(savedLang);
+activateTab(tabFromHash() || 'plan', {noHash:true});
 loadPhotos();
+loadWeather();
 renderGardenRoute();
 renderSafari();
 
