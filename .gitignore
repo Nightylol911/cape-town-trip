@@ -1,0 +1,6 @@
+node_modules/
+# Your original full-size pictures stay on your computer.
+# Only the resized copies in photos/ are published.
+pictures/
+.DS_Store
+Thumbs.db

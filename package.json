@@ -1,0 +1,15 @@
+{
+  "name": "cape-town-trip",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Trip planner website",
+  "scripts": {
+    "folders": "node tools/make-folders.js",
+    "photos": "node tools/build-photos.js",
+    "missing": "node tools/build-photos.js --missing"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0",
+    "sharp": "^0.34.0"
+  }
+}
