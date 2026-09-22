@@ -12,6 +12,8 @@ const OUT = path.join(ROOT, 'photos');
 const MAX_SIDE = 2000;      // longest edge in pixels
 const QUALITY = 85;         // JPEG quality
 const SLOTS = 6;            // the site shows up to 6 photos per place
+const THUMB_SIDE = 640;     // small versions (photos/t/) used on the cards so phones load fast
+const THUMB_QUALITY = 78;
 const IMG = /\.(jpe?g|png|webp|gif|tiff?|avif)$/i;
 const listOnly = process.argv.includes('--missing');
 
@@ -48,6 +50,8 @@ if (listOnly) {
 (async () => {
   const sharp = require('sharp');
   fs.mkdirSync(OUT, { recursive: true });
+  const TDIR = path.join(OUT, 't');
+  fs.mkdirSync(TDIR, { recursive: true });
   const manifest = {};
   let made = 0, reused = 0, failed = 0, skipped = 0;
 
@@ -70,6 +74,14 @@ if (listOnly) {
             .jpeg({ quality: QUALITY, mozjpeg: true })
             .toFile(outPath);
           made++;
+        }
+        const tPath = path.join(TDIR, outName);
+        if (!fs.existsSync(tPath)) {
+          await sharp(file).rotate()
+            .resize({ width: THUMB_SIDE, height: THUMB_SIDE, fit: 'inside', withoutEnlargement: true })
+            .flatten({ background: '#ffffff' })
+            .jpeg({ quality: THUMB_QUALITY, mozjpeg: true })
+            .toFile(tPath);
         }
         manifest[`${p.key}:${i}`] = outName;
       } catch (err) {
@@ -94,7 +106,12 @@ if (listOnly) {
   const keep = new Set(Object.values(manifest));
   let removed = 0;
   for (const f of fs.readdirSync(OUT)) {
-    if (f !== 'manifest.json' && !keep.has(f)) { fs.unlinkSync(path.join(OUT, f)); removed++; }
+    const fp = path.join(OUT, f);
+    if (fs.statSync(fp).isDirectory()) continue;
+    if (f !== 'manifest.json' && !keep.has(f)) { fs.unlinkSync(fp); removed++; }
+  }
+  for (const f of fs.readdirSync(TDIR)) {
+    if (!keep.has(f)) fs.unlinkSync(path.join(TDIR, f));
   }
   const sorted = Object.fromEntries(Object.entries(manifest).sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true })));
   fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(sorted, null, 1));

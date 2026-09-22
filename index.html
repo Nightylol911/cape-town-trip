@@ -435,7 +435,7 @@ body.ar .wx-now-temp{font-family:'Tajawal',sans-serif;}
 .wx-now-facts b{display:block;font-size:17px;font-weight:700;}
 .wx-now-facts small{font-size:11px;font-weight:500;color:#bcdcd8;}
 .wx-now-facts span{font-size:11.5px;color:#bcdcd8;}
-@media(max-width:700px){.wx-now-facts{grid-template-columns:repeat(2,auto);margin-inline-start:0;width:100%;}}
+@media(max-width:700px){.wx-now-facts{grid-template-columns:repeat(2,auto);margin-inline-start:0;width:100%;} .wx-now-ic{width:76px;height:76px;} .wx-now-ic svg{width:60px;height:60px;}}
 .wx-h{font-size:15px;margin:4px 0 10px;}
 .wx-strip{display:grid;grid-auto-flow:column;grid-auto-columns:112px;gap:10px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:4px;scroll-snap-type:x proximity;}
 @media(min-width:900px){.wx-strip{grid-auto-flow:row;grid-template-columns:repeat(7,1fr);grid-auto-columns:auto;overflow:visible;padding-bottom:2px;}}
@@ -463,6 +463,54 @@ body.ar .wx-t b{font-family:'Tajawal',sans-serif;}
 .wstat .wv,.wx-t,.wx-meta span,.wx-now-temp,.wx-now-facts b{direction:ltr;unicode-bidi:isolate;}
 body.ar .wstat .wv,body.ar .wx-now-facts b{text-align:right;}
 body.ar .wx-t,body.ar .wx-now-temp{justify-content:center;}
+
+/* WEATHER v2: tabs, date picker, hourly, details */
+.wx-live{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.16);border-radius:99px;padding:1px 9px;font-size:10.5px;font-weight:700;letter-spacing:.04em;margin-inline-start:6px;vertical-align:middle;}
+.wx-live::before{content:"";width:6px;height:6px;border-radius:50%;background:#5be08a;animation:wxpulse 1.8s ease-in-out infinite;}
+@keyframes wxpulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+@media(prefers-reduced-motion:reduce){.wx-live::before{animation:none;}}
+.wx-hours-t{font-size:12.5px;font-weight:700;color:#6b6157;margin:0 0 6px;}
+.wx-hours-row{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:6px;scroll-snap-type:x proximity;}
+.wx-hr{flex:0 0 68px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:8px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:#4d6f78;scroll-snap-align:start;}
+.wx-hr.is-now{border-color:var(--ocean);box-shadow:0 0 0 1px var(--ocean) inset;}
+.wx-hr-t{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ocean);}
+.wx-hr b{font-size:14.5px;color:var(--ink);font-family:'Fraunces',serif;}
+body.ar .wx-hr b{font-family:'Tajawal',sans-serif;}
+.wx-hr span{display:inline-flex;align-items:center;gap:3px;direction:ltr;unicode-bidi:isolate;}
+.wx-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 10px;}
+.wx-tab{border:1.5px solid var(--line);background:var(--white);color:var(--ink);padding:8px 16px;border-radius:99px;font:600 13.5px 'Inter',sans-serif;cursor:pointer;}
+body.ar .wx-tab,body.ar .wx-ctrl button,body.ar .wx-ctrl input{font-family:'Tajawal',sans-serif;}
+.wx-tab.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.wx-ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:8px;}
+.wx-ctrl > div{display:flex;align-items:center;gap:8px;}
+.wx-ctrl button{border:1.5px solid var(--line);background:var(--white);color:var(--ink);border-radius:99px;padding:7px 14px;font:600 13px 'Inter',sans-serif;cursor:pointer;}
+#wxLocToggle button.active{background:var(--ocean-deep);border-color:var(--ocean-deep);color:#fff;}
+#wxPrev,#wxNext{width:36px;height:36px;padding:0 0 2px;font-size:20px;line-height:1;}
+body.ar #wxPrev,body.ar #wxNext{transform:scaleX(-1);}
+#wxDate{border:1.5px solid var(--line);background:var(--white);color:var(--ink);border-radius:10px;padding:7px 10px;font:600 14px 'Inter',sans-serif;min-height:36px;}
+#wxDate:focus,.wx-tab:focus-visible,.wx-ctrl button:focus-visible,.wx-day:focus-visible{outline:2px solid var(--coral);outline-offset:2px;}
+.wx-range{font-size:14.5px;font-weight:700;margin:4px 0 10px;}
+.wx-load{grid-column:1 / -1;padding:22px 10px;text-align:center;color:#8a7f70;font-size:13.5px;}
+button.wx-day{font:inherit;color:inherit;cursor:pointer;}
+.wx-day > span{display:block;}
+.wx-day .wx-ic{display:flex;justify-content:center;}
+.wx-day .wx-t,.wx-day .wx-meta{display:flex;justify-content:center;}
+.wx-day.is-forecast{border-color:var(--ocean);box-shadow:0 0 0 1px var(--ocean) inset;}
+.wx-day.is-forecast .wx-badge{background:var(--ocean);border-color:var(--ocean);color:#fff;}
+.wx-day.is-recorded .wx-badge{background:#eef3e9;border-color:#b9cca9;color:#4a6b3a;}
+.wx-day.is-sel{outline:2.5px solid var(--coral);outline-offset:1px;}
+.wx-detail:not(:empty){margin-top:12px;background:var(--paper-2);border-radius:12px;padding:14px 16px;}
+.wx-detail-h{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+.wx-detail-h b{display:block;font-size:15px;}
+.wx-detail-h span{font-size:12.5px;color:#6b6157;}
+.wx-detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px 14px;}
+.wx-detail-grid span{display:block;font-size:11px;color:#8a7f70;text-transform:uppercase;letter-spacing:.04em;}
+body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
+.wx-detail-grid b{font-size:15px;}
+.wx-detail-note{margin:10px 0 0;font-size:12px;color:#6b6157;font-style:italic;}
+
+.ph-static{cursor:default;} .ph-empty.ph-static:hover{background:transparent;color:#8a7f70;}
+#ppThumbs,#ghDisconnect{margin-top:8px;}
 </style>
 </head>
 <body id="bodyRoot">
@@ -531,8 +579,19 @@ body.ar .wx-t,body.ar .wx-now-temp{justify-content:center;}
   <div class="weather-head"><h2 data-t="weatherTitle"></h2><span class="weather-tag" data-t="weatherDate"></span><button type="button" class="wx-refresh" id="wxRefresh" data-t="wxRefreshBtn"></button></div>
   <p class="weather-cap" data-t="weatherCaption"></p>
   <div class="wx-now wx-empty" id="wxNow"></div>
-  <h3 class="wx-h" data-t="wxTripTitle"></h3>
+  <div class="wx-hours" id="wxHours"></div>
+  <div class="wx-tabs" role="tablist">
+    <button type="button" class="wx-tab active" data-wxt="trip" data-t="wxTabTrip"></button>
+    <button type="button" class="wx-tab" data-wxt="live" data-t="wxTabLive"></button>
+    <button type="button" class="wx-tab" data-wxt="date" data-t="wxTabDate"></button>
+  </div>
+  <div class="wx-ctrl">
+    <div id="wxLocToggle" style="display:none"><button type="button" class="active" data-wxl="ct" data-t="wxCT"></button><button type="button" data-wxl="gr" data-t="wxGR"></button></div>
+    <div id="wxDateCtl" style="display:none"><button type="button" id="wxPrev" aria-label="-7">‹</button><input type="date" id="wxDate" min="1950-01-01" max="2100-12-31" aria-label="date"><button type="button" id="wxNext" aria-label="+7">›</button><button type="button" id="wxToday" data-t="wxToday"></button></div>
+  </div>
+  <p class="wx-range" id="wxRange"></p>
   <div class="wx-strip" id="wxStrip"></div>
+  <div class="wx-detail" id="wxDetail"></div>
   <p class="wx-note"><span id="wxNote"></span> <a href="https://open-meteo.com/" target="_blank" rel="noopener" data-t="wxCredit"></a></p>
   <div class="weather-grid">
     <div class="wstat" data-w="high"><div class="wt"><div class="wv">21–24°C</div><div class="wl" data-t="wTypicalHigh"></div></div></div>
@@ -632,23 +691,25 @@ body.ar .wx-t,body.ar .wx-now-temp{justify-content:center;}
       <h4 data-t="ghTitle"></h4>
       <p data-t="ghBody"></p>
       <p class="pp-status" id="ghStatus"></p>
+      <p class="pp-status" id="ppPub"></p>
       <div id="ghForm">
         <label><span data-t="ghOwner"></span><input id="ghOwner" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
         <label><span data-t="ghRepo"></span><input id="ghRepo" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
         <label><span data-t="ghToken"></span><input id="ghToken" type="password" autocomplete="off" spellcheck="false"></label>
         <button type="button" class="pp-primary" id="ghConnect" data-t="ghConnect"></button>
       </div>
+      <button type="button" id="ppThumbs" data-t="ppThumbs"></button>
       <button type="button" id="ghDisconnect" data-t="ghDisconnect"></button>
     </section>
-    <section class="pp-sync">
+    <section class="pp-sync" id="ppLocalSec">
       <p class="pp-count" id="ppCount"></p>
       <div class="pp-actions">
         <button type="button" class="pp-primary" id="ppUpload"></button>
         <button type="button" id="ppExport" data-t="ppExport"></button>
         <button type="button" class="pp-danger" id="ppClear" data-t="ppClear"></button>
-        <button type="button" id="ppClose" data-t="ppClose"></button>
       </div>
     </section>
+    <div class="pp-actions" style="margin-top:14px"><button type="button" id="ppClose" data-t="ppClose"></button></div>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -679,12 +740,14 @@ const photoDB = (function(){
   let dbPromise = null;
   function open(){
     if(!dbPromise) dbPromise = new Promise(resolve=>{
+      let done = false; const fin = v=>{ if(!done){ done = true; resolve(v); } };
+      setTimeout(()=>fin(null), 3000);            // Safari can leave open() hanging: never wait more than 3s
       try{
         const req = indexedDB.open('trip-planner-photos', 1);
         req.onupgradeneeded = ()=>req.result.createObjectStore('photos');
-        req.onsuccess = ()=>resolve(req.result);
-        req.onerror = req.onblocked = ()=>resolve(null);
-      }catch(e){ resolve(null); }
+        req.onsuccess = ()=>fin(req.result);
+        req.onerror = req.onblocked = ()=>fin(null);
+      }catch(e){ fin(null); }
     });
     return dbPromise;
   }
@@ -729,7 +792,7 @@ en:{
   heroLead:"Every place you two shortlisted — the story behind it, practical info, when to go, what to wear, real menus and booking pages where they exist. Tap ○ to shortlist, tap a photo to view it full size, tap + to add your own.",
   statPlaces:"Places curated", statAreasL:"Neighbourhoods", statBookingL:"Need pre-booking",
   weatherTitle:"Weather & what to pack", weatherDate:"28 Oct – 10 Nov 2026",
-  weatherCaption:"Live weather from Open-Meteo. Trip days within the next 16 days show the real forecast; days further out show typical weather for the same dates (average of the last 5 years). Sea temperature, UV, sunrise and sunset are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
+  weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
   wTypicalHigh:"Typical daytime high", wTypicalLow:"Typical overnight low", wSea:"Sea temperature (cold!)",
   wWind:"Wind (\"Cape Doctor\" SE wind is common)", wRain:"Chance of rain on a given day", wUV:"UV index — sun protection needed",
   wSunrise:"Sunrise (28 Oct → 10 Nov)", wSunset:"Sunset (28 Oct → 10 Nov)",
@@ -783,7 +846,7 @@ en:{
   signature:"Designed by Yazeed Alturki",
   directions:"Directions", menuBtn:"Menu", bookBadge:"Pre-booking recommended", howToBook:"How to book",
   official:"Official booking page →", findOperator:"Find operator →",
-  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Sync across devices", ghBody:"Connect your GitHub so photos you add are saved to your website and show on every device. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
+  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Add & edit photos", ghBody:"Only devices connected with your GitHub token can add, replace or delete photos. Everyone else can only view them. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
   allChip:"All"
 },
 ar:{
@@ -798,7 +861,7 @@ ar:{
   heroLead:"كل مكان اخترتماه — قصته، معلومات عملية، أفضل وقت للزيارة، ماذا ترتديان، قوائم طعام حقيقية، وروابط حجز فعلية إن وُجدت. اضغطا على ○ لإضافته لقائمتكما، واضغطا على الصورة لعرضها بالحجم الكامل، وعلى + لإضافة صورتكما.",
   statPlaces:"مكانًا منسقًا", statAreasL:"حيًا", statBookingL:"يحتاج حجزًا مسبقًا",
   weatherTitle:"الطقس وماذا تحضران", weatherDate:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦",
-  weatherCaption:"طقس مباشر من Open-Meteo. أيام الرحلة خلال الـ١٦ يومًا القادمة تعرض التنبؤ الفعلي، أما الأيام الأبعد فتعرض الطقس المعتاد لنفس التواريخ (متوسط آخر ٥ سنوات). حرارة البحر ومؤشر الأشعة فوق البنفسجية والشروق والغروب تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
+  weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
   wTypicalHigh:"الحرارة العظمى المعتادة نهارًا", wTypicalLow:"الحرارة الصغرى المعتادة ليلاً", wSea:"حرارة البحر (باردة!)",
   wWind:"الرياح (رياح \"الطبيب الكيبي\" الجنوبية الشرقية شائعة)", wRain:"احتمال هطول المطر في يوم معين", wUV:"مؤشر الأشعة فوق البنفسجية — الحماية من الشمس ضرورية",
   wSunrise:"الشروق (٢٨ أكتوبر ← ١٠ نوفمبر)", wSunset:"الغروب (٢٨ أكتوبر ← ١٠ نوفمبر)",
@@ -852,7 +915,7 @@ ar:{
   signature:"صمّمه يزيد التركي",
   directions:"الاتجاهات", menuBtn:"القائمة", bookBadge:"يُنصح بالحجز المسبق", howToBook:"كيفية الحجز",
   official:"صفحة الحجز الرسمية ←", findOperator:"ابحثا عن المشغّل ←",
-  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"المزامنة بين الأجهزة", ghBody:"اربطا حساب GitHub لتُحفظ الصور التي تضيفانها في موقعكما وتظهر على كل الأجهزة. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع فقط.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
+  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"إضافة الصور وتعديلها", ghBody:"الأجهزة المرتبطة برمز GitHub الخاص بكما فقط تستطيع إضافة الصور أو استبدالها أو حذفها، والبقية تشاهدها فقط. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع وحده.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
   allChip:"الكل"
 }
 };
@@ -1604,14 +1667,31 @@ function nameForBase(base){
   const it = itemForBase(base);
   return it ? (LANG==='ar' ? (it.n_ar || it.n) : it.n) : '';
 }
+const noThumb = new Set();     // published files that have no small version yet
+const thumbUrl = f=>(noThumb.has(f) ? 'photos/' : 'photos/t/') + encodeURIComponent(f);
+const canEdit = ()=>!!ghConfig();   // only devices connected with your GitHub token can add / replace / delete
 function photosFor(base){
   const out = [];
   for(let s=0; s<MAX_SLOTS; s++){
     const key = base+':'+s;
-    if(photoData[key]) out.push({slot:s, key, url:photoData[key].url, local:true, pending:!!pendingMap[key]});
-    else if(sharedPhotos[key]) out.push({slot:s, key, url:sharedPhotos[key], local:false});
+    if(photoData[key]) out.push({slot:s, key, url:photoData[key].url, thumb:photoData[key].url, local:true, pending:!!pendingMap[key]});
+    else if(sharedPhotos[key]) out.push({slot:s, key, url:sharedPhotos[key], thumb:thumbUrl(sharedManifest[key]), local:false});
   }
   return out;
+}
+function makeThumbBlob(blob){
+  return new Promise((resolve, reject)=>{
+    const src = URL.createObjectURL(blob), img = new Image();
+    img.onload = ()=>{
+      const k = Math.min(1, 640 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(img.naturalWidth*k)); c.height = Math.max(1, Math.round(img.naturalHeight*k));
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(src);
+      c.toBlob(b=>b ? resolve(b) : reject(new Error('thumb failed')), 'image/jpeg', 0.78);
+    };
+    img.onerror = ()=>{ URL.revokeObjectURL(src); reject(new Error('thumb decode failed')); };
+    img.src = src;
+  });
 }
 
 /* ---- saving a photo: resize + re-encode as JPEG ---- */
@@ -1648,6 +1728,7 @@ fileInput.type = 'file'; fileInput.accept = 'image/*'; fileInput.hidden = true;
 document.body.appendChild(fileInput);
 let pendingPick = null;
 function pickFiles(base, replaceSlot){
+  if(!canEdit()){ toast(tr('needToken')); return; }
   pendingPick = {base, replaceSlot: (replaceSlot==null ? null : replaceSlot)};
   fileInput.multiple = (replaceSlot==null);
   fileInput.value = '';
@@ -1659,6 +1740,7 @@ fileInput.addEventListener('change', ()=>{
 });
 
 async function savePhotos(base, files, replaceSlot){
+  if(!canEdit()){ toast(tr('needToken')); return; }
   let slots = [];
   if(replaceSlot != null){ slots = [replaceSlot]; files = files.slice(0,1); }
   else{
@@ -1678,7 +1760,8 @@ async function savePhotos(base, files, replaceSlot){
       photoData[key] = {url: URL.createObjectURL(blob), blob};
       delete pendingMap[key];
       await photoDB.put(key, blob);
-      saved.push({key, blob, filename: key.replace(':','_') + '-' + stamp + '.jpg'});
+      const thumb = await makeThumbBlob(blob).catch(()=>null);
+      saved.push({key, blob, thumb, filename: key.replace(':','_') + '-' + stamp + '.jpg'});
       if(firstSlot === null) firstSlot = slots[n];
     }catch(err){ console.error('Photo failed', err); failed++; }
   }
@@ -1725,15 +1808,17 @@ const ICON_EXPAND = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"
 function slideshow(base){
   const ps = photosFor(base);
   if(!ps.length){
-    return `<div class="slideshow empty" data-slideshow="${base}"><button type="button" class="ph-empty" data-add="${base}">${ICON_CAM}<span>${tr('addPhoto')}</span></button></div>`;
+    return `<div class="slideshow empty" data-slideshow="${base}">${canEdit()
+      ? `<button type="button" class="ph-empty" data-add="${base}">${ICON_CAM}<span>${tr('addPhoto')}</span></button>`
+      : `<div class="ph-empty ph-static">${ICON_CAM}<span>${tr('noPhotoYet')}</span></div>`}</div>`;
   }
   const cur = Math.min(slideState[base]||0, ps.length-1);
   const nm = escHtml(nameForBase(base));
-  const slides = ps.map((p,i)=>`<img class="slide ${i===cur?'show':''}" data-view="${i}" src="${p.url}" alt="${nm}" loading="lazy" decoding="async" tabindex="0" role="button" aria-label="${tr('viewFull')}">`).join('');
+  const slides = ps.map((p,i)=>`<img class="slide ${i===cur?'show':''}" data-view="${i}" src="${p.thumb}" data-full="${p.url}" alt="${nm}" loading="lazy" tabindex="0" role="button" aria-label="${tr('viewFull')}">`).join('');
   const multi = ps.length > 1;
   return `<div class="slideshow" data-slideshow="${base}">${slides}
     <span class="ph-expand" aria-hidden="true">${ICON_EXPAND}</span>
-    <button type="button" class="ph-btn" data-add="${base}" title="${tr('addPhoto')}" aria-label="${tr('addPhoto')}">+</button>
+    ${canEdit() ? `<button type="button" class="ph-btn" data-add="${base}" title="${tr('addPhoto')}" aria-label="${tr('addPhoto')}">+</button>` : ''}
     ${multi ? `<button type="button" class="slide-nav prev" data-nav="-1" aria-label="${tr('prevPhoto')}">‹</button><button type="button" class="slide-nav next" data-nav="1" aria-label="${tr('nextPhoto')}">›</button>
     <div class="slide-dots">${ps.map((p,i)=>`<button type="button" class="${i===cur?'active':''}" data-dot="${i}" aria-label="${i+1}"></button>`).join('')}</div>` : ''}
   </div>`;
@@ -1764,6 +1849,15 @@ document.addEventListener('click', e=>{
   const view = t.closest('.slideshow [data-view]');
   if(view){ openLightbox(view.closest('.slideshow').dataset.slideshow, +view.dataset.view); }
 });
+document.addEventListener('error', e=>{
+  const img = e.target;
+  if(!(img instanceof HTMLImageElement) || !img.dataset || !img.dataset.full) return;
+  const full = new URL(img.dataset.full, location.href).href;
+  if(img.src !== full){
+    const m = img.src.split('/photos/t/')[1]; if(m) noThumb.add(decodeURIComponent(m));
+    img.src = full;
+  }
+}, true);
 document.addEventListener('keydown', e=>{
   if((e.key==='Enter' || e.key===' ') && e.target instanceof Element && e.target.matches('.slideshow [data-view]')){
     e.preventDefault(); openLightbox(e.target.closest('.slideshow').dataset.slideshow, +e.target.dataset.view);
@@ -1819,10 +1913,13 @@ function lbShow(i){
   lbMeta();
   const dl = document.getElementById('lbDownload');
   dl.href = p.url; dl.download = (name.replace(/[^\w]+/g,'-').replace(/^-|-$/g,'') || 'photo') + '-' + (lb.i+1) + '.jpg';
-  document.getElementById('lbRemove').style.display = (p.local || (ghConfig() && sharedManifest[p.key])) ? '' : 'none';
+  const edit = canEdit();
+  document.getElementById('lbAdd').style.display = edit ? '' : 'none';
+  document.getElementById('lbReplace').style.display = edit ? '' : 'none';
+  document.getElementById('lbRemove').style.display = (edit && (p.local || sharedManifest[p.key])) ? '' : 'none';
   document.querySelectorAll('.lb-nav').forEach(b=>b.style.display = list.length>1 ? '' : 'none');
-  lbThumbs.innerHTML = list.map((q,k)=>`<button type="button" class="lb-thumb ${k===lb.i?'active':''}" data-ti="${k}" aria-label="${k+1}"><img src="${q.url}" alt=""></button>`).join('')
-    + (list.length < MAX_SLOTS ? `<button type="button" class="lb-thumb add" id="lbThumbAdd" aria-label="${tr('addPhoto')}">+</button>` : '');
+  lbThumbs.innerHTML = list.map((q,k)=>`<button type="button" class="lb-thumb ${k===lb.i?'active':''}" data-ti="${k}" aria-label="${k+1}"><img src="${q.thumb}" data-full="${q.url}" alt=""></button>`).join('')
+    + (edit && list.length < MAX_SLOTS ? `<button type="button" class="lb-thumb add" id="lbThumbAdd" aria-label="${tr('addPhoto')}">+</button>` : '');
   const act = lbThumbs.querySelector('.active'); if(act && act.scrollIntoView) act.scrollIntoView({inline:'center', block:'nearest'});
   [['lbClose','closeViewer'],['lbZoomIn','zoomIn'],['lbZoomOut','zoomOut'],['lbFit','zoomReset'],['lbAdd','addPhoto'],['lbReplace','replacePhoto'],['lbDownload','downloadPhoto'],['lbRemove','removePhoto'],['lbPrev','prevPhoto'],['lbNext','nextPhoto']]
     .forEach(([id,k])=>{ const el = document.getElementById(id); el.title = tr(k); el.setAttribute('aria-label', tr(k)); });
@@ -1981,6 +2078,9 @@ function openPanel(){
   document.getElementById('ppCount').textContent = n ? tr('ppCount').replace('{n}', n) : tr('ppNone');
   document.getElementById('ppExport').disabled = document.getElementById('ppClear').disabled = !n;
   const cfg = ghConfig(), unsent = Object.keys(photoData).filter(k=>!pendingMap[k]);
+  document.getElementById('ppLocalSec').style.display = n ? '' : 'none';
+  document.getElementById('ppThumbs').style.display = cfg ? '' : 'none';
+  document.getElementById('ppPub').textContent = tr('ppPublished').replace('{n}', Object.keys(sharedManifest).filter(k=>/^(gr-)?\d+:\d+$/.test(k)).length);
   document.getElementById('ghStatus').textContent = cfg ? tr('ghConnected').replace('{r}', cfg.owner + '/' + cfg.repo) : tr('ghNotConnected');
   document.getElementById('ghForm').style.display = cfg ? 'none' : '';
   document.getElementById('ghDisconnect').style.display = cfg ? '' : 'none';
@@ -2010,10 +2110,32 @@ document.getElementById('ghConnect').addEventListener('click', async ()=>{
     ghSaveConfig(cfg);
     document.getElementById('ghToken').value = '';
     toast(tr('ghConnected').replace('{r}', cfg.owner + '/' + cfg.repo));
-    openPanel();
+    openPanel(); renderAreas(); renderGardenRoute();
   }catch(err){ toast(ghErrText(err)); }
 });
-document.getElementById('ghDisconnect').addEventListener('click', ()=>{ ghSaveConfig(null); openPanel(); });
+document.getElementById('ghDisconnect').addEventListener('click', ()=>{ ghSaveConfig(null); openPanel(); renderAreas(); renderGardenRoute(); });
+document.getElementById('ppThumbs').addEventListener('click', async ()=>{
+  const cfg = ghConfig(); if(!cfg) return;
+  const entries = Object.entries(sharedManifest).filter(([k])=>/^(gr-)?\d+:\d+$/.test(k));
+  if(!entries.length){ toast(tr('thumbsNone')); return; }
+  toast(tr('thumbsWorking').replace('{a}', 0).replace('{b}', entries.length));
+  const need = [];
+  await runPool(entries, 6, async([k, f])=>{
+    try{ const r = await fetch('photos/t/' + encodeURIComponent(f), {method:'HEAD', cache:'no-store'}); if(!r.ok) need.push(f); }catch(e){ need.push(f); }
+  });
+  if(!need.length){ toast(tr('thumbsNone')); return; }
+  const extra = []; let done = 0;
+  await runPool(need, 3, async f=>{
+    try{
+      const r = await fetch('photos/' + encodeURIComponent(f), {cache:'no-store'});
+      if(r.ok) extra.push({path:'photos/t/' + f, blob: await makeThumbBlob(await r.blob())});
+    }catch(e){ console.error('thumb failed', f, e); }
+    done++; toast(tr('thumbsWorking').replace('{a}', done).replace('{b}', need.length));
+  });
+  if(!extra.length){ toast(tr('photoFail')); return; }
+  try{ await ghCommit(cfg, {extra, message:'Add small versions of ' + extra.length + ' photos'}); toast(tr('thumbsDone')); }
+  catch(err){ console.error(err); toast(ghErrText(err)); }
+});
 document.getElementById('ppUpload').addEventListener('click', async ()=>{
   const cfg = ghConfig(); if(!cfg) return;
   const stamp = Date.now().toString(36);
@@ -2059,7 +2181,7 @@ function ghErrText(err){
 const blobToB64 = b => new Promise((res, rej)=>{ const fr = new FileReader(); fr.onload = ()=>res(String(fr.result).split(',')[1]); fr.onerror = ()=>rej(fr.error); fr.readAsDataURL(b); });
 
 // One commit that adds/replaces/removes photos and rewrites photos/manifest.json
-async function ghCommit(cfg, {adds = [], removeKeys = [], message}){
+async function ghCommit(cfg, {adds = [], removeKeys = [], extra = [], message}){
   let lastErr;
   for(let attempt = 0; attempt < 2; attempt++){
     try{
@@ -2074,16 +2196,28 @@ async function ghCommit(cfg, {adds = [], removeKeys = [], message}){
       for(const a of adds){
         if(!a.sha) a.sha = (await ghJson(cfg, '/git/blobs', {method:'POST', body:{content: await blobToB64(a.blob), encoding:'base64'}})).sha;
         tree.push({path:'photos/' + a.filename, mode:'100644', type:'blob', sha:a.sha});
-        if(manifest[a.key] && manifest[a.key] !== a.filename) deletes.push('photos/' + manifest[a.key]);
+        if(a.thumb){
+          if(!a.tsha) a.tsha = (await ghJson(cfg, '/git/blobs', {method:'POST', body:{content: await blobToB64(a.thumb), encoding:'base64'}})).sha;
+          tree.push({path:'photos/t/' + a.filename, mode:'100644', type:'blob', sha:a.tsha});
+        }
+        if(manifest[a.key] && manifest[a.key] !== a.filename){ deletes.push('photos/' + manifest[a.key], 'photos/t/' + manifest[a.key]); }
         manifest[a.key] = a.filename;
       }
-      removeKeys.forEach(k=>{ if(manifest[k]){ deletes.push('photos/' + manifest[k]); delete manifest[k]; } });
+      for(const x of extra){
+        if(!x.sha) x.sha = (await ghJson(cfg, '/git/blobs', {method:'POST', body:{content: await blobToB64(x.blob), encoding:'base64'}})).sha;
+        tree.push({path:x.path, mode:'100644', type:'blob', sha:x.sha});
+      }
+      removeKeys.forEach(k=>{ if(manifest[k]){ deletes.push('photos/' + manifest[k], 'photos/t/' + manifest[k]); delete manifest[k]; } });
       const sorted = Object.fromEntries(Object.entries(manifest).sort((x,y)=>x[0].localeCompare(y[0], undefined, {numeric:true})));
       tree.push({path:'photos/manifest.json', mode:'100644', type:'blob', content: JSON.stringify(sorted, null, 1)});
       const mkTree = extra => ghJson(cfg, '/git/trees', {method:'POST', body:{base_tree: baseTree, tree: tree.concat(extra.map(p=>({path:p, mode:'100644', type:'blob', sha:null})))}});
       let t;
       try{ t = await mkTree(deletes); }
-      catch(e){ if(e.status === 422 && deletes.length) t = await mkTree([]); else throw e; }   // an old file was already gone
+      catch(e){
+        if(!(e.status === 422 && deletes.length)) throw e;            // an old file (or its small version) was already gone
+        try{ t = await mkTree(deletes.filter(p=>!p.startsWith('photos/t/'))); }
+        catch(e2){ if(e2.status === 422) t = await mkTree([]); else throw e2; }
+      }
       const c = await ghJson(cfg, '/git/commits', {method:'POST', body:{message: message || 'Update photos', tree: t.sha, parents:[head]}});
       await ghJson(cfg, '/git/refs/heads/' + branch, {method:'PATCH', body:{sha: c.sha}});
       sharedManifest = sorted;
@@ -2093,17 +2227,26 @@ async function ghCommit(cfg, {adds = [], removeKeys = [], message}){
   throw lastErr;
 }
 
+async function loadManifest(){
+  for(let attempt = 0; attempt < 2; attempt++){
+    try{
+      const r = await fetch('photos/manifest.json?v=' + Date.now(), {cache:'no-store'});
+      if(r.ok){
+        sharedManifest = (await r.json()) || {};
+        Object.keys(sharedPhotos).forEach(k=>delete sharedPhotos[k]);
+        Object.entries(sharedManifest).forEach(([k,f])=>{ sharedPhotos[k] = 'photos/' + encodeURIComponent(f); });
+      }
+      return;      // loaded, or there is no manifest yet
+    }catch(e){ await new Promise(res=>setTimeout(res, 1500)); }   // network hiccup: try once more
+  }
+}
+const withTimeout = (p, ms, dflt)=>Promise.race([p, new Promise(res=>setTimeout(()=>res(dflt), ms))]);
 async function loadPhotos(){
+  await loadManifest();
+  renderAreas(); renderGardenRoute();      // published photos appear straight away
   try{
-    const r = await fetch('photos/manifest.json', {cache:'no-cache'});
-    if(r.ok){
-      sharedManifest = await r.json();
-      Object.entries(sharedManifest).forEach(([k,f])=>{ sharedPhotos[k] = 'photos/' + encodeURIComponent(f); });
-    }
-  }catch(e){ /* no published photos yet (or opened as a local file) */ }
-  try{
-    const all = await photoDB.all();
-    Object.entries(all).forEach(([k,b])=>{ photoData[k] = {url:URL.createObjectURL(b), blob:b}; });
+    const all = await withTimeout(photoDB.all(), 4000, {});
+    Object.entries(all).forEach(([k,b])=>{ if(!photoData[k]) photoData[k] = {url:URL.createObjectURL(b), blob:b}; });
   }catch(e){}
   // photos uploaded to GitHub earlier: once the site's own manifest has them, drop the temporary local copy
   let changed = false;
@@ -3032,10 +3175,10 @@ function clipText(s, n){
 }
 const shortUrl = u => String(u||'').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
-function makeThumb(url){
+function makeThumb(url, small){
   if(thumbJobs.has(url)) return thumbJobs.get(url);
   const job = new Promise(resolve=>{
-    const img = new Image(); let done = false;
+    const img = new Image(); let done = false, triedFull = !small || small === url;
     const finish = v=>{ if(done) return; done = true; if(v) thumbData.set(url, v); resolve(v); };
     setTimeout(()=>finish(null), 20000);
     img.onload = ()=>{
@@ -3046,8 +3189,8 @@ function makeThumb(url){
         finish(c.toDataURL('image/jpeg', 0.75));
       }catch(e){ finish(null); }
     };
-    img.onerror = ()=>finish(null);
-    img.src = url;
+    img.onerror = ()=>{ if(!triedFull){ triedFull = true; img.src = url; } else finish(null); };
+    img.src = triedFull ? url : small;
   });
   thumbJobs.set(url, job); return job;
 }
@@ -3191,11 +3334,13 @@ async function printItinerary(){
     const collect = it=>{ if(it && it.base) bases.add(it.base); };
     model.days.forEach(d=>d.blocks.forEach(b=>b.items.forEach(collect)));
     Object.values(model.groups).forEach(arr=>arr.forEach(collect));
-    const urls = [...new Set([...bases].flatMap(b=>photosFor(b).slice(0,3).map(p=>p.url)))].filter(u=>!thumbData.has(u));
+    const smallOf = new Map();
+    [...bases].forEach(b=>photosFor(b).slice(0,3).forEach(p=>{ if(!thumbData.has(p.url)) smallOf.set(p.url, p.thumb); }));
+    const urls = [...smallOf.keys()];
     let done = 0;
     if(urls.length){
       toast(tr('pdfPreparing').replace('{a}', 0).replace('{b}', urls.length));
-      await runPool(urls, 4, async u=>{ await makeThumb(u); done++; toast(tr('pdfPreparing').replace('{a}', done).replace('{b}', urls.length)); });
+      await runPool(urls, 4, async u=>{ await makeThumb(u, smallOf.get(u)); done++; toast(tr('pdfPreparing').replace('{a}', done).replace('{b}', urls.length)); });
     }
     const doc = document.getElementById('printDoc');
     doc.innerHTML = renderPrintDoc(model);
@@ -3212,14 +3357,15 @@ document.getElementById('printBtn').addEventListener('click', printItinerary);
 document.getElementById('pdfBtnPlan').addEventListener('click', printItinerary);
 
 /* ================= WEATHER (Open-Meteo, free, no key) =================
-   - "Now": live conditions in Cape Town.
-   - Trip strip: real forecast for trip days that are within 16 days of today,
-     otherwise typical weather for those dates (average of the previous 5 years).
-   - Falls back to the last saved data when offline. */
+   - Live: current conditions + next 24 hours + next 16 days (refreshes every ~25 min).
+   - Tabs: your trip dates, the next 16 days, or any date you pick (a week at a time).
+   - Dates beyond the 16-day forecast show typical weather (average of the same dates over the last 5 years).
+   - Past dates show recorded weather. Falls back to the last saved data when offline. */
 const WX_LOC = {ct:{lat:-33.9249, lon:18.4241}, gr:{lat:-34.0361, lon:23.0487}};   // Cape Town, Knysna (Garden Route)
 const TRIP_START = '2026-10-28', TRIP_DAYS = 14;
-const WX_KEY = 'ctgr_wx_v1';
-let WX = null, wxStatus = 'loading', wxBusy = false, wxLastFetch = 0;
+const WX_HIST_YEARS = 5, WX_LS = 'ctgr_wxc_v2';
+let wxTab = 'trip', wxLoc = 'ct', wxPick = '', wxSeq = 0, wxStale = false, wxBusy = false, wxLastFetch = 0;
+const WX = {now:null, hourly:[], today:'', updated:0, status:'loading'};
 
 /* ---- icons (48x48, inline SVG, colours from the site palette) ---- */
 const WXC = {sun:'#f4b63a', sunEdge:'#e8961a', cloud:'#e6edf1', cloudEdge:'#a9bcc5', cloudDark:'#8fa3ad', rain:'#2f86b3', bolt:'#f2c230', wind:'#4f7f8b', moon:'#d8dfee', moonEdge:'#98a6c4'};
@@ -3292,28 +3438,56 @@ function wxTileIcons(){
 
 /* ---- data ---- */
 const wxAddDays = (iso, n)=>{ const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const wxShiftYear = (iso, y)=>{ const [, m, d] = iso.split('-').map(Number); return new Date(Date.UTC(y, m - 1, d)).toISOString().slice(0, 10); };
+const wxIsoToday = ()=>new Date().toISOString().slice(0, 10);
 async function wxJson(url){ const r = await fetch(url); if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }
-const wxFetchForecast = k => wxJson(`https://api.open-meteo.com/v1/forecast?latitude=${WX_LOC[k].lat}&longitude=${WX_LOC[k].lon}`
-  + `&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,weather_code,wind_speed_10m,wind_gusts_10m`
-  + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max`
-  + `&wind_speed_unit=kmh&timezone=Africa%2FJohannesburg&forecast_days=16`);
-async function wxFetchHist(k){
-  const tripY = +TRIP_START.slice(0, 4), tail = TRIP_START.slice(4);
-  const years = [1,2,3,4,5].map(n=>tripY - n);
-  const res = await Promise.allSettled(years.map(y=>wxJson(`https://archive-api.open-meteo.com/v1/archive?latitude=${WX_LOC[k].lat}&longitude=${WX_LOC[k].lon}`
-    + `&start_date=${wxAddDays(y + tail, -2)}&end_date=${wxAddDays(y + tail, TRIP_DAYS + 1)}`
-    + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max&wind_speed_unit=kmh&timezone=Africa%2FJohannesburg`)));
-  const ok = res.filter(r=>r.status === 'fulfilled').map(r=>r.value.daily).filter(Boolean);
-  if(!ok.length) throw new Error('no history');
-  return ok;
-}
-function wxCache(){ try{ return JSON.parse(localStorage.getItem(WX_KEY) || 'null') || {}; }catch(e){ return {}; } }
-function wxSaveCache(c){ try{ localStorage.setItem(WX_KEY, JSON.stringify(c)); }catch(e){} }
+const wxUrl = (base, loc, extra)=>`${base}?latitude=${WX_LOC[loc].lat}&longitude=${WX_LOC[loc].lon}&wind_speed_unit=kmh&timezone=Africa%2FJohannesburg${extra}`;
+const WX_FDAILY = 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,sunrise,sunset,uv_index_max';
+const WX_ADAILY = 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,sunrise,sunset';
 
-/* typical weather for trip day i (uses +-2 days across the previous years for a steadier average) */
-function wxTypical(hist, i){
+/* small cache: memory + localStorage. If a request fails, the last saved answer is used (works offline). */
+const wxMem = new Map();
+function wxLsRead(){ try{ return JSON.parse(localStorage.getItem(WX_LS) || '{}') || {}; }catch(e){ return {}; } }
+function wxLsWrite(o){
+  try{
+    const keys = Object.keys(o);
+    if(keys.length > 40) keys.sort((a, b)=>o[a].t - o[b].t).slice(0, keys.length - 40).forEach(k=>delete o[k]);
+    localStorage.setItem(WX_LS, JSON.stringify(o));
+  }catch(e){ /* storage full or blocked: memory cache still works */ }
+}
+async function wxCached(key, ttl, fn){
+  const now = Date.now(), ls = wxLsRead(), hit = wxMem.get(key) || ls[key];
+  if(hit && now - hit.t < ttl) return hit.v;
+  try{
+    const v = await fn(), rec = {t:now, v};
+    wxMem.set(key, rec); ls[key] = rec; wxLsWrite(ls);
+    return v;
+  }catch(e){
+    if(hit){ wxStale = true; return hit.v; }
+    throw e;
+  }
+}
+function wxDrop(prefix){
+  [...wxMem.keys()].forEach(k=>{ if(k.startsWith(prefix)) wxMem.delete(k); });
+  const ls = wxLsRead(); Object.keys(ls).forEach(k=>{ if(k.startsWith(prefix)) delete ls[k]; }); wxLsWrite(ls);
+}
+
+/* live data (updates every ~25 min) */
+const wxCore = loc=>wxCached('core|' + loc, 25*60e3, async()=>{
+  const j = await wxJson(wxUrl('https://api.open-meteo.com/v1/forecast', loc,
+    `&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,weather_code,wind_speed_10m,wind_gusts_10m`
+    + `&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m,is_day&daily=${WX_FDAILY}&forecast_days=16`));
+  Object.keys(j.hourly || {}).forEach(k=>{ if(Array.isArray(j.hourly[k])) j.hourly[k] = j.hourly[k].slice(0, 48); });   // only the next day or so is needed
+  j._t = Date.now();
+  return j;
+});
+const wxPast = loc=>wxCached('past|' + loc, 6*3600e3, ()=>wxJson(wxUrl('https://api.open-meteo.com/v1/forecast', loc, `&daily=${WX_FDAILY}&past_days=92&forecast_days=1`)).then(j=>j.daily));
+const wxArchive = (loc, s, e)=>wxCached(`arc|${loc}|${s}|${e}`, 30*864e5, ()=>wxJson(wxUrl('https://archive-api.open-meteo.com/v1/archive', loc, `&start_date=${s}&end_date=${e}&daily=${WX_ADAILY}`)).then(j=>j.daily));
+
+/* typical weather for a date window: average of the same dates (+-2 days) over the previous 5 years */
+function wxTypicalDay(hist, i){
   const rows = [];
-  (hist || []).forEach(d=>{
+  hist.forEach(d=>{
     for(let o = i; o <= i + 4; o++){
       if(d.temperature_2m_max && d.temperature_2m_max[o] != null){
         rows.push({code:d.weather_code[o], hi:d.temperature_2m_max[o], lo:d.temperature_2m_min[o], pr:d.precipitation_sum[o] || 0, wind:d.wind_speed_10m_max[o] || 0});
@@ -3321,87 +3495,80 @@ function wxTypical(hist, i){
     }
   });
   if(!rows.length) return null;
-  const avg = f => rows.reduce((s, r)=>s + f(r), 0) / rows.length;
+  const avg = f=>rows.reduce((s, r)=>s + f(r), 0) / rows.length;
   const rainFrac = rows.filter(r=>r.pr >= 1).length / rows.length;
-  const dry = rows.filter(r=>r.pr < 1 && r.code <= 3);
-  const counts = {}; (dry.length ? dry : rows).forEach(r=>{ const c = r.code <= 1 ? 0 : r.code; counts[c] = (counts[c] || 0) + 1; });
-  const mode = +Object.keys(counts).sort((a, b)=>counts[b] - counts[a])[0];
-  const wind = avg(r=>r.wind);
+  const dry = rows.filter(r=>r.pr < 1 && r.code <= 3), counts = {};
+  (dry.length ? dry : rows).forEach(r=>{ const c = r.code <= 1 ? 0 : r.code; counts[c] = (counts[c] || 0) + 1; });
+  const mode = +Object.keys(counts).sort((a, b)=>counts[b] - counts[a])[0], wind = avg(r=>r.wind);
   let kind = wxKind(mode, 1, wind, 40);
   if(rainFrac >= 0.5) kind = 'rain';
   return {hi:avg(r=>r.hi), lo:avg(r=>r.lo), wind, rain:Math.round(rainFrac * 100), kind};
 }
-function wxBuild(fc, hist){
-  const m = {now:null, days:[], tiles:null};
-  if(fc && fc.ct && fc.ct.current){
-    const c = fc.ct.current;
-    m.now = {temp:c.temperature_2m, feels:c.apparent_temperature, hum:c.relative_humidity_2m, wind:c.wind_speed_10m, gust:c.wind_gusts_10m, isDay:c.is_day, time:String(c.time || '').slice(11, 16), kind:wxKind(c.weather_code, c.is_day, c.wind_speed_10m, 32)};
-  }
-  const typCT = [];
-  for(let i = 0; i < TRIP_DAYS; i++){
-    const date = wxAddDays(TRIP_START, i);
-    const gr = ITINERARY14[i] && ITINERARY14[i].region === 'garden-route';
-    const loc = gr ? 'gr' : 'ct';
-    typCT.push(hist && hist.ct ? wxTypical(hist.ct, i) : null);
-    let day = null;
-    const f = fc && fc[loc] && fc[loc].daily;
-    const fi = f ? f.time.indexOf(date) : -1;
-    if(fi >= 0 && f.temperature_2m_max[fi] != null){
-      day = {src:'forecast', hi:f.temperature_2m_max[fi], lo:f.temperature_2m_min[fi], rain:f.precipitation_probability_max[fi], wind:f.wind_speed_10m_max[fi], kind:wxKind(f.weather_code[fi], 1, f.wind_speed_10m_max[fi], 40)};
-      if(f.precipitation_probability_max[fi] >= 60 && !['rain','drizzle','storm','snow'].includes(day.kind)) day.kind = 'rain';
-    }else if(hist && hist[loc]){
-      const t = wxTypical(hist[loc], i);
-      if(t) day = Object.assign({src:'typical'}, t);
-    }
-    m.days.push(Object.assign({i, date, gr}, day || {src:null}));
-  }
-  const ok = typCT.filter(Boolean);
-  if(ok.length){
-    const rng = f => { const v = ok.map(f); return [Math.round(Math.min(...v)), Math.round(Math.max(...v))]; };
-    m.tiles = {high:rng(t=>t.hi), low:rng(t=>t.lo), wind:rng(t=>t.wind), rain:Math.round(ok.reduce((s, t)=>s + t.rain, 0) / ok.length)};
-  }
-  return m;
-}
+const wxTypicalWindow = (loc, startISO, n)=>wxCached(`typ|${loc}|${startISO.slice(5)}|${n}`, 30*864e5, async()=>{
+  const y0 = new Date().getUTCFullYear();
+  const res = await Promise.allSettled(Array.from({length:WX_HIST_YEARS}, (_, k)=>{
+    const s = wxShiftYear(startISO, y0 - 1 - k);
+    return wxJson(wxUrl('https://archive-api.open-meteo.com/v1/archive', loc, `&start_date=${wxAddDays(s, -2)}&end_date=${wxAddDays(s, n + 1)}&daily=${WX_ADAILY}`));
+  }));
+  const ok = res.filter(r=>r.status === 'fulfilled').map(r=>r.value.daily).filter(Boolean);
+  if(!ok.length) throw new Error('no history');
+  return Array.from({length:n}, (_, i)=>wxTypicalDay(ok, i));
+});
 
-async function loadWeather(force){
-  if(wxBusy) return; wxBusy = true;
-  const c = wxCache(), now = Date.now();
-  let fc = c.fc, fcT = c.fcT || 0, hist = c.hist, hT = c.hT || 0, failed = false;
-  const jobs = [];
-  if(force || !fc || now - fcT > 25*60e3){
-    jobs.push((async()=>{ const [ct, gr] = await Promise.all([wxFetchForecast('ct'), wxFetchForecast('gr')]); fc = {ct, gr}; fcT = Date.now(); })().catch(()=>{ failed = true; }));
-  }
-  if(!hist || now - hT > 14*864e5){
-    jobs.push((async()=>{ const [ct, gr] = await Promise.all([wxFetchHist('ct'), wxFetchHist('gr')]); hist = {ct, gr}; hT = Date.now(); })().catch(()=>{ failed = true; }));
-  }
-  if(jobs.length){ await Promise.all(jobs); wxSaveCache({fc, fcT, hist, hT}); }
-  wxLastFetch = Date.now();
-  wxBusy = false;
-  if(!fc && !hist){ WX = null; wxStatus = 'fail'; }
-  else{ WX = wxBuild(fc, hist); WX.updated = fcT || hT; wxStatus = failed ? 'offline' : 'ok'; }
-  renderWeather();
+/* the day list for any date window: live forecast, recorded weather, or typical weather */
+function wxRainKind(kind, rainy){ return (rainy && !['rain', 'drizzle', 'storm', 'snow'].includes(kind)) ? 'rain' : kind; }
+async function wxDaysFor(loc, startISO, n){
+  const core = await wxCore(loc).catch(()=>null), fd = core && core.daily;
+  const today = (fd && fd.time[0]) || wxIsoToday();
+  const dates = Array.from({length:n}, (_, i)=>wxAddDays(startISO, i));
+  const inF = d=>fd ? fd.time.indexOf(d) : -1;
+  const needPast = [], needOld = [], needTyp = [];
+  dates.forEach(d=>{
+    if(inF(d) >= 0) return;
+    if(d < today) (d >= wxAddDays(today, -92) ? needPast : needOld).push(d); else needTyp.push(d);
+  });
+  const past = needPast.length ? await wxPast(loc).catch(()=>null) : null;
+  const old = needOld.length ? await wxArchive(loc, needOld[0], needOld[needOld.length - 1]).catch(()=>null) : null;
+  const typ = needTyp.length ? await wxTypicalWindow(loc, startISO, n).catch(()=>null) : null;
+  const fromDaily = (src, D, k, forecast)=>{
+    const hi = D.temperature_2m_max[k]; if(hi == null) return null;
+    const wind = D.wind_speed_10m_max[k], mm = D.precipitation_sum ? D.precipitation_sum[k] : null;
+    const prob = forecast ? D.precipitation_probability_max[k] : null;
+    let kind = wxKind(D.weather_code[k], 1, wind, 40);
+    kind = wxRainKind(kind, forecast ? (prob >= 60) : (mm >= 2));
+    return {src, hi, lo:D.temperature_2m_min[k], wind, mm, rain:prob, kind, uv:D.uv_index_max ? D.uv_index_max[k] : null,
+      sunrise:D.sunrise ? D.sunrise[k] : null, sunset:D.sunset ? D.sunset[k] : null};
+  };
+  return dates.map((date, i)=>{
+    let day = null, k;
+    if((k = inF(date)) >= 0) day = fromDaily('forecast', fd, k, true);
+    else if(date < today){
+      if(past && (k = past.time.indexOf(date)) >= 0) day = fromDaily('recorded', past, k, false);
+      else if(old && (k = old.time.indexOf(date)) >= 0) day = fromDaily('recorded', old, k, false);
+    }else if(typ && typ[i]) day = Object.assign({src:'typical'}, typ[i]);
+    return Object.assign({date, i, loc}, day || {src:null});
+  });
 }
 
 /* ---- rendering ---- */
-const wxDeg = v => Math.round(v) + '°';
-const WX_ICON_DROP = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/></svg>';
-const WX_ICON_WIND = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9h11a3 3 0 1 0-2.8-4"/><path d="M2 15h16a3.2 3.2 0 1 1-3 4.3"/></svg>';
+const wxDeg = v=>Math.round(v) + '°';
+const wxSvgSmall = p=>`<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const WX_ICON_DROP = wxSvgSmall('<path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/>');
+const WX_ICON_WIND = wxSvgSmall('<path d="M2 9h11a3 3 0 1 0-2.8-4"/><path d="M2 15h16a3.2 3.2 0 1 1-3 4.3"/>');
+const wxEl = id=>document.getElementById(id);
+const wxLocale = ()=>LANG === 'ar' ? 'ar-SA-u-nu-latn' : 'en-GB';
+const wxFmt = (iso, opt)=>new Date(iso + 'T00:00:00Z').toLocaleDateString(wxLocale(), Object.assign({timeZone:'UTC'}, opt));
+let wxShown = [], wxSel = '';
+
 function renderWeather(){
-  const nowEl = document.getElementById('wxNow'), stripEl = document.getElementById('wxStrip'), noteEl = document.getElementById('wxNote');
-  if(!nowEl) return;
+  if(!wxEl('wxNow')) return;
   wxTileIcons();
-  if(!WX){
-    nowEl.className = 'wx-now wx-empty';
-    nowEl.textContent = tr(wxStatus === 'loading' ? 'wxLoading' : 'wxFail');
-    stripEl.innerHTML = ''; noteEl.textContent = '';
-    return;
-  }
-  const n = WX.now;
+  const nowEl = wxEl('wxNow'), hoursEl = wxEl('wxHours'), noteEl = wxEl('wxNote'), n = WX.now;
   if(n){
     const label = wxLabel(n.kind);
     nowEl.className = 'wx-now';
     nowEl.innerHTML = `<div class="wx-now-ic">${wxIcon(n.kind, 72, label)}</div>
-      <div class="wx-now-main"><div class="wx-now-place">${escHtml(tr('wxNowIn'))}</div><div class="wx-now-temp">${wxDeg(n.temp)}<span>C</span></div><div class="wx-now-cond">${escHtml(label)}</div></div>
+      <div class="wx-now-main"><div class="wx-now-place">${escHtml(tr('wxNowIn'))} <span class="wx-live">${escHtml(tr('wxLive'))}</span></div><div class="wx-now-temp">${wxDeg(n.temp)}<span>C</span></div><div class="wx-now-cond">${escHtml(label)}</div></div>
       <div class="wx-now-facts">
         <div><b>${wxDeg(n.feels)}</b><span>${escHtml(tr('wxFeels'))}</span></div>
         <div><b>${Math.round(n.wind)} <small>km/h</small></b><span>${escHtml(tr('wxWind'))}${n.gust ? ` · ${escHtml(tr('wxGusts'))} ${Math.round(n.gust)}` : ''}</span></div>
@@ -3409,34 +3576,130 @@ function renderWeather(){
         <div><b dir="ltr">${escHtml(n.time)}</b><span>${escHtml(tr('wxLocalTime'))}</span></div>
       </div>`;
   }else{
-    nowEl.className = 'wx-now wx-empty'; nowEl.textContent = tr('wxFail');
+    nowEl.className = 'wx-now wx-empty';
+    nowEl.textContent = tr(WX.status === 'loading' ? 'wxLoading' : 'wxFail');
   }
-  const fmtDate = iso => new Date(iso + 'T00:00:00Z').toLocaleDateString(LANG === 'ar' ? 'ar-SA-u-nu-latn' : 'en-GB', {weekday:'short', day:'numeric', month:'short', timeZone:'UTC'});
-  stripEl.innerHTML = WX.days.filter(d=>d.src).map(d=>{
-    const label = wxLabel(d.kind), fcst = d.src === 'forecast';
-    return `<div class="wx-day ${fcst ? 'is-fc' : 'is-typ'}">
-      <div class="wx-d1">${escHtml(LANG === 'ar' ? 'اليوم ' + (d.i + 1) : 'Day ' + (d.i + 1))}</div>
-      <div class="wx-d2">${escHtml(fmtDate(d.date))}</div>
-      <div class="wx-ic">${wxIcon(d.kind, 46, label)}</div>
-      <div class="wx-cond">${escHtml(label)}</div>
-      <div class="wx-t"><b>${wxDeg(d.hi)}</b><span>${wxDeg(d.lo)}</span></div>
-      <div class="wx-meta"><span>${WX_ICON_DROP} ${Math.round(d.rain)}%</span><span>${WX_ICON_WIND} ${Math.round(d.wind)}</span></div>
-      <div class="wx-badge">${escHtml(tr(fcst ? 'wxForecast' : 'wxTypical'))}</div>
-      <div class="wx-loc">${escHtml(tr(d.gr ? 'wxGR' : 'wxCT'))}</div>
-    </div>`;
-  }).join('');
-  if(WX.tiles){
-    const set = (k, txt)=>{ const el = document.querySelector(`.wstat[data-w="${k}"] .wv`); if(el) el.textContent = txt; };
-    const r = a => a[0] === a[1] ? String(a[0]) : a[0] + '–' + a[1];
-    set('high', r(WX.tiles.high) + '°C'); set('low', r(WX.tiles.low) + '°C');
-    set('wind', r(WX.tiles.wind) + ' km/h'); set('rain', '~' + WX.tiles.rain + '%');
-  }
-  const t = WX.updated ? new Date(WX.updated).toLocaleTimeString(LANG === 'ar' ? 'ar-SA-u-nu-latn' : [], {hour:'2-digit', minute:'2-digit'}) : '';
-  noteEl.textContent = (wxStatus === 'offline' ? tr('wxOffline') + ' ' : '') + (t ? tr('wxUpdated').replace('{t}', t) : '');
+  hoursEl.innerHTML = WX.hourly.length ? `<div class="wx-hours-t">${escHtml(tr('wxHourly'))}</div><div class="wx-hours-row">` + WX.hourly.map((h, i)=>{
+    const label = wxLabel(h.kind);
+    return `<div class="wx-hr ${i === 0 ? 'is-now' : ''}"><div class="wx-hr-t" dir="ltr">${i === 0 ? escHtml(tr('wxNowShort')) : h.hour}</div>${wxIcon(h.kind, 34, label)}<b>${wxDeg(h.temp)}</b><span>${WX_ICON_DROP} ${Math.round(h.rain || 0)}%</span></div>`;
+  }).join('') + '</div>' : '';
+  const t = WX.updated ? new Date(WX.updated).toLocaleTimeString(wxLocale(), {hour:'2-digit', minute:'2-digit'}) : '';
+  noteEl.textContent = (WX.status === 'offline' ? tr('wxOffline') + ' ' : '') + (t ? tr('wxUpdated').replace('{t}', t) : '');
+  wxRenderStrip();
 }
-document.getElementById('wxRefresh').addEventListener('click', ()=>{ wxStatus = 'loading'; loadWeather(true); });
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && Date.now() - wxLastFetch > 30*60e3) loadWeather(); });
-setInterval(()=>{ if(!document.hidden) loadWeather(); }, 30*60e3);
+
+const WX_SRC = {forecast:'wxForecast', recorded:'wxRecorded', typical:'wxTypical'};
+function wxRenderStrip(){
+  const stripEl = wxEl('wxStrip'); if(!stripEl) return;
+  const rangeEl = wxEl('wxRange'), place = tr(wxTab === 'trip' ? 'wxTripTitle' : (wxLoc === 'gr' ? 'wxGR' : 'wxCT'));
+  if(wxTab === 'trip') rangeEl.textContent = tr('wxTripTitle');
+  else if(wxShown.length) rangeEl.textContent = `${wxFmt(wxShown[0].date, {day:'numeric', month:'short', year:'numeric'})} – ${wxFmt(wxShown[wxShown.length - 1].date, {day:'numeric', month:'short', year:'numeric'})} · ${place}`;
+  else rangeEl.textContent = place;
+  if(wxLoadingStrip){ stripEl.innerHTML = `<div class="wx-load">${escHtml(tr('wxLoading'))}</div>`; wxEl('wxDetail').innerHTML = ''; return; }
+  const usable = wxShown.filter(d=>d.src);
+  if(!usable.length){ stripEl.innerHTML = `<div class="wx-load">${escHtml(tr('wxFail'))}</div>`; wxEl('wxDetail').innerHTML = ''; return; }
+  stripEl.innerHTML = usable.map(d=>{
+    const label = wxLabel(d.kind), fcst = d.src === 'forecast', rainTxt = d.src === 'recorded' ? `${Math.round((d.mm || 0) * 10) / 10} mm` : `${Math.round(d.rain || 0)}%`;
+    const head = wxTab === 'trip' ? (LANG === 'ar' ? 'اليوم ' + (d.i + 1) : 'Day ' + (d.i + 1)) : wxFmt(d.date, {weekday:'short'});
+    const sub = wxTab === 'trip' ? wxFmt(d.date, {weekday:'short', day:'numeric', month:'short'}) : wxFmt(d.date, {day:'numeric', month:'short'});
+    return `<button type="button" class="wx-day is-${d.src} ${d.date === wxSel ? 'is-sel' : ''}" data-date="${d.date}" data-loc="${d.loc}">
+      <span class="wx-d1">${escHtml(head)}</span><span class="wx-d2">${escHtml(sub)}</span>
+      <span class="wx-ic">${wxIcon(d.kind, 46, label)}</span><span class="wx-cond">${escHtml(label)}</span>
+      <span class="wx-t"><b>${wxDeg(d.hi)}</b><span>${wxDeg(d.lo)}</span></span>
+      <span class="wx-meta"><span>${WX_ICON_DROP} ${rainTxt}</span><span>${WX_ICON_WIND} ${Math.round(d.wind)}</span></span>
+      <span class="wx-badge">${escHtml(tr(WX_SRC[d.src]))}</span>
+      ${wxTab === 'trip' ? `<span class="wx-loc">${escHtml(tr(d.loc === 'gr' ? 'wxGR' : 'wxCT'))}</span>` : ''}
+    </button>`;
+  }).join('');
+  wxRenderDetail();
+}
+function wxRenderDetail(){
+  const el = wxEl('wxDetail'), d = wxShown.find(x=>x.date === wxSel && x.src);
+  if(!d){ el.innerHTML = ''; return; }
+  const hm = s=>s ? String(s).slice(11, 16) : '—';
+  const rain = d.src === 'recorded' ? `${Math.round((d.mm || 0) * 10) / 10} mm` : `${Math.round(d.rain || 0)}%` + (d.mm != null && d.src === 'forecast' ? ` · ${Math.round(d.mm * 10) / 10} mm` : '');
+  const cells = [[tr('wxHigh'), wxDeg(d.hi)], [tr('wxLow'), wxDeg(d.lo)], [tr('wxRain'), rain], [tr('wxWind'), Math.round(d.wind) + ' km/h'],
+    [tr('wxUV'), d.uv != null ? Math.round(d.uv) : '—'], [tr('wxSunrise'), hm(d.sunrise)], [tr('wxSunset'), hm(d.sunset)]];
+  const note = d.src === 'forecast' ? tr('wxNoteForecast') : d.src === 'recorded' ? tr('wxNoteRecorded') : tr('wxNoteTypical');
+  el.innerHTML = `<div class="wx-detail-h">${wxIcon(d.kind, 40, wxLabel(d.kind))}<div><b>${escHtml(wxFmt(d.date, {weekday:'long', day:'numeric', month:'long', year:'numeric'}))}</b><span>${escHtml(wxLabel(d.kind))} · ${escHtml(tr(d.loc === 'gr' ? 'wxGR' : 'wxCT'))}</span></div></div>
+    <div class="wx-detail-grid">${cells.map(([k, v])=>`<div><span>${escHtml(k)}</span><b dir="ltr">${escHtml(String(v))}</b></div>`).join('')}</div>
+    <p class="wx-detail-note">${escHtml(note)}</p>`;
+}
+
+/* tiles under the strip: typical Cape Town numbers for the trip dates */
+async function wxTiles(){
+  try{
+    const typ = (await wxTypicalWindow('ct', TRIP_START, TRIP_DAYS)).filter(Boolean);
+    if(!typ.length) return;
+    const rng = f=>{ const v = typ.map(f); return [Math.round(Math.min(...v)), Math.round(Math.max(...v))]; };
+    const r = a=>a[0] === a[1] ? String(a[0]) : a[0] + '–' + a[1];
+    const set = (k, txt)=>{ const el = document.querySelector(`.wstat[data-w="${k}"] .wv`); if(el) el.textContent = txt; };
+    set('high', r(rng(t=>t.hi)) + '°C'); set('low', r(rng(t=>t.lo)) + '°C'); set('wind', r(rng(t=>t.wind)) + ' km/h');
+    set('rain', '~' + Math.round(typ.reduce((s, t)=>s + t.rain, 0) / typ.length) + '%');
+  }catch(e){ /* keep the built-in seasonal numbers */ }
+}
+
+/* load + show */
+let wxLoadingStrip = true;
+async function wxShow(){
+  const seq = ++wxSeq;
+  wxLoadingStrip = true; wxRenderStrip();
+  let days = [];
+  try{
+    if(wxTab === 'trip'){
+      const [ct, gr] = await Promise.all([wxDaysFor('ct', TRIP_START, TRIP_DAYS), wxDaysFor('gr', TRIP_START, TRIP_DAYS)]);
+      days = ct.map((d, i)=>(ITINERARY14[i] && ITINERARY14[i].region === 'garden-route') ? gr[i] : d);
+    }else if(wxTab === 'live'){
+      days = await wxDaysFor(wxLoc, WX.today || wxIsoToday(), 16);
+    }else{
+      days = await wxDaysFor(wxLoc, wxPick || WX.today || wxIsoToday(), 7);
+    }
+  }catch(e){ days = []; }
+  if(seq !== wxSeq) return;      // the user already picked something else
+  wxShown = days; wxLoadingStrip = false;
+  if(wxSel && !days.some(d=>d.date === wxSel)) wxSel = '';
+  wxRenderStrip();
+}
+function wxSyncControls(){
+  document.querySelectorAll('.wx-tab').forEach(b=>b.classList.toggle('active', b.dataset.wxt === wxTab));
+  document.querySelectorAll('[data-wxl]').forEach(b=>b.classList.toggle('active', b.dataset.wxl === wxLoc));
+  wxEl('wxLocToggle').style.display = wxTab === 'trip' ? 'none' : '';
+  wxEl('wxDateCtl').style.display = wxTab === 'date' ? '' : 'none';
+  if(wxPick) wxEl('wxDate').value = wxPick;
+}
+async function loadWeather(force){
+  if(wxBusy) return; wxBusy = true; wxStale = false;
+  if(force) wxDrop('core|');
+  try{
+    const core = await wxCore('ct'), c = core.current;
+    WX.now = {temp:c.temperature_2m, feels:c.apparent_temperature, hum:c.relative_humidity_2m, wind:c.wind_speed_10m, gust:c.wind_gusts_10m, isDay:c.is_day, time:String(c.time || '').slice(11, 16), kind:wxKind(c.weather_code, c.is_day, c.wind_speed_10m, 32)};
+    const h = core.hourly, from = String(c.time || '').slice(0, 13);
+    const start = Math.max(0, h.time.findIndex(t=>t.slice(0, 13) >= from));
+    WX.hourly = h.time.slice(start, start + 24).map((t, k)=>({hour:t.slice(11, 16), temp:h.temperature_2m[start + k], rain:h.precipitation_probability[start + k], kind:wxKind(h.weather_code[start + k], h.is_day[start + k], h.wind_speed_10m[start + k], 32)}));
+    WX.today = core.daily.time[0]; WX.updated = core._t; WX.status = wxStale ? 'offline' : 'ok';
+  }catch(e){ WX.now = null; WX.hourly = []; WX.status = 'fail'; }
+  wxBusy = false; wxLastFetch = Date.now();
+  if(!wxPick) wxPick = WX.today || wxIsoToday();
+  renderWeather(); wxSyncControls();
+  await wxShow(); wxTiles();
+}
+
+/* controls */
+document.querySelectorAll('.wx-tab').forEach(b=>b.addEventListener('click', ()=>{ wxTab = b.dataset.wxt; wxSel = (wxTab === 'date') ? wxPick : ''; wxSyncControls(); wxShow(); }));
+document.querySelectorAll('[data-wxl]').forEach(b=>b.addEventListener('click', ()=>{ wxLoc = b.dataset.wxl; wxSyncControls(); wxShow(); }));
+wxEl('wxDate').addEventListener('change', e=>{ if(/^\d{4}-\d{2}-\d{2}$/.test(e.target.value)){ wxPick = e.target.value; wxSel = wxPick; wxShow(); } });
+wxEl('wxPrev').addEventListener('click', ()=>{ wxPick = wxAddDays(wxPick || wxIsoToday(), -7); wxSel = ''; wxSyncControls(); wxShow(); });
+wxEl('wxNext').addEventListener('click', ()=>{ wxPick = wxAddDays(wxPick || wxIsoToday(), 7); wxSel = ''; wxSyncControls(); wxShow(); });
+wxEl('wxToday').addEventListener('click', ()=>{ wxPick = WX.today || wxIsoToday(); wxSel = wxPick; wxSyncControls(); wxShow(); });
+wxEl('wxStrip').addEventListener('click', e=>{
+  const b = e.target instanceof Element ? e.target.closest('.wx-day') : null; if(!b) return;
+  wxSel = (wxSel === b.dataset.date) ? '' : b.dataset.date;
+  wxEl('wxStrip').querySelectorAll('.wx-day').forEach(x=>x.classList.toggle('is-sel', x.dataset.date === wxSel));
+  wxRenderDetail();
+});
+wxEl('wxRefresh').addEventListener('click', ()=>{ WX.status = 'loading'; loadWeather(true); });
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && Date.now() - wxLastFetch > 25*60e3) loadWeather(); });
+setInterval(()=>{ if(!document.hidden) loadWeather(); }, 25*60e3);
 
 const drawer = document.getElementById('drawer');
 const backdrop = document.getElementById('backdrop');
