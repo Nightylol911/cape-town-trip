@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
-<meta name="build-id" content="2026-09-23T03:06:33Z">
+<meta name="build-id" content="2026-09-23T04:17:45Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -2471,8 +2471,15 @@ function ghGuess(){
 }
 async function ghFetch(cfg, path, opt){
   opt = opt || {};
+  // GitHub's API sends its own Cache-Control headers on GET responses (e.g. the ref/commit/contents
+  // lookups below), and the browser will honour those by default — silently serving a stale, cached
+  // answer instead of asking GitHub again. Since every commit here depends on reading the repo's
+  // CURRENT state first, a stale read means we keep building on top of an outdated ref, which GitHub
+  // then rejects as "not a fast-forward" — forever, since the next attempt reads the same stale cache.
+  // cache:'no-store' forces a real network request every time, so we always see the true current state.
   return fetch('https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' + encodeURIComponent(cfg.repo) + path, {
     method: opt.method || 'GET',
+    cache: 'no-store',
     headers: Object.assign({'Authorization':'Bearer ' + cfg.token, 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28'}, opt.headers || {}),
     body: opt.body ? JSON.stringify(opt.body) : undefined
   });
