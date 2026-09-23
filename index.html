@@ -5,7 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
+<meta name="build-id" content="2026-09-23T00:52:00Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
+<script>
+/* Keeps this page from going stale in a browser's cache (this trips up Safari especially).
+   On load, and every so often while the tab is open, it fetches this same page fresh
+   (bypassing the cache) and compares its build-id to the one actually on screen. If the
+   two differ, it silently reloads to the current version — no "clear cache" needed. */
+(function(){
+  try{
+    var meta = document.querySelector('meta[name="build-id"]');
+    var CURRENT = meta ? meta.content : '';
+    var SEEN_KEY = 'ctgr_seen_build';
+    function checkForUpdate(){
+      fetch(location.pathname, {cache: 'no-store'}).then(function(r){ return r.text(); }).then(function(html){
+        var m = html.match(/name="build-id" content="([^"]+)"/);
+        if(!m) return;
+        var latest = m[1];
+        if(latest !== CURRENT && sessionStorage.getItem(SEEN_KEY) !== latest){
+          sessionStorage.setItem(SEEN_KEY, latest);
+          location.replace(location.pathname + '?v=' + encodeURIComponent(latest) + location.hash);
+        }
+      }).catch(function(){});
+    }
+    checkForUpdate();
+    setInterval(function(){ if(!document.hidden) checkForUpdate(); }, 10 * 60 * 1000);
+    document.addEventListener('visibilitychange', function(){ if(!document.hidden) checkForUpdate(); });
+  }catch(e){}
+})();
+</script>
 <title>Cape Town & Garden Route, 14 Days / 13 Nights — Our Trip Planner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
