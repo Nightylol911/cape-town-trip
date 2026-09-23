@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
-<meta name="build-id" content="2026-09-23T00:52:00Z">
+<meta name="build-id" content="2026-09-23T01:28:12Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
 <script>
 /* Keeps this page from going stale in a browser's cache (this trips up Safari especially).
@@ -351,7 +351,11 @@ table.saf-compare tr:nth-child(even) td{background:var(--paper-2);}
 
 /* SEARCH */
 .search-wrap{max-width:1120px;margin:14px auto 0;padding:0 24px;position:relative;z-index:70;}
-.search-input{width:100%;padding:13px 18px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;font-family:'Inter',sans-serif;background:var(--white);box-shadow:var(--shadow);}
+@keyframes ctgrAutofillStart { from {opacity:.9999;} to {opacity:1;} }
+@keyframes ctgrAutofillCancel { from {opacity:.9999;} to {opacity:1;} }
+.search-input:-webkit-autofill{ animation-name: ctgrAutofillStart; animation-duration: 1ms; }
+.search-input:not(:-webkit-autofill){ animation-name: ctgrAutofillCancel; animation-duration: 1ms; }
+.search-input{width:100%;padding:13px 18px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;font-family:'Inter',sans-serif;background:var(--white);box-shadow:var(--shadow);;-webkit-appearance:none;appearance:none;}
 body.ar .search-input{font-family:'Tajawal',sans-serif;}
 .search-input:focus{outline:none;border-color:var(--ocean);}
 .search-results{position:absolute;top:calc(100% + 6px);left:24px;right:24px;background:var(--white);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(18,56,64,.18);max-height:420px;overflow-y:auto;z-index:60;}
@@ -597,7 +601,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
 <div class="budget-bar" id="budgetBar" style="display:none;"></div>
 
 <div class="search-wrap">
-  <input type="text" id="searchInput" class="search-input" placeholder="" name="ctgr-trip-search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="search" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
+  <input type="search" id="searchInput" class="search-input" placeholder="" name="ctgr-trip-search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="search" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
   <div class="search-results" id="searchResults" style="display:none;"></div>
 </div>
 
@@ -3957,6 +3961,16 @@ function runSearch(q){
 }
 const searchInputEl = document.getElementById('searchInput');
 if(searchInputEl){
+  // This field should only ever hold what someone actually typed. If the browser (Chrome's
+  // account autofill has done this here) fills it on its own, wipe it out immediately —
+  // the CSS animation above only plays at the exact moment autofill happens.
+  searchInputEl.addEventListener('animationstart', e=>{
+    if(e.animationName === 'ctgrAutofillStart' && searchInputEl.value && !searchInputEl.dataset.userTyped){
+      searchInputEl.value = '';
+      runSearch('');
+    }
+  });
+  searchInputEl.addEventListener('input', ()=>{ searchInputEl.dataset.userTyped = '1'; });
   searchInputEl.addEventListener('input', (e)=> runSearch(e.target.value));
   searchInputEl.addEventListener('focus', (e)=> { if(e.target.value.trim().length>=2) runSearch(e.target.value); });
   document.addEventListener('click', (e)=>{
