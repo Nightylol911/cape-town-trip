@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
-<meta name="build-id" content="2026-09-23T04:17:45Z">
+<meta name="build-id" content="2026-09-23T04:31:01Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -2022,9 +2022,24 @@ function pendingUploadCount(){ return Object.keys(photoData).filter(k=>!pendingM
 const UPLOAD_CHUNK = 10;   // photos per commit — a big batch is sent in small steps instead of one giant one,
                             // so most of it is safely saved even if something interrupts partway through
 let uploadTotal = 0, uploadDone = 0;
+// filename/thumb only ever live in memory (photoData) — if the page reloads while a photo is
+// still waiting to upload, IndexedDB still has the raw picture, but not those two fields. This
+// fills them back in before anything is sent, so a lost filename never becomes the literal text
+// "undefined" (which used to make every such photo silently overwrite the same broken file).
+async function ensureUploadMeta(key, v){
+  if(!v.filename){
+    v.filename = key.replace(':','_') + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,6) + '.jpg';
+  }
+  if(!v.thumb){
+    v.thumb = await makeThumbBlob(v.blob).catch(()=>null);
+  }
+  return v;
+}
 async function uploadQueued(){
   const cfg = ghConfig(); if(!cfg) return;
-  let adds = Object.entries(photoData).filter(([k])=>!pendingMap[k]).map(([key, v])=>({key, blob:v.blob, thumb:v.thumb, filename:v.filename}));
+  const pendingKeys = Object.keys(photoData).filter(k=>!pendingMap[k]);
+  await Promise.all(pendingKeys.map(k=>ensureUploadMeta(k, photoData[k])));
+  let adds = pendingKeys.map(key=>{ const v = photoData[key]; return {key, blob:v.blob, thumb:v.thumb, filename:v.filename}; });
   let removeKeys = [...pendingRemoves];
   if(!adds.length && !removeKeys.length){ uploadState = 'idle'; uploadFails = 0; uploadTotal = 0; uploadDone = 0; return; }
   uploadTotal = adds.length + removeKeys.length; uploadDone = 0;
@@ -2499,6 +2514,10 @@ const blobToB64 = b => new Promise((res, rej)=>{ const fr = new FileReader(); fr
 
 // One commit that adds/replaces/removes photos and rewrites photos/manifest.json
 async function ghCommit(cfg, {adds = [], removeKeys = [], extra = [], message}){
+  // Belt-and-braces: a photo can never be written under a missing/blank filename — that's what
+  // silently overwrote a single "photos/undefined" file over and over in the past. If this ever
+  // fires it means a caller forgot to run it through the upload queue's own safety check.
+  for(const a of adds){ if(!a.filename || typeof a.filename !== 'string'){ throw new Error('Refusing to upload a photo with no filename (key: ' + a.key + ')'); } }
   let lastErr;
   for(let attempt = 0; attempt < 5; attempt++){
     if(attempt > 0) await new Promise(res=>setTimeout(res, 400 * attempt + Math.random() * 400));
@@ -2559,6 +2578,7 @@ async function loadManifest(){
   }
 }
 const withTimeout = (p, ms, dflt)=>Promise.race([p, new Promise(res=>setTimeout(()=>res(dflt), ms))]);
+const isRealFilename = f => typeof f === 'string' && /\.(jpe?g|png)$/i.test(f);
 async function loadPhotos(){
   await loadManifest();
   renderAreas(); renderGardenRoute();      // published photos appear straight away
@@ -2566,10 +2586,18 @@ async function loadPhotos(){
     const all = await withTimeout(photoDB.all(), 4000, {});
     Object.entries(all).forEach(([k,b])=>{ if(!photoData[k]) photoData[k] = {url:URL.createObjectURL(b), blob:b}; });
   }catch(e){}
+  // A past bug could mark a photo "uploaded" under a broken filename (literally the text
+  // "undefined") without it ever really being saved. Treat any such entry as still-pending —
+  // never as a match to delete the local original over — so it gets re-uploaded properly instead.
+  let repaired = false;
+  for(const k of Object.keys(pendingMap)){
+    if(!isRealFilename(pendingMap[k])){ delete pendingMap[k]; repaired = true; }
+  }
+  if(repaired) savePending();
   // photos uploaded to GitHub earlier: once the site's own manifest has them, drop the temporary local copy
   let changed = false;
   for(const [k,f] of Object.entries(pendingMap)){
-    if(sharedManifest[k] === f){
+    if(isRealFilename(f) && sharedManifest[k] === f){
       delete pendingMap[k]; changed = true;
       if(photoData[k]){ URL.revokeObjectURL(photoData[k].url); delete photoData[k]; await photoDB.del(k); }
     }
