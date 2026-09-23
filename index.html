@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
-<meta name="build-id" content="2026-09-23T09:15:00Z">
+<meta name="build-id" content="2026-09-23T03:06:33Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -72,7 +72,7 @@ if('serviceWorker' in navigator){
   --shadow:0 8px 24px rgba(18,56,64,.10);
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;background:var(--paper);}   /* keeps body's own background from being "promoted" to paint the page canvas outside body's own (filterable) box — see the dark-mode rules below */
+html{scroll-behavior:smooth;}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;line-height:1.55;}
 body.ar{font-family:'Tajawal',sans-serif;}
 h1,h2,h3,.display{font-family:'Fraunces',serif;}
@@ -149,7 +149,7 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .day-num{font-family:'JetBrains Mono',monospace;background:var(--ink);color:var(--paper);padding:4px 11px;border-radius:99px;font-size:13px;font-weight:700;}
 .day-head h3{margin:0;font-size:19px;font-weight:700;}
 .day-tip{font-size:13px;color:#6b6157;margin:2px 0 16px;font-style:italic;}
-.day-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ocean);}
+.day-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ocean);margin-inline-start:auto;}
 .hotel-box{display:flex;align-items:center;gap:12px;background:#f1e6fa;border:1px solid #d9c2ee;border-radius:12px;padding:12px 14px;margin-bottom:14px;flex-wrap:wrap;}
 .hotel-ic{font-size:20px;}
 .hotel-box b{font-size:14px;}
@@ -276,14 +276,6 @@ body.ar .pp-sync label input,body.ar .pp-sync > button,body.ar #ghForm > button{
 .rating-pill{font-size:11.5px;font-weight:700;color:#a3791f;background:#fdf3de;padding:3px 8px;border-radius:6px;white-space:nowrap;}
 .rating-pill i{font-style:normal;color:#8a7f70;font-weight:600;}
 .mynote{font-size:12.5px;color:#7a5a1e;background:#fff3d9;border:1px dashed #e0be6f;border-radius:8px;padding:6px 10px;}
-.unote{margin:2px 0;}
-.unote-toggle{font-size:12px;font-weight:600;color:#8a7f70;background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
-.unote-toggle:hover{color:var(--ocean-deep);}
-.unote-preview{font-size:12.5px;color:var(--ink);background:var(--paper-2);border-radius:8px;padding:6px 10px;cursor:text;word-break:break-word;}
-.unote-preview:hover{background:#e9e0cb;}
-.unote-box{width:100%;box-sizing:border-box;font:13px 'Inter',sans-serif;color:var(--ink);background:var(--white);border:1.5px solid var(--line);border-radius:8px;padding:7px 10px;resize:vertical;}
-.unote-box:focus{outline:none;border-color:var(--ocean);}
-body.ar .unote-box{font-family:'Tajawal',sans-serif;}
 .about{font-size:13px;color:#4d453c;margin:0;line-height:1.55;}
 .wear{font-size:12.5px;color:#5c6f52;background:#eef3e9;border-radius:8px;padding:6px 10px;display:flex;gap:6px;align-items:flex-start;}
 .meta-row{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#6b6157;padding:8px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);}
@@ -312,15 +304,6 @@ body.ar .unote-box{font-family:'Tajawal',sans-serif;}
 .drawer.open{inset-inline-end:0;}
 .drawer-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
 .drawer-head h3{margin:0;font-size:20px;}
-.drawer-settings{padding:12px 22px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:12.5px;background:var(--paper-2);}
-.ds-field{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);cursor:pointer;}
-.ds-field select{font:600 12.5px 'Inter',sans-serif;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;}
-body.ar .ds-field select{font-family:'Tajawal',sans-serif;}
-.ds-split input{accent-color:var(--ocean-deep);width:15px;height:15px;cursor:pointer;}
-.ds-travelers{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);}
-.ds-travelers button{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;}
-.ds-travelers button:hover{background:var(--paper-2);border-color:var(--ocean-deep);}
-.ds-travelers-label{font-weight:500;color:#6b6157;}
 .drawer-close{border:none;background:none;font-size:22px;cursor:pointer;color:var(--ink);}
 .drawer-body{padding:16px 22px;overflow-y:auto;flex:1;}
 .drawer-empty{color:#8a7f70;font-size:14px;padding:30px 0;text-align:center;}
@@ -440,12 +423,6 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
 body.ar .pdf-btn{font-family:'Tajawal',sans-serif;}
 .pdf-btn:hover{background:var(--ocean-deep);}
 .pdf-btn::before{content:"⬇";font-size:13px;}
-.pdf-btn.no-ico::before{content:none;}
-.pdf-btn.no-ico{background:var(--white);color:var(--ink);border:1px solid var(--line);margin-inline-start:8px;}
-.pdf-btn.no-ico:hover{background:var(--paper-2);}
-.day-head-right{margin-inline-start:auto;display:flex;align-items:center;gap:8px;}
-.day-cal-btn{border:none;background:none;color:#8a7f70;cursor:pointer;font-size:15px;padding:2px 4px;border-radius:6px;display:inline-flex;align-items:center;line-height:1;}
-.day-cal-btn:hover{background:var(--paper-2);color:var(--ocean-deep);}
 #printDoc{display:none;}
 @media print{
   @page{size:A4;margin:12mm 12mm 14mm;}
@@ -925,10 +902,8 @@ en:{
   },
   heroLead:"Every place you two shortlisted — the story behind it, practical info, when to go, what to wear, real menus and booking pages where they exist. Tap ○ to shortlist, tap a photo to view it full size, tap + to add your own.",
   statPlaces:"Places curated", statAreasL:"Neighbourhoods", statBookingL:"Need pre-booking",
-  statCountdownDefault:"days to go", statCountdownToday:"Trip day", statCountdownDone:"Trip complete!", statCountdownDoneSub:"Hope it was unforgettable",
-  icsBtn:"📅 Add trip to calendar", icsDayBtn:"Add day to calendar", icsAdded:"Calendar file downloaded — open it to add these to your calendar app.",
   weatherTitle:"Weather & what to pack", weatherDate:"28 Oct – 10 Nov 2026",
-  weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", ppClearPublished:"Delete ALL {n} published photos (for everyone)", ppConfirmClearPublished:"Delete all {n} photos published on the website? This removes them for everyone, right away, in one go. Photos only saved on a device are not affected. This can't be undone.", ghAllCleared:"All published photos deleted. You can start adding photos again now.", ppRetryNow:"Retry now ({n})", ghQueueBusy:"Uploading now…", ghQueueRetry:"Upload failed — retrying automatically… ({n} waiting)", ghQueueWaiting:"{n} waiting to upload",   wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
+  weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", ppClearPublished:"Delete ALL {n} published photos (for everyone)", ppConfirmClearPublished:"Delete all {n} photos published on the website? This removes them for everyone, right away, in one go. Photos only saved on a device are not affected. This can't be undone.", ghAllCleared:"All published photos deleted. You can start adding photos again now.", ghUploadingProgress:"Uploading… {a}/{b} photos", ghQueueProgress:"Uploading {a}/{b} photos…",  ppRetryNow:"Retry now ({n})", ghQueueBusy:"Uploading now…", ghQueueRetry:"Upload failed — retrying automatically… ({n} waiting)", ghQueueWaiting:"{n} waiting to upload",   wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
   wTypicalHigh:"Typical daytime high", wTypicalLow:"Typical overnight low", wSea:"Sea temperature (cold!)",
   wWind:"Wind (\"Cape Doctor\" SE wind is common)", wRain:"Chance of rain on a given day", wUV:"UV index — sun protection needed",
   wSunrise:"Sunrise (28 Oct → 10 Nov)", wSunset:"Sunset (28 Oct → 10 Nov)",
@@ -954,7 +929,6 @@ en:{
   ttFlightTitle:"Domestic flight: Cape Town ↔ George", ttFlightBody:"There's a short domestic flight (about 1 hour) between Cape Town International (CPT) and George Airport (GRJ), run by South African carriers. Useful on the way back if you'd rather not drive the full return leg — fly from George into Cape Town and skip 1–2 days of driving. If you fly back, you can also drop a rental car at George Airport instead of driving it all the way back to Cape Town (most companies allow one-way drop-off for a fee).",
   ttCarRentalTitle:"Car rental companies in Cape Town (compare)",
   searchPlaceholder:"🔍 Search everything — activities, restaurants, coffee, safari lodges…",
-  scrollTop:"Back to top", scrollBottom:"Jump to bottom", themeToggle:"Toggle dark mode",
   tnFlightTitle:"Ethiopian Airlines contact", tnFlightPhone:"800 8500286 (Saudi Arabia toll-free)", tnFlightNote:"Keep this handy for booking changes, baggage questions, or flight delays — Ethiopian Airlines operates the Cape Town route via Addis Ababa. Also save your booking reference (PNR) and check in online 24 hours before each flight.",
   freeLabel:"Free", weakSignal:"Weak signal", weakSignalTip:"Patchy or no cell coverage here — download offline maps before you go.",
   budgetTotal:"Estimated total so far:", budgetApprox:"(rough estimate, per person)",
@@ -978,14 +952,12 @@ en:{
   grItinTitle:"Suggested 10-day Garden Route itinerary", grItinTag:"10 days", grItinSub:"In travel order, Cape Town → Tsitsikamma — each day keeps you in one or two neighbouring towns so you're not backtracking. Includes a dedicated safari day near Mossel Bay. Treat it as a flexible skeleton, not a fixed script.",
   safTitle:"Safari — which lodge to book", safTag:"5 compared", safSub:"All five you shortlisted, compared side by side, with official booking sites and what to expect. None of these are on the Garden Route route itself except Garden Route Game Lodge, Gondwana and Botlierskop — Aquila is near Cape Town, best done as a separate day trip or on the way out.",
   mapTitle:"Overview map", mapSub:"Pins grouped by neighbourhood so you plan efficient days. Click a pin for the name, use \"Directions\" on any card for exact navigation.",
-  dsCurrency:"Currency", dsSplit:"Split per person", dsTravelers:"travelers",
-  noteAdd:"Add a note", notePlaceholder:"A reminder just for you — book by a date, ask about X, bring cash…",
   drawerTitle:"Our itinerary", printBtn:"Download itinerary as PDF", pdfBtn:"Download itinerary as PDF", pdfPreparing:"Preparing PDF… photos {a}/{b}", pdfFail:"Couldn't prepare the PDF. Try again.", pdfGlance:"Trip at a glance", pdfColDay:"Day", pdfColDate:"Date", pdfColPlan:"Plan", pdfColStay:"Where you stay", pdfStayingAt:"Staying at", pdfEmergency:"Emergency & key numbers", pdfHospitals:"Nearest hospital by area", pdfPractical:"Practical information", pdfMap:"Google Maps", pdfHowBook:"How to book", pdfShortlist:"Your shortlist", pdfAlready:"Already in the day-by-day plan", pdfFoot:"Prices are rough per-person estimates in SAR. Hours, prices and weather closures change, so check the official page before you go.",
   footerText:"Built for your Cape Town trip · Coordinates are approximate per neighbourhood for map orientation — use \"Directions\" on each card for the exact pin. Prices, hours, menus, booking links and weather are all subject to change, so double-check close to your trip.",
   signature:"Designed by Yazeed Alturki",
   directions:"Directions", menuBtn:"Menu", bookBadge:"Pre-booking recommended", howToBook:"How to book",
   official:"Official booking page →", findOperator:"Find operator →",
-  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Add & edit photos", ghBody:"Only devices connected with your GitHub token can add, replace or delete photos — and your own notes on each place sync here too, so they follow you to any device instead of staying stuck on this one. Everyone else can only view what's published. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghUploadingN:"Uploading {n} photos to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
+  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Add & edit photos", ghBody:"Only devices connected with your GitHub token can add, replace or delete photos. Everyone else can only view them. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghUploadingN:"Uploading {n} photos to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
   allChip:"All"
 },
 ar:{
@@ -999,10 +971,8 @@ ar:{
   },
   heroLead:"كل مكان اخترتماه — قصته، معلومات عملية، أفضل وقت للزيارة، ماذا ترتديان، قوائم طعام حقيقية، وروابط حجز فعلية إن وُجدت. اضغطا على ○ لإضافته لقائمتكما، واضغطا على الصورة لعرضها بالحجم الكامل، وعلى + لإضافة صورتكما.",
   statPlaces:"مكانًا منسقًا", statAreasL:"حيًا", statBookingL:"يحتاج حجزًا مسبقًا",
-  statCountdownDefault:"يومًا متبقيًا", statCountdownToday:"يوم الرحلة", statCountdownDone:"انتهت الرحلة!", statCountdownDoneSub:"نتمنى أنها كانت لا تُنسى",
-  icsBtn:"📅 أضيفا الرحلة إلى التقويم", icsDayBtn:"أضف اليوم إلى التقويم", icsAdded:"تم تنزيل ملف التقويم — افتحاه لإضافة الرحلة إلى تطبيق التقويم لديكما.",
   weatherTitle:"الطقس وماذا تحضران", weatherDate:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦",
-  weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", ppClearPublished:"حذف كل الصور المنشورة والبالغ عددها {n} (للجميع)", ppConfirmClearPublished:"حذف جميع الصور المنشورة على الموقع وعددها {n}؟ سيُحذفن للجميع فورًا دفعة واحدة. الصور المحفوظة على جهاز فقط لن تتأثر. لا يمكن التراجع عن هذا.", ghAllCleared:"تم حذف كل الصور المنشورة. يمكنكما البدء بإضافة صور من جديد الآن.", ppRetryNow:"إعادة المحاولة الآن ({n})", ghQueueBusy:"جارٍ الرفع الآن…", ghQueueRetry:"فشل الرفع — تجري إعادة المحاولة تلقائيًا… ({n} في الانتظار)", ghQueueWaiting:"{n} في انتظار الرفع",   wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
+  weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", ppClearPublished:"حذف كل الصور المنشورة والبالغ عددها {n} (للجميع)", ppConfirmClearPublished:"حذف جميع الصور المنشورة على الموقع وعددها {n}؟ سيُحذفن للجميع فورًا دفعة واحدة. الصور المحفوظة على جهاز فقط لن تتأثر. لا يمكن التراجع عن هذا.", ghAllCleared:"تم حذف كل الصور المنشورة. يمكنكما البدء بإضافة صور من جديد الآن.", ghUploadingProgress:"جارٍ الرفع… {a}/{b} صور", ghQueueProgress:"جارٍ رفع {a}/{b} صور…",  ppRetryNow:"إعادة المحاولة الآن ({n})", ghQueueBusy:"جارٍ الرفع الآن…", ghQueueRetry:"فشل الرفع — تجري إعادة المحاولة تلقائيًا… ({n} في الانتظار)", ghQueueWaiting:"{n} في انتظار الرفع",   wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
   wTypicalHigh:"الحرارة العظمى المعتادة نهارًا", wTypicalLow:"الحرارة الصغرى المعتادة ليلاً", wSea:"حرارة البحر (باردة!)",
   wWind:"الرياح (رياح \"الطبيب الكيبي\" الجنوبية الشرقية شائعة)", wRain:"احتمال هطول المطر في يوم معين", wUV:"مؤشر الأشعة فوق البنفسجية — الحماية من الشمس ضرورية",
   wSunrise:"الشروق (٢٨ أكتوبر ← ١٠ نوفمبر)", wSunset:"الغروب (٢٨ أكتوبر ← ١٠ نوفمبر)",
@@ -1028,7 +998,6 @@ ar:{
   ttFlightTitle:"رحلة داخلية: كيب تاون ↔ جورج", ttFlightBody:"توجد رحلة داخلية قصيرة (حوالي ساعة) بين مطار كيب تاون الدولي (CPT) ومطار جورج (GRJ)، تشغّلها شركات طيران جنوب أفريقية. مفيدة في طريق العودة إن فضّلتما عدم قيادة كامل المسافة — طيرا من جورج إلى كيب تاون وتجنبا ١-٢ يوم من القيادة. إن عدتما بالطائرة، يمكنكما أيضًا تسليم سيارة الإيجار في مطار جورج بدل قيادتها كاملة إلى كيب تاون (معظم الشركات تسمح بالتسليم في مكان مختلف مقابل رسم).",
   ttCarRentalTitle:"شركات تأجير السيارات في كيب تاون (مقارنة)",
   searchPlaceholder:"🔍 ابحثا عن أي شيء — أنشطة، مطاعم، قهوة، نُزل سفاري…",
-  scrollTop:"العودة للأعلى", scrollBottom:"الانتقال للأسفل", themeToggle:"تبديل الوضع الداكن",
   tnFlightTitle:"التواصل مع الخطوط الإثيوبية", tnFlightPhone:"٨٠٠ ٨٥٠٠٢٨٦ (مجاني داخل السعودية)", tnFlightNote:"احتفظا بهذا الرقم لتعديل الحجز أو استفسارات الأمتعة أو تأخير الرحلات — الخطوط الإثيوبية تشغّل رحلة كيب تاون عبر أديس أبابا. احتفظا أيضًا برقم الحجز (PNR) وسجّلا الدخول إلكترونيًا قبل كل رحلة بـ٢٤ ساعة.",
   freeLabel:"مجاني", weakSignal:"إشارة ضعيفة", weakSignalTip:"تغطية جوال ضعيفة أو منعدمة هنا — حمّلا خرائط بدون إنترنت قبل الذهاب.",
   budgetTotal:"الإجمالي التقريبي حتى الآن:", budgetApprox:"(تقدير تقريبي، للشخص الواحد)",
@@ -1052,14 +1021,12 @@ ar:{
   grItinTitle:"خطة مقترحة لـ١٠ أيام على طريق الحدائق", grItinTag:"١٠ أيام", grItinSub:"بترتيب الرحلة، من كيب تاون إلى تسيتسيكاما — كل يوم يبقيكما في بلدة أو بلدتين متجاورتين حتى لا ترجعا للخلف. يشمل يومًا مخصصًا للسفاري قرب موسيل باي. اعتبراها هيكلاً مرنًا لا نصًا ثابتًا.",
   safTitle:"السفاري — أي نُزل تحجزان", safTag:"مقارنة بين ٥", safSub:"الخمسة التي اخترتماها، مقارنة جنبًا إلى جنب، مع مواقع الحجز الرسمية وما يمكن توقعه. لا شيء منها على طريق الحدائق نفسه سوى Garden Route Game Lodge وGondwana وBotlierskop — أما Aquila فقريبة من كيب تاون، والأفضل زيارتها كرحلة يوم منفصلة أو في الطريق.",
   mapTitle:"خريطة عامة", mapSub:"الدبابيس مجمّعة حسب الحي لتخطيط أيام فعالة. اضغطي على أي دبوس لرؤية الاسم، واستخدمي \"الاتجاهات\" في أي بطاقة للملاحة الدقيقة.",
-  dsCurrency:"العملة", dsSplit:"تقسيم للشخص", dsTravelers:"مسافرين",
-  noteAdd:"أضف ملاحظة", notePlaceholder:"تذكير لكما فقط — احجزا قبل تاريخ معيّن، اسألا عن كذا، أحضرا نقدًا…",
   drawerTitle:"خطة رحلتنا", printBtn:"تنزيل خطة الرحلة PDF", pdfBtn:"تنزيل خطة الرحلة PDF", pdfPreparing:"جارٍ تجهيز الملف… الصور {a}/{b}", pdfFail:"تعذّر تجهيز الملف. حاولا مرة أخرى.", pdfGlance:"الرحلة في لمحة", pdfColDay:"اليوم", pdfColDate:"التاريخ", pdfColPlan:"الخطة", pdfColStay:"مكان الإقامة", pdfStayingAt:"الإقامة في", pdfEmergency:"أرقام الطوارئ والأرقام المهمة", pdfHospitals:"أقرب مستشفى حسب المنطقة", pdfPractical:"معلومات عملية", pdfMap:"خرائط جوجل", pdfHowBook:"طريقة الحجز", pdfShortlist:"قائمتكما المختارة", pdfAlready:"موجودة أصلًا في الخطة اليومية", pdfFoot:"الأسعار تقديرات تقريبية للشخص بالريال السعودي. الأوقات والأسعار وإغلاقات الطقس تتغير، فتحققا من الصفحة الرسمية قبل الذهاب.",
   footerText:"صُمم لرحلتكما إلى كيب تاون · الإحداثيات تقريبية لكل حي لأغراض توجيه الخريطة — استخدما \"الاتجاهات\" في كل بطاقة للموقع الدقيق. الأسعار وأوقات العمل والقوائم وروابط الحجز والطقس كلها عرضة للتغيير، فتحققا منها قبل رحلتكما.",
   signature:"صمّمه يزيد التركي",
   directions:"الاتجاهات", menuBtn:"القائمة", bookBadge:"يُنصح بالحجز المسبق", howToBook:"كيفية الحجز",
   official:"صفحة الحجز الرسمية ←", findOperator:"ابحثا عن المشغّل ←",
-  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"إضافة الصور وتعديلها", ghBody:"الأجهزة المرتبطة برمز GitHub الخاص بكما فقط تستطيع إضافة الصور أو استبدالها أو حذفها — وملاحظاتكما الشخصية على كل مكان تُزامَن من هنا أيضًا، فتلحق بكما على أي جهاز بدل أن تبقى حبيسة هذا الجهاز فقط. البقية يشاهدون المنشور فقط. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع وحده.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghUploadingN:"جارٍ رفع {n} صور إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
+  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"إضافة الصور وتعديلها", ghBody:"الأجهزة المرتبطة برمز GitHub الخاص بكما فقط تستطيع إضافة الصور أو استبدالها أو حذفها، والبقية تشاهدها فقط. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع وحده.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghUploadingN:"جارٍ رفع {n} صور إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
   allChip:"الكل"
 }
 };
@@ -2052,37 +2019,49 @@ function pendingUploadBases(){
   return [...new Set(Object.keys(photoData).filter(k=>!pendingMap[k]).map(k=>k.split(':')[0]))];
 }
 function pendingUploadCount(){ return Object.keys(photoData).filter(k=>!pendingMap[k]).length + pendingRemoves.size; }
+const UPLOAD_CHUNK = 10;   // photos per commit — a big batch is sent in small steps instead of one giant one,
+                            // so most of it is safely saved even if something interrupts partway through
+let uploadTotal = 0, uploadDone = 0;
 async function uploadQueued(){
   const cfg = ghConfig(); if(!cfg) return;
-  const adds = Object.entries(photoData).filter(([k])=>!pendingMap[k]).map(([key, v])=>({key, blob:v.blob, thumb:v.thumb, filename:v.filename}));
-  const removeKeys = [...pendingRemoves];
-  if(!adds.length && !removeKeys.length){ uploadState = 'idle'; uploadFails = 0; return; }
-  const n = adds.length + removeKeys.length;
+  let adds = Object.entries(photoData).filter(([k])=>!pendingMap[k]).map(([key, v])=>({key, blob:v.blob, thumb:v.thumb, filename:v.filename}));
+  let removeKeys = [...pendingRemoves];
+  if(!adds.length && !removeKeys.length){ uploadState = 'idle'; uploadFails = 0; uploadTotal = 0; uploadDone = 0; return; }
+  uploadTotal = adds.length + removeKeys.length; uploadDone = 0;
   uploadState = 'uploading'; refreshUploadStatus();
-  toast(n > 1 ? tr('ghUploadingN').replace('{n}', n) : tr('ghUploading'));
-  const bases = [...new Set([...adds.map(a=>a.key.split(':')[0]), ...removeKeys.map(k=>k.split(':')[0])])];
-  try{
-    await ghCommit(cfg, {adds, removeKeys, message: 'Update ' + n + ' photo' + (n === 1 ? '' : 's')});
-    adds.forEach(a=>{ pendingMap[a.key] = a.filename; });
-    removeKeys.forEach(k=>{ pendingRemoves.delete(k); delete sharedPhotos[k]; });
-    savePending(); savePendingRemoves();
-    toast(tr('ghDone'));
-    uploadFails = 0; uploadState = 'idle';
-  }catch(err){
-    console.error('GitHub upload failed', err);
-    toast(ghErrText(err));
-    uploadFails++; uploadState = 'retrying';
-    // retry automatically: quick at first (a hiccup usually clears fast), backing off up to once a minute so it
-    // doesn't hammer GitHub if something is actually wrong (e.g. an expired token) — nothing is ever lost meanwhile.
-    scheduleUpload(Math.min(60000, 4000 * Math.pow(1.8, uploadFails - 1)) + Math.random() * 1000);
+  const touchedBases = new Set();
+  while(adds.length || removeKeys.length){
+    const chunkAdds = adds.splice(0, UPLOAD_CHUNK);
+    const chunkRemoves = removeKeys; removeKeys = [];   // deletes are cheap (no file upload) — clear them all in the first chunk
+    const n = chunkAdds.length + chunkRemoves.length;
+    toast(uploadTotal > n ? tr('ghUploadingProgress').replace('{a}', uploadDone).replace('{b}', uploadTotal) : (n > 1 ? tr('ghUploadingN').replace('{n}', n) : tr('ghUploading')));
+    try{
+      await ghCommit(cfg, {adds: chunkAdds, removeKeys: chunkRemoves, message: 'Update ' + n + ' photo' + (n === 1 ? '' : 's')});
+      chunkAdds.forEach(a=>{ pendingMap[a.key] = a.filename; touchedBases.add(a.key.split(':')[0]); });
+      chunkRemoves.forEach(k=>{ pendingRemoves.delete(k); delete sharedPhotos[k]; touchedBases.add(k.split(':')[0]); });
+      savePending(); savePendingRemoves();
+      uploadDone += n;
+      touchedBases.forEach(b=>{ refreshSlideshow(b); if(lbOpen() && b === lb.base) lbShow(lb.i); });
+      uploadFails = 0; refreshUploadStatus();
+    }catch(err){
+      console.error('GitHub upload failed', err);
+      toast(ghErrText(err));
+      uploadFails++; uploadState = 'retrying';
+      // whatever uploaded before this point is already safely committed on GitHub — only what's left
+      // (this chunk onward) still needs to go, and that's what the next attempt will pick up
+      scheduleUpload(Math.min(60000, 4000 * Math.pow(1.8, uploadFails - 1)) + Math.random() * 1000);
+      refreshUploadStatus();
+      return;
+    }
   }
-  bases.forEach(b=>{ refreshSlideshow(b); if(lbOpen() && bases.includes(lb.base)) lbShow(lb.i); });
+  toast(tr('ghDone'));
+  uploadState = 'idle'; uploadFails = 0; uploadTotal = 0; uploadDone = 0;
   refreshUploadStatus();
 }
 function refreshUploadStatus(){
   const el = document.getElementById('ppUploadStatus'); if(!el) return;
   const n = pendingUploadCount();
-  el.textContent = uploadState === 'uploading' ? tr('ghQueueBusy')
+  el.textContent = uploadState === 'uploading' ? (uploadTotal > 1 ? tr('ghQueueProgress').replace('{a}', uploadDone).replace('{b}', uploadTotal) : tr('ghQueueBusy'))
     : uploadState === 'retrying' ? tr('ghQueueRetry').replace('{n}', n)
     : n ? tr('ghQueueWaiting').replace('{n}', n) : '';
 }
