@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
-<meta name="build-id" content="2026-09-23T04:48:49Z">
+<meta name="build-id" content="2026-09-23T15:04:52Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -2011,6 +2011,7 @@ function ghSerial(task){
   return run;
 }
 let uploadTimer = null, uploadFails = 0, uploadState = 'idle';   // 'idle' | 'uploading' | 'retrying'
+let lastUploadNote = '';   // human-readable detail on the most recent problem, shown in the Photos panel so it's visible without opening the browser console
 function scheduleUpload(delay){
   clearTimeout(uploadTimer);
   uploadTimer = setTimeout(()=>ghSerial(uploadQueued), delay == null ? 2500 : delay);
@@ -2062,9 +2063,11 @@ async function uploadQueued(){
       savePending(); savePendingRemoves();
       uploadDone += n;
       touchedBases.forEach(b=>{ refreshSlideshow(b); if(lbOpen() && b === lb.base) lbShow(lb.i); });
+      console.log('[upload] chunk saved — pendingMap now has', Object.keys(pendingMap).length, 'total,', pendingUploadCount(), 'still unsent');
       uploadFails = 0; refreshUploadStatus();
     }catch(err){
-      console.error('GitHub upload failed', err);
+      console.error('[upload] chunk failed —', err && err.status, err && (err.detail || err.message));
+      lastUploadNote = 'Chunk failed (' + (err && err.status || '?') + '): ' + (err && (err.detail || err.message) || String(err));
       toast(ghErrText(err));
       uploadFails++; uploadState = 'retrying';
       // whatever uploaded before this point is already safely committed on GitHub — only what's left
@@ -2074,16 +2077,29 @@ async function uploadQueued(){
       return;
     }
   }
+  // Every chunk reported success — but confirm that against what's actually still marked
+  // unsent, rather than assuming. GitHub's own APIs can briefly disagree with each other right
+  // after a write, so trust the real count over "the loop finished with no errors".
+  const stillUnsent = pendingUploadCount();
+  if(stillUnsent > 0){
+    console.warn('[upload] loop finished with no errors, but', stillUnsent, 'item(s) are still unmarked — retrying shortly instead of reporting done.');
+    lastUploadNote = stillUnsent + ' photo(s) did not get marked as saved even though no error was reported. Retrying automatically.';
+    uploadFails++; uploadState = 'retrying'; refreshUploadStatus();
+    scheduleUpload(Math.min(60000, 4000 * Math.pow(1.8, uploadFails - 1)) + Math.random() * 1000);
+    return;
+  }
   toast(tr('ghDone'));
+  lastUploadNote = '';
   uploadState = 'idle'; uploadFails = 0; uploadTotal = 0; uploadDone = 0;
   refreshUploadStatus();
 }
 function refreshUploadStatus(){
   const el = document.getElementById('ppUploadStatus'); if(!el) return;
   const n = pendingUploadCount();
-  el.textContent = uploadState === 'uploading' ? (uploadTotal > 1 ? tr('ghQueueProgress').replace('{a}', uploadDone).replace('{b}', uploadTotal) : tr('ghQueueBusy'))
-    : uploadState === 'retrying' ? tr('ghQueueRetry').replace('{n}', n)
-    : n ? tr('ghQueueWaiting').replace('{n}', n) : '';
+  const noteSuffix = lastUploadNote ? ' — ' + lastUploadNote : '';
+  el.textContent = (uploadState === 'uploading' ? (uploadTotal > 1 ? tr('ghQueueProgress').replace('{a}', uploadDone).replace('{b}', uploadTotal) : tr('ghQueueBusy'))
+    : uploadState === 'retrying' ? tr('ghQueueRetry').replace('{n}', n) + noteSuffix
+    : n ? tr('ghQueueWaiting').replace('{n}', n) : '');
 }
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && pendingUploadCount()) scheduleUpload(300); });
 window.addEventListener('online', ()=>{ if(pendingUploadCount()) scheduleUpload(300); });
@@ -2535,10 +2551,18 @@ async function ghCommit(cfg, {adds = [], removeKeys = [], extra = [], message}){
       const branch = (await ghJson(cfg, '')).default_branch || 'main';
       const head = (await ghJson(cfg, '/git/ref/heads/' + branch)).object.sha;
       const baseTree = (await ghJson(cfg, '/git/commits/' + head)).tree.sha;
+      // Read the existing manifest.json through the SAME low-level Git Data API used for
+      // everything else here (never the higher-level "contents" API), which can lag a few
+      // seconds behind right after a write. Reading it out of the exact tree this commit is
+      // about to build on guarantees it reflects every earlier chunk's commit, every time —
+      // a stale read here was silently dropping earlier chunks' entries from the manifest.
       let manifest = {};
-      const mr = await ghFetch(cfg, '/contents/photos/manifest.json?ref=' + encodeURIComponent(branch), {headers:{'Accept':'application/vnd.github.raw+json'}});
-      if(mr.ok){ try{ manifest = JSON.parse(await mr.text()) || {}; }catch(e){ manifest = {}; } }
-      else if(mr.status !== 404){ const e = new Error('GitHub ' + mr.status); e.status = mr.status; throw e; }
+      const fullTree = await ghJson(cfg, '/git/trees/' + baseTree + '?recursive=1');
+      const manifestEntry = (fullTree.tree || []).find(e => e.path === 'photos/manifest.json');
+      if(manifestEntry){
+        const blobText = await ghJson(cfg, '/git/blobs/' + manifestEntry.sha);
+        try{ manifest = JSON.parse(b64ToText(blobText.content)) || {}; }catch(e){ manifest = {}; }
+      }
       const tree = [], deletes = [];
       for(const a of adds){
         if(!a.sha) a.sha = (await ghJson(cfg, '/git/blobs', {method:'POST', body:{content: await blobToB64(a.blob), encoding:'base64'}})).sha;
