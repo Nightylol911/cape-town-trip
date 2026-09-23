@@ -5,8 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
-<meta name="build-id" content="2026-09-23T01:28:12Z">
+<meta name="build-id" content="2026-09-23T09:15:00Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CT Trip">
+<meta name="mobile-web-app-capable" content="yes">
+<script>
+/* Offline support: register the service worker (no-ops harmlessly if the page is opened as a
+   local file:// rather than hosted — see README.txt for hosting it properly). */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+<script>
+/* Set the theme before first paint so a saved/system dark preference doesn't flash light first. */
+(function(){
+  try{
+    var saved = localStorage.getItem('ctgr_theme');
+    var theme = saved || ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light');
+    if(theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  }catch(e){}
+})();
+</script>
 <script>
 /* Keeps this page from going stale in a browser's cache (this trips up Safari especially).
    On load, and every so often while the tab is open, it fetches this same page fresh
@@ -124,7 +149,7 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .day-num{font-family:'JetBrains Mono',monospace;background:var(--ink);color:var(--paper);padding:4px 11px;border-radius:99px;font-size:13px;font-weight:700;}
 .day-head h3{margin:0;font-size:19px;font-weight:700;}
 .day-tip{font-size:13px;color:#6b6157;margin:2px 0 16px;font-style:italic;}
-.day-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ocean);margin-inline-start:auto;}
+.day-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ocean);}
 .hotel-box{display:flex;align-items:center;gap:12px;background:#f1e6fa;border:1px solid #d9c2ee;border-radius:12px;padding:12px 14px;margin-bottom:14px;flex-wrap:wrap;}
 .hotel-ic{font-size:20px;}
 .hotel-box b{font-size:14px;}
@@ -232,6 +257,14 @@ body.ar .pp-sync label input,body.ar .pp-sync > button,body.ar #ghForm > button{
 .toast.show{opacity:1;transform:translateX(-50%);}
 @media(prefers-reduced-motion:reduce){.lb-stage.loading::after{animation-duration:2.4s;} .toast{transition:none;}}
 
+/* SCROLL FABS */
+.scroll-fabs{position:fixed;inset-inline-end:18px;bottom:22px;display:flex;flex-direction:column;gap:10px;z-index:80;}
+.scroll-fab{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:var(--ocean-deep);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .18s,transform .18s,background .18s,color .18s;}
+.scroll-fab.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.scroll-fab:hover{background:var(--ocean-deep);color:#fff;border-color:var(--ocean-deep);}
+@media(prefers-reduced-motion:reduce){.scroll-fab{transition:opacity .18s;}}
+@media print{.scroll-fabs{display:none !important;}}
+
 .card-body{padding:16px 18px;display:flex;flex-direction:column;gap:9px;flex:1;}
 .card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
 .card-top h4{margin:0;font-size:16px;font-weight:700;line-height:1.3;}
@@ -243,6 +276,14 @@ body.ar .pp-sync label input,body.ar .pp-sync > button,body.ar #ghForm > button{
 .rating-pill{font-size:11.5px;font-weight:700;color:#a3791f;background:#fdf3de;padding:3px 8px;border-radius:6px;white-space:nowrap;}
 .rating-pill i{font-style:normal;color:#8a7f70;font-weight:600;}
 .mynote{font-size:12.5px;color:#7a5a1e;background:#fff3d9;border:1px dashed #e0be6f;border-radius:8px;padding:6px 10px;}
+.unote{margin:2px 0;}
+.unote-toggle{font-size:12px;font-weight:600;color:#8a7f70;background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+.unote-toggle:hover{color:var(--ocean-deep);}
+.unote-preview{font-size:12.5px;color:var(--ink);background:var(--paper-2);border-radius:8px;padding:6px 10px;cursor:text;word-break:break-word;}
+.unote-preview:hover{background:#e9e0cb;}
+.unote-box{width:100%;box-sizing:border-box;font:13px 'Inter',sans-serif;color:var(--ink);background:var(--white);border:1.5px solid var(--line);border-radius:8px;padding:7px 10px;resize:vertical;}
+.unote-box:focus{outline:none;border-color:var(--ocean);}
+body.ar .unote-box{font-family:'Tajawal',sans-serif;}
 .about{font-size:13px;color:#4d453c;margin:0;line-height:1.55;}
 .wear{font-size:12.5px;color:#5c6f52;background:#eef3e9;border-radius:8px;padding:6px 10px;display:flex;gap:6px;align-items:flex-start;}
 .meta-row{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#6b6157;padding:8px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);}
@@ -271,6 +312,15 @@ body.ar .pp-sync label input,body.ar .pp-sync > button,body.ar #ghForm > button{
 .drawer.open{inset-inline-end:0;}
 .drawer-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
 .drawer-head h3{margin:0;font-size:20px;}
+.drawer-settings{padding:12px 22px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:12.5px;background:var(--paper-2);}
+.ds-field{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);cursor:pointer;}
+.ds-field select{font:600 12.5px 'Inter',sans-serif;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;}
+body.ar .ds-field select{font-family:'Tajawal',sans-serif;}
+.ds-split input{accent-color:var(--ocean-deep);width:15px;height:15px;cursor:pointer;}
+.ds-travelers{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);}
+.ds-travelers button{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;}
+.ds-travelers button:hover{background:var(--paper-2);border-color:var(--ocean-deep);}
+.ds-travelers-label{font-weight:500;color:#6b6157;}
 .drawer-close{border:none;background:none;font-size:22px;cursor:pointer;color:var(--ink);}
 .drawer-body{padding:16px 22px;overflow-y:auto;flex:1;}
 .drawer-empty{color:#8a7f70;font-size:14px;padding:30px 0;text-align:center;}
@@ -390,6 +440,12 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
 body.ar .pdf-btn{font-family:'Tajawal',sans-serif;}
 .pdf-btn:hover{background:var(--ocean-deep);}
 .pdf-btn::before{content:"⬇";font-size:13px;}
+.pdf-btn.no-ico::before{content:none;}
+.pdf-btn.no-ico{background:var(--white);color:var(--ink);border:1px solid var(--line);margin-inline-start:8px;}
+.pdf-btn.no-ico:hover{background:var(--paper-2);}
+.day-head-right{margin-inline-start:auto;display:flex;align-items:center;gap:8px;}
+.day-cal-btn{border:none;background:none;color:#8a7f70;cursor:pointer;font-size:15px;padding:2px 4px;border-radius:6px;display:inline-flex;align-items:center;line-height:1;}
+.day-cal-btn:hover{background:var(--paper-2);color:var(--ocean-deep);}
 #printDoc{display:none;}
 @media print{
   @page{size:A4;margin:12mm 12mm 14mm;}
@@ -543,6 +599,23 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
 
 .ph-static{cursor:default;} .ph-empty.ph-static:hover{background:transparent;color:#8a7f70;}
 #ppThumbs,#ghDisconnect{margin-top:8px;}
+
+/* DARK MODE — the whole page is one consistent light palette built from a handful of custom
+   properties plus a lot of hand-picked warm grays, so instead of re-deriving a second palette
+   for every rule, we invert the page's lightness and spin the hue back to where it started.
+   Photos, the map, the photo-viewer chrome and hand-colored art (the logo, weather icons) get
+   the same filter a second time, which cancels the inversion for just that subtree. */
+:root[data-theme="dark"]{ color-scheme:dark; }
+:root[data-theme="dark"] html{ background:#0e1614; }
+:root[data-theme="dark"] body{ filter:invert(1) hue-rotate(180deg); }
+:root[data-theme="dark"] img,
+:root[data-theme="dark"] video,
+:root[data-theme="dark"] #map,
+:root[data-theme="dark"] .lb,
+:root[data-theme="dark"] .wx-svg,
+:root[data-theme="dark"] .site-logo{ filter:invert(1) hue-rotate(180deg); }
+@media print{ :root[data-theme="dark"] body{ filter:none !important; } }
+.theme-icon{display:block;}
 </style>
 </head>
 <body id="bodyRoot">
@@ -572,6 +645,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     <span class="site-brand-text">Yazeed Alturki</span>
   </div>
   <div class="langbtns">
+    <button class="langbtn" id="btnTheme" type="button" aria-label="Toggle dark mode" data-t-aria="themeToggle" aria-pressed="false"><svg class="theme-icon" id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
     <button class="langbtn" id="btnPhotos" data-t="myPhotos"></button>
     <button class="langbtn active" id="btnEn">English</button>
     <button class="langbtn" id="btnAr">العربية</button>
@@ -584,6 +658,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     <h1 data-html="heroTitle"></h1>
     <p class="lead" data-t="heroLead"></p>
     <div class="hero-stats">
+      <div class="hstat hstat-countdown" id="countdownStat"><b id="statCountdown">–</b><span id="countdownLabel" data-t="statCountdownDefault"></span></div>
       <div class="hstat"><b id="statTotal">0</b><span data-t="statPlaces"></span></div>
       <div class="hstat"><b id="statAreas">0</b><span data-t="statAreas"></span></div>
       <div class="hstat"><b id="statBooking">0</b><span data-t="statBooking"></span></div>
@@ -653,6 +728,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
   <div class="section-title"><h2 data-t="planTitle"></h2><span class="n" data-t="planTag"></span></div>
   <p class="section-sub" data-t="planSub"></p>
   <button type="button" class="pdf-btn" id="pdfBtnPlan" data-t="pdfBtn"></button>
+  <button type="button" class="pdf-btn no-ico" id="icsBtnPlan" data-t="icsBtn"></button>
   <div id="transportSection"></div>
   <div class="section-title" style="margin-top:48px;"><h2 data-t="planDayTitle"></h2></div>
   <div id="planItinerary"></div>
@@ -748,9 +824,34 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<div class="scroll-fabs" id="scrollFabs">
+  <button type="button" class="scroll-fab" id="fabTop" aria-label="Back to top" data-t-aria="scrollTop">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <button type="button" class="scroll-fab" id="fabBottom" aria-label="Jump to bottom" data-t-aria="scrollBottom">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </button>
+</div>
+
 <div class="drawer-backdrop" id="backdrop"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-head"><h3 data-t="drawerTitle"></h3><button class="drawer-close" id="closeDrawer">×</button></div>
+  <div class="drawer-settings" id="drawerSettings">
+    <label class="ds-field"><span data-t="dsCurrency"></span>
+      <select id="currencySel">
+        <option value="SAR">SAR</option>
+        <option value="ZAR">ZAR (R)</option>
+        <option value="USD">USD ($)</option>
+      </select>
+    </label>
+    <label class="ds-field ds-split"><input type="checkbox" id="splitToggle"><span data-t="dsSplit"></span></label>
+    <div class="ds-travelers" id="dsTravelers" hidden>
+      <button type="button" id="travelersMinus" aria-label="-">−</button>
+      <span id="travelersCount">2</span>
+      <button type="button" id="travelersPlus" aria-label="+">+</button>
+      <span class="ds-travelers-label" data-t="dsTravelers"></span>
+    </div>
+  </div>
   <div class="drawer-body" id="drawerBody"></div>
   <div class="drawer-foot"><button id="printBtn" data-t="printBtn"></button></div>
 </div>
@@ -825,6 +926,8 @@ en:{
   },
   heroLead:"Every place you two shortlisted — the story behind it, practical info, when to go, what to wear, real menus and booking pages where they exist. Tap ○ to shortlist, tap a photo to view it full size, tap + to add your own.",
   statPlaces:"Places curated", statAreasL:"Neighbourhoods", statBookingL:"Need pre-booking",
+  statCountdownDefault:"days to go", statCountdownToday:"Trip day", statCountdownDone:"Trip complete!", statCountdownDoneSub:"Hope it was unforgettable",
+  icsBtn:"📅 Add trip to calendar", icsDayBtn:"Add day to calendar", icsAdded:"Calendar file downloaded — open it to add these to your calendar app.",
   weatherTitle:"Weather & what to pack", weatherDate:"28 Oct – 10 Nov 2026",
   weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", ppClearPublished:"Delete ALL {n} published photos (for everyone)", ppConfirmClearPublished:"Delete all {n} photos published on the website? This removes them for everyone, right away, in one go. Photos only saved on a device are not affected. This can't be undone.", ghAllCleared:"All published photos deleted. You can start adding photos again now.", ppRetryNow:"Retry now ({n})", ghQueueBusy:"Uploading now…", ghQueueRetry:"Upload failed — retrying automatically… ({n} waiting)", ghQueueWaiting:"{n} waiting to upload",   wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
   wTypicalHigh:"Typical daytime high", wTypicalLow:"Typical overnight low", wSea:"Sea temperature (cold!)",
@@ -852,6 +955,7 @@ en:{
   ttFlightTitle:"Domestic flight: Cape Town ↔ George", ttFlightBody:"There's a short domestic flight (about 1 hour) between Cape Town International (CPT) and George Airport (GRJ), run by South African carriers. Useful on the way back if you'd rather not drive the full return leg — fly from George into Cape Town and skip 1–2 days of driving. If you fly back, you can also drop a rental car at George Airport instead of driving it all the way back to Cape Town (most companies allow one-way drop-off for a fee).",
   ttCarRentalTitle:"Car rental companies in Cape Town (compare)",
   searchPlaceholder:"🔍 Search everything — activities, restaurants, coffee, safari lodges…",
+  scrollTop:"Back to top", scrollBottom:"Jump to bottom", themeToggle:"Toggle dark mode",
   tnFlightTitle:"Ethiopian Airlines contact", tnFlightPhone:"800 8500286 (Saudi Arabia toll-free)", tnFlightNote:"Keep this handy for booking changes, baggage questions, or flight delays — Ethiopian Airlines operates the Cape Town route via Addis Ababa. Also save your booking reference (PNR) and check in online 24 hours before each flight.",
   freeLabel:"Free", weakSignal:"Weak signal", weakSignalTip:"Patchy or no cell coverage here — download offline maps before you go.",
   budgetTotal:"Estimated total so far:", budgetApprox:"(rough estimate, per person)",
@@ -875,12 +979,14 @@ en:{
   grItinTitle:"Suggested 10-day Garden Route itinerary", grItinTag:"10 days", grItinSub:"In travel order, Cape Town → Tsitsikamma — each day keeps you in one or two neighbouring towns so you're not backtracking. Includes a dedicated safari day near Mossel Bay. Treat it as a flexible skeleton, not a fixed script.",
   safTitle:"Safari — which lodge to book", safTag:"5 compared", safSub:"All five you shortlisted, compared side by side, with official booking sites and what to expect. None of these are on the Garden Route route itself except Garden Route Game Lodge, Gondwana and Botlierskop — Aquila is near Cape Town, best done as a separate day trip or on the way out.",
   mapTitle:"Overview map", mapSub:"Pins grouped by neighbourhood so you plan efficient days. Click a pin for the name, use \"Directions\" on any card for exact navigation.",
+  dsCurrency:"Currency", dsSplit:"Split per person", dsTravelers:"travelers",
+  noteAdd:"Add a note", notePlaceholder:"A reminder just for you — book by a date, ask about X, bring cash…",
   drawerTitle:"Our itinerary", printBtn:"Download itinerary as PDF", pdfBtn:"Download itinerary as PDF", pdfPreparing:"Preparing PDF… photos {a}/{b}", pdfFail:"Couldn't prepare the PDF. Try again.", pdfGlance:"Trip at a glance", pdfColDay:"Day", pdfColDate:"Date", pdfColPlan:"Plan", pdfColStay:"Where you stay", pdfStayingAt:"Staying at", pdfEmergency:"Emergency & key numbers", pdfHospitals:"Nearest hospital by area", pdfPractical:"Practical information", pdfMap:"Google Maps", pdfHowBook:"How to book", pdfShortlist:"Your shortlist", pdfAlready:"Already in the day-by-day plan", pdfFoot:"Prices are rough per-person estimates in SAR. Hours, prices and weather closures change, so check the official page before you go.",
   footerText:"Built for your Cape Town trip · Coordinates are approximate per neighbourhood for map orientation — use \"Directions\" on each card for the exact pin. Prices, hours, menus, booking links and weather are all subject to change, so double-check close to your trip.",
   signature:"Designed by Yazeed Alturki",
   directions:"Directions", menuBtn:"Menu", bookBadge:"Pre-booking recommended", howToBook:"How to book",
   official:"Official booking page →", findOperator:"Find operator →",
-  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Add & edit photos", ghBody:"Only devices connected with your GitHub token can add, replace or delete photos. Everyone else can only view them. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghUploadingN:"Uploading {n} photos to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
+  best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Add & edit photos", ghBody:"Only devices connected with your GitHub token can add, replace or delete photos — and your own notes on each place sync here too, so they follow you to any device instead of staying stuck on this one. Everyone else can only view what's published. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghUploadingN:"Uploading {n} photos to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
   allChip:"All"
 },
 ar:{
@@ -894,6 +1000,8 @@ ar:{
   },
   heroLead:"كل مكان اخترتماه — قصته، معلومات عملية، أفضل وقت للزيارة، ماذا ترتديان، قوائم طعام حقيقية، وروابط حجز فعلية إن وُجدت. اضغطا على ○ لإضافته لقائمتكما، واضغطا على الصورة لعرضها بالحجم الكامل، وعلى + لإضافة صورتكما.",
   statPlaces:"مكانًا منسقًا", statAreasL:"حيًا", statBookingL:"يحتاج حجزًا مسبقًا",
+  statCountdownDefault:"يومًا متبقيًا", statCountdownToday:"يوم الرحلة", statCountdownDone:"انتهت الرحلة!", statCountdownDoneSub:"نتمنى أنها كانت لا تُنسى",
+  icsBtn:"📅 أضيفا الرحلة إلى التقويم", icsDayBtn:"أضف اليوم إلى التقويم", icsAdded:"تم تنزيل ملف التقويم — افتحاه لإضافة الرحلة إلى تطبيق التقويم لديكما.",
   weatherTitle:"الطقس وماذا تحضران", weatherDate:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦",
   weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", ppClearPublished:"حذف كل الصور المنشورة والبالغ عددها {n} (للجميع)", ppConfirmClearPublished:"حذف جميع الصور المنشورة على الموقع وعددها {n}؟ سيُحذفن للجميع فورًا دفعة واحدة. الصور المحفوظة على جهاز فقط لن تتأثر. لا يمكن التراجع عن هذا.", ghAllCleared:"تم حذف كل الصور المنشورة. يمكنكما البدء بإضافة صور من جديد الآن.", ppRetryNow:"إعادة المحاولة الآن ({n})", ghQueueBusy:"جارٍ الرفع الآن…", ghQueueRetry:"فشل الرفع — تجري إعادة المحاولة تلقائيًا… ({n} في الانتظار)", ghQueueWaiting:"{n} في انتظار الرفع",   wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
   wTypicalHigh:"الحرارة العظمى المعتادة نهارًا", wTypicalLow:"الحرارة الصغرى المعتادة ليلاً", wSea:"حرارة البحر (باردة!)",
@@ -921,6 +1029,7 @@ ar:{
   ttFlightTitle:"رحلة داخلية: كيب تاون ↔ جورج", ttFlightBody:"توجد رحلة داخلية قصيرة (حوالي ساعة) بين مطار كيب تاون الدولي (CPT) ومطار جورج (GRJ)، تشغّلها شركات طيران جنوب أفريقية. مفيدة في طريق العودة إن فضّلتما عدم قيادة كامل المسافة — طيرا من جورج إلى كيب تاون وتجنبا ١-٢ يوم من القيادة. إن عدتما بالطائرة، يمكنكما أيضًا تسليم سيارة الإيجار في مطار جورج بدل قيادتها كاملة إلى كيب تاون (معظم الشركات تسمح بالتسليم في مكان مختلف مقابل رسم).",
   ttCarRentalTitle:"شركات تأجير السيارات في كيب تاون (مقارنة)",
   searchPlaceholder:"🔍 ابحثا عن أي شيء — أنشطة، مطاعم، قهوة، نُزل سفاري…",
+  scrollTop:"العودة للأعلى", scrollBottom:"الانتقال للأسفل", themeToggle:"تبديل الوضع الداكن",
   tnFlightTitle:"التواصل مع الخطوط الإثيوبية", tnFlightPhone:"٨٠٠ ٨٥٠٠٢٨٦ (مجاني داخل السعودية)", tnFlightNote:"احتفظا بهذا الرقم لتعديل الحجز أو استفسارات الأمتعة أو تأخير الرحلات — الخطوط الإثيوبية تشغّل رحلة كيب تاون عبر أديس أبابا. احتفظا أيضًا برقم الحجز (PNR) وسجّلا الدخول إلكترونيًا قبل كل رحلة بـ٢٤ ساعة.",
   freeLabel:"مجاني", weakSignal:"إشارة ضعيفة", weakSignalTip:"تغطية جوال ضعيفة أو منعدمة هنا — حمّلا خرائط بدون إنترنت قبل الذهاب.",
   budgetTotal:"الإجمالي التقريبي حتى الآن:", budgetApprox:"(تقدير تقريبي، للشخص الواحد)",
@@ -944,12 +1053,14 @@ ar:{
   grItinTitle:"خطة مقترحة لـ١٠ أيام على طريق الحدائق", grItinTag:"١٠ أيام", grItinSub:"بترتيب الرحلة، من كيب تاون إلى تسيتسيكاما — كل يوم يبقيكما في بلدة أو بلدتين متجاورتين حتى لا ترجعا للخلف. يشمل يومًا مخصصًا للسفاري قرب موسيل باي. اعتبراها هيكلاً مرنًا لا نصًا ثابتًا.",
   safTitle:"السفاري — أي نُزل تحجزان", safTag:"مقارنة بين ٥", safSub:"الخمسة التي اخترتماها، مقارنة جنبًا إلى جنب، مع مواقع الحجز الرسمية وما يمكن توقعه. لا شيء منها على طريق الحدائق نفسه سوى Garden Route Game Lodge وGondwana وBotlierskop — أما Aquila فقريبة من كيب تاون، والأفضل زيارتها كرحلة يوم منفصلة أو في الطريق.",
   mapTitle:"خريطة عامة", mapSub:"الدبابيس مجمّعة حسب الحي لتخطيط أيام فعالة. اضغطي على أي دبوس لرؤية الاسم، واستخدمي \"الاتجاهات\" في أي بطاقة للملاحة الدقيقة.",
+  dsCurrency:"العملة", dsSplit:"تقسيم للشخص", dsTravelers:"مسافرين",
+  noteAdd:"أضف ملاحظة", notePlaceholder:"تذكير لكما فقط — احجزا قبل تاريخ معيّن، اسألا عن كذا، أحضرا نقدًا…",
   drawerTitle:"خطة رحلتنا", printBtn:"تنزيل خطة الرحلة PDF", pdfBtn:"تنزيل خطة الرحلة PDF", pdfPreparing:"جارٍ تجهيز الملف… الصور {a}/{b}", pdfFail:"تعذّر تجهيز الملف. حاولا مرة أخرى.", pdfGlance:"الرحلة في لمحة", pdfColDay:"اليوم", pdfColDate:"التاريخ", pdfColPlan:"الخطة", pdfColStay:"مكان الإقامة", pdfStayingAt:"الإقامة في", pdfEmergency:"أرقام الطوارئ والأرقام المهمة", pdfHospitals:"أقرب مستشفى حسب المنطقة", pdfPractical:"معلومات عملية", pdfMap:"خرائط جوجل", pdfHowBook:"طريقة الحجز", pdfShortlist:"قائمتكما المختارة", pdfAlready:"موجودة أصلًا في الخطة اليومية", pdfFoot:"الأسعار تقديرات تقريبية للشخص بالريال السعودي. الأوقات والأسعار وإغلاقات الطقس تتغير، فتحققا من الصفحة الرسمية قبل الذهاب.",
   footerText:"صُمم لرحلتكما إلى كيب تاون · الإحداثيات تقريبية لكل حي لأغراض توجيه الخريطة — استخدما \"الاتجاهات\" في كل بطاقة للموقع الدقيق. الأسعار وأوقات العمل والقوائم وروابط الحجز والطقس كلها عرضة للتغيير، فتحققا منها قبل رحلتكما.",
   signature:"صمّمه يزيد التركي",
   directions:"الاتجاهات", menuBtn:"القائمة", bookBadge:"يُنصح بالحجز المسبق", howToBook:"كيفية الحجز",
   official:"صفحة الحجز الرسمية ←", findOperator:"ابحثا عن المشغّل ←",
-  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"إضافة الصور وتعديلها", ghBody:"الأجهزة المرتبطة برمز GitHub الخاص بكما فقط تستطيع إضافة الصور أو استبدالها أو حذفها، والبقية تشاهدها فقط. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع وحده.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghUploadingN:"جارٍ رفع {n} صور إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
+  best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"إضافة الصور وتعديلها", ghBody:"الأجهزة المرتبطة برمز GitHub الخاص بكما فقط تستطيع إضافة الصور أو استبدالها أو حذفها — وملاحظاتكما الشخصية على كل مكان تُزامَن من هنا أيضًا، فتلحق بكما على أي جهاز بدل أن تبقى حبيسة هذا الجهاز فقط. البقية يشاهدون المنشور فقط. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع وحده.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghUploadingN:"جارٍ رفع {n} صور إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
   allChip:"الكل"
 }
 };
@@ -1670,6 +1781,106 @@ const ITINERARY = [
 const picked = new Set();
 const grPicked = new Set();
 let activeFilter = "all";
+
+/* ---------- YOUR OWN NOTES (per place) ----------
+   Always saved to this browser first (instant, works offline). If a GitHub token is connected
+   (same one used for 📷 Photos — see ghConfig()), edited notes also sync to notes.json in the
+   repo, so they follow you to any device instead of being stuck on this one. Only the keys you
+   actually changed on THIS device get pushed — merged into whatever's already there — so two
+   devices editing different places' notes never clobber each other. */
+let USER_NOTES = {};
+try{ USER_NOTES = JSON.parse(localStorage.getItem('ctgr_usernotes') || '{}') || {}; }catch(e){}
+let notesDirty = new Set();
+try{ notesDirty = new Set(JSON.parse(localStorage.getItem('ctgr_notes_dirty') || '[]')); }catch(e){}
+const saveNotesLocal = ()=>{ try{ localStorage.setItem('ctgr_usernotes', JSON.stringify(USER_NOTES)); }catch(e){} };
+const saveNotesDirty = ()=>{ try{ localStorage.setItem('ctgr_notes_dirty', JSON.stringify([...notesDirty])); }catch(e){} };
+function saveUserNote(key, val){
+  val = (val || '').trim();
+  if(val) USER_NOTES[key] = val; else delete USER_NOTES[key];
+  saveNotesLocal();
+  notesDirty.add(key); saveNotesDirty();
+  if(ghConfig()) scheduleNotesSync();
+}
+let notesSyncTimer = null, notesSyncBusy = false, notesSyncFails = 0;
+function scheduleNotesSync(delay){
+  if(notesSyncTimer) clearTimeout(notesSyncTimer);
+  notesSyncTimer = setTimeout(syncNotesNow, delay != null ? delay : 2500);
+}
+const b64ToText = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g,'')), c=>c.charCodeAt(0)));
+async function syncNotesNow(){
+  const cfg = ghConfig();
+  if(!cfg || notesDirty.size === 0 || notesSyncBusy) return;
+  notesSyncBusy = true;
+  const myDirty = [...notesDirty];
+  try{
+    const branch = (await ghJson(cfg, '')).default_branch || 'main';
+    let sha, remote = {};
+    const r = await ghFetch(cfg, '/contents/notes.json?ref=' + encodeURIComponent(branch), {headers:{'Accept':'application/vnd.github+json'}});
+    // NOTE: don't swallow a parse failure here into remote={} — that would make a hiccup reading
+    // the existing file look like "there are no notes yet" and overwrite everyone else's synced
+    // notes with just this device's. Let it throw, so the outer catch retries later instead.
+    if(r.ok){ const d = await r.json(); sha = d.sha; remote = JSON.parse(b64ToText(d.content)) || {}; }
+    else if(r.status !== 404){ throw Object.assign(new Error('GitHub ' + r.status), {status: r.status}); }
+    // apply only what changed on THIS device on top of whatever's on GitHub right now
+    myDirty.forEach(k=>{ if(USER_NOTES[k] != null) remote[k] = USER_NOTES[k]; else delete remote[k]; });
+    const sorted = Object.fromEntries(Object.entries(remote).sort((a,b)=>a[0].localeCompare(b[0])));
+    const content = await blobToB64(new Blob([JSON.stringify(sorted, null, 1)], {type:'application/json'}));
+    await ghJson(cfg, '/contents/notes.json', {method:'PUT', body:{message:'Update notes', content, sha, branch}});
+    myDirty.forEach(k=>notesDirty.delete(k)); saveNotesDirty();
+    // this is now what's on GitHub: our overlaid changes + anything other devices added — but
+    // keep whatever's currently typed locally for any key edited again while this sync was in
+    // flight (still marked dirty), so a fast second edit is never silently reverted
+    const stillDirty = {};
+    notesDirty.forEach(k=>{ if(USER_NOTES[k] != null) stillDirty[k] = USER_NOTES[k]; });
+    USER_NOTES = Object.assign({}, sorted, stillDirty);
+    saveNotesLocal();
+    renderAreas(); renderGardenRoute();
+    notesSyncFails = 0;
+  }catch(e){
+    notesSyncFails++;
+    scheduleNotesSync(Math.min(60000, 4000 * Math.pow(1.8, notesSyncFails)) + Math.random() * 1000);
+  }finally{
+    notesSyncBusy = false;
+    if(notesDirty.size) scheduleNotesSync(2000);
+  }
+}
+async function loadNotes(){
+  try{
+    const r = await fetch('notes.json?v=' + Date.now(), {cache:'no-store'});
+    if(r.ok){
+      const remote = await r.json() || {};
+      Object.entries(remote).forEach(([k, v])=>{ if(!notesDirty.has(k)) USER_NOTES[k] = v; });
+      saveNotesLocal();
+    }
+  }catch(e){}
+  if(ghConfig() && notesDirty.size) scheduleNotesSync(1000);
+}
+function unoteBlock(key){
+  const val = USER_NOTES[key] || '';
+  const preview = val.length > 70 ? val.slice(0, 70) + '…' : val;
+  return `<div class="unote" data-notewrap="${escHtml(key)}">
+    ${val ? `<div class="unote-preview" data-noteedit="${escHtml(key)}">🖊️ ${escHtml(preview)}</div>`
+          : `<button type="button" class="unote-toggle" data-noteedit="${escHtml(key)}">🖊️ ${tr('noteAdd')}</button>`}
+    <textarea class="unote-box" rows="2" data-notesave="${escHtml(key)}" placeholder="${tr('notePlaceholder')}" hidden>${escHtml(val)}</textarea>
+  </div>`;
+}
+function wireNoteEvents(container){
+  container.querySelectorAll('[data-noteedit]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const wrap = el.closest('[data-notewrap]');
+      const box = wrap.querySelector('[data-notesave]');
+      el.style.display = 'none';
+      box.hidden = false;
+      box.focus();
+      const v = box.value; box.value = ''; box.value = v; // put the caret at the end
+    });
+  });
+  container.querySelectorAll('[data-notesave]').forEach(box=>{
+    let t;
+    box.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=>saveUserNote(box.dataset.notesave, box.value), 500); });
+    box.addEventListener('blur', ()=>{ clearTimeout(t); saveUserNote(box.dataset.notesave, box.value); });
+  });
+}
 /* ================= PHOTOS =================
    Two sources of photos per place:
    1. Published: files in the /photos folder listed in photos/manifest.json (everyone sees these).
@@ -2213,6 +2424,7 @@ document.getElementById('ghConnect').addEventListener('click', async ()=>{
     document.getElementById('ghToken').value = '';
     toast(tr('ghConnected').replace('{r}', cfg.owner + '/' + cfg.repo));
     openPanel(); renderAreas(); renderGardenRoute();
+    if(notesDirty.size) scheduleNotesSync(500); else loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
   }catch(err){ toast(ghErrText(err)); }
 });
 document.getElementById('ghDisconnect').addEventListener('click', ()=>{ ghSaveConfig(null); openPanel(); renderAreas(); renderGardenRoute(); });
@@ -2404,11 +2616,13 @@ function setLang(lang){
     else el.textContent = UI[lang][k] || '';
   });
   document.querySelectorAll('[data-html]').forEach(el=>{ el.innerHTML = UI[lang][el.dataset.html] || ''; });
+  document.querySelectorAll('[data-t-aria]').forEach(el=>{ const v = UI[lang][el.dataset.tAria] || ''; el.setAttribute('aria-label', v); el.title = v; });
   updateHeroTitle();
   document.getElementById('packList').innerHTML = UI[lang].pack.map(t=>`<div class="pack-item"><span class="ic">✔</span><span>${t}</span></div>`).join('');
   const searchEl = document.getElementById('searchInput');
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
   renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather();
+  updateCountdown();
 }
 function updateHeroTitle(){
   const el = document.querySelector('[data-html="heroTitle"]');
@@ -2651,11 +2865,12 @@ function grItemCard(item, grIdx){
     <div class="pill-row">
       <span class="catpill" style="background:${color}22;color:${color};">${CATS[LANG][item.c]?.label || item.c}</span>
       ${item.rating ? `<span class="rating-pill">★ ${item.rating.toFixed(1)} <i>(${item.ratingCount.toLocaleString()})</i></span>` : ``}
-      <span class="price-pill">${item.price ? 'SAR '+item.price : tr('freeLabel')}</span>
+      <span class="price-pill">${item.price ? money(item.price) : tr('freeLabel')}</span>
       ${item.weak ? `<span class="weak-pill" title="${tr('weakSignalTip')}">📶 ${tr('weakSignal')}</span>` : ``}
     </div>
     <p class="about">${about||''}</p>
     ${mynote ? `<div class="mynote">📝 ${mynote}</div>` : ``}
+    ${unoteBlock('g:'+item.n)}
     <div class="gr-card-actions">
       <a class="mini-link primary" href="${item.g}" target="_blank">📍 ${tr('directions')}</a>
       ${(item.c==='restaurant'||item.c==='coffee') ? `<a class="mini-link" href="${item.menu||gsearch(item.n+' Garden Route menu')}" target="_blank">📋 ${tr('menuBtn')}</a>` : ``}
@@ -2815,6 +3030,7 @@ function wireGRCardEvents(container){
       renderGardenRoute(); renderDrawer(); updateBudget();
     });
   });
+  wireNoteEvents(container);
 }
 
 /* ================= GARDEN ROUTE ITINERARY ================= */
@@ -3161,7 +3377,7 @@ function renderPlanItinerary(){
     const title = LANG==='ar' ? day.title_ar : day.title;
     const tip = LANG==='ar' ? day.tip_ar : day.tip;
     const dayLabel = LANG==='ar' ? `اليوم ${i+1}` : `Day ${i+1}`;
-    html += `<div class="day-card"><div class="day-head"><span class="day-num">${dayLabel}</span><h3>${title}</h3>${day.date?`<span class="day-date">${day.date}</span>`:''}</div><p class="day-tip">${tip}</p>`;
+    html += `<div class="day-card"><div class="day-head"><span class="day-num">${dayLabel}</span><h3>${title}</h3><div class="day-head-right">${day.date?`<span class="day-date">${day.date}</span>`:''}<button type="button" class="day-cal-btn" data-icsday="${i}" aria-label="${tr('icsDayBtn')}" title="${tr('icsDayBtn')}">📅</button></div></div><p class="day-tip">${tip}</p>`;
     if(day.hotel){
       const h = day.hotel;
       const hname = LANG==='ar' ? (h.n_ar||h.n) : h.n;
@@ -3175,6 +3391,9 @@ function renderPlanItinerary(){
     html += `</div>`;
   });
   el.innerHTML = html;
+  el.querySelectorAll('[data-icsday]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); downloadTripICS(+btn.dataset.icsday); });
+  });
 }
 
 function renderGRItinerary(){
@@ -3243,7 +3462,7 @@ function renderAreas(){
             <span class="catpill" style="background:${cat.color}22;color:${cat.color}">${cat.label}</span>
             ${cuisine ? `<span class="catpill cuisine-pill">${cuisine}</span>` : ``}
             ${p.rating ? `<span class="rating-pill">★ ${p.rating.toFixed(1)} <i>(${p.ratingCount.toLocaleString()})</i></span>` : ``}
-            <span class="price-pill">${p.price ? 'SAR '+p.price : tr('freeLabel')}</span>
+            <span class="price-pill">${p.price ? money(p.price) : tr('freeLabel')}</span>
             ${p.weak ? `<span class="weak-pill" title="${tr('weakSignalTip')}">📶 ${tr('weakSignal')}</span>` : ``}
           </div>
           <p class="about">${about||''}</p>
@@ -3251,6 +3470,7 @@ function renderAreas(){
           ${wear ? `<div class="wear">🧥 <span><b>${tr('wear')}:</b> ${wear}</span></div>` : ``}
           <div class="meta-row"><div>🕐 <b>${best||'—'}</b></div><div>⏱ <b>${dur||'—'}</b></div></div>
           ${p.book ? `<div class="badge-book">${tr('bookBadge')}</div>` : ``}
+          ${unoteBlock('p:'+p.n)}
           <div class="card-actions">
             <a class="mini-link primary" href="${p.g}" target="_blank">📍 ${tr('directions')}</a>
             ${(p.c==='restaurant'||p.c==='coffee') ? `<a class="mini-link ${p.menu&&p.menu.v?'verified':''}" href="${p.menu?p.menu.url:gsearch(p.n+' Cape Town menu')}" target="_blank">📋 ${tr('menuBtn')}</a>` : ``}
@@ -3279,6 +3499,7 @@ function wireCardEvents(areasEl){
   areasEl.querySelectorAll('[data-toggle]').forEach(btn=>{
     btn.addEventListener('click', ()=>{ const el=document.getElementById('steps-'+btn.dataset.toggle); el.classList.toggle('open'); btn.textContent=(el.classList.contains('open')?tr('howToBook')+' ▾':tr('howToBook')+' ▸'); });
   });
+  wireNoteEvents(areasEl);
 }
 /* ================= ITINERARY PDF =================
    Builds a clean, print-only document (#printDoc) from the 14-day plan (+ your shortlist),
@@ -3338,7 +3559,7 @@ function resolveRef(ref){
     const p = PLACES[idx];
     return Object.assign({kind:'place', id:p.n, base:String(idx), name:pt(p,'n'), cat:p.c, area:AREAS_META[p.a] ? AREAS_META[p.a][LANG] : '',
       about:clipText(pt(p,'about'), 380), cuisine:pt(p,'cuisine'), rating:p.rating, ratingCount:p.ratingCount, weak:p.weak, phone:p.phone||'', g:p.g, mynote:pt(p,'mynote'),
-      priceText: p.price>0 ? 'SAR '+p.price : (p.c==='activity' ? tr('freeLabel') : ''),
+      priceText: p.price>0 ? money(p.price) : (p.c==='activity' ? tr('freeLabel') : ''),
       facts:[[tr('best'),pt(p,'best')],[tr('dur'),pt(p,'dur')],[tr('wear'),pt(p,'wear')]].filter(f=>f[1])}, bookOf(p.book));
   }
   let flatIdx = 0;
@@ -3347,7 +3568,7 @@ function resolveRef(ref){
       if(it.n === ref){
         return Object.assign({kind:'gr', id:it.n, base:'gr-'+flatIdx, name:pt(it,'n'), cat:it.c, area:pt(t,'town'),
           about:clipText(pt(it,'about'), 380), rating:it.rating, ratingCount:it.ratingCount, weak:it.weak, g:it.g, mynote:pt(it,'mynote'),
-          priceText: it.price>0 ? 'SAR '+it.price : (it.c==='activity' ? tr('freeLabel') : ''), facts:[]}, {bookFlag:!!it.book, bookNote:'', steps:[], bookLink:''});
+          priceText: it.price>0 ? money(it.price) : (it.c==='activity' ? tr('freeLabel') : ''), facts:[]}, {bookFlag:!!it.book, bookNote:'', steps:[], bookLink:''});
       }
       flatIdx++;
     }
@@ -3442,7 +3663,7 @@ function renderPrintDoc(m){
     html += `<section class="pd-day pd-short"><header class="pd-dayhead"><h2>${escHtml(tr('pdfShortlist'))}</h2></header>`;
     if(m.already.length) html += `<p class="pd-tip">${escHtml(tr('pdfAlready'))}: ${escHtml(m.already.join(ar ? '، ' : ', '))}</p>`;
     groupNames.forEach(g=>{ html += `<h3 class="pd-h3">${escHtml(g)}</h3>${m.groups[g].map(pdItem).join('')}`; });
-    if(m.budget.count) html += `<div class="pd-total">${escHtml(tr('budgetTotal'))} <b>≈ SAR ${m.budget.total.toLocaleString()}</b> <span>${escHtml(tr('budgetApprox'))}</span></div>`;
+    if(m.budget.count) html += `<div class="pd-total">${escHtml(tr('budgetTotal'))} <b>≈ ${escHtml(budgetDisplay(m.budget.total))}</b> <span>${escHtml(tr('budgetApprox'))}</span></div>`;
     html += `</section>`;
   }
   return html;
@@ -3477,6 +3698,7 @@ async function printItinerary(){
 }
 document.getElementById('printBtn').addEventListener('click', printItinerary);
 document.getElementById('pdfBtnPlan').addEventListener('click', printItinerary);
+document.getElementById('icsBtnPlan').addEventListener('click', ()=>downloadTripICS());
 
 /* ================= WEATHER (Open-Meteo, free, no key) =================
    - Live: current conditions + next 24 hours + next 16 days (refreshes every ~25 min).
@@ -3488,6 +3710,89 @@ const TRIP_START = '2026-10-28', TRIP_DAYS = 14;
 const WX_HIST_YEARS = 5, WX_LS = 'ctgr_wxc_v2';
 let wxTab = 'trip', wxLoc = 'ct', wxPick = '', wxSeq = 0, wxStale = false, wxBusy = false, wxLastFetch = 0;
 const WX = {now:null, hourly:[], today:'', updated:0, status:'loading'};
+
+/* ---------- COUNTDOWN ---------- */
+function isoPlusDays(iso, n){
+  const d = new Date(iso + 'T00:00:00');
+  d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+function updateCountdown(){
+  const b = document.getElementById('statCountdown'), lbl = document.getElementById('countdownLabel');
+  if(!b || !lbl) return;
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const start = new Date(TRIP_START + 'T00:00:00'), today = new Date(todayIso + 'T00:00:00');
+  const end = new Date(isoPlusDays(TRIP_START, TRIP_DAYS - 1) + 'T00:00:00');
+  const daysTo = Math.round((start - today) / 864e5);
+  if(daysTo > 0){
+    b.textContent = daysTo.toLocaleString(LANG==='ar' ? 'ar' : 'en-US');
+    lbl.textContent = tr('statCountdownDefault');
+  } else if(today <= end){
+    const dayNum = Math.round((today - start) / 864e5) + 1;
+    b.textContent = dayNum + ' / ' + TRIP_DAYS;
+    lbl.textContent = tr('statCountdownToday');
+  } else {
+    b.textContent = '🎉';
+    lbl.textContent = tr('statCountdownDone');
+  }
+}
+
+/* ---------- CALENDAR EXPORT (.ics) ---------- */
+function icsEscape(s){ return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
+function icsFold(line){ // RFC5545: lines over 75 octets should be folded with a leading space
+  const out = [];
+  let rest = line;
+  while(rest.length > 74){ out.push(rest.slice(0, 74)); rest = ' ' + rest.slice(74); }
+  out.push(rest);
+  return out.join('\r\n');
+}
+function buildICS(events){
+  const stamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Cape Town Trip Planner//EN','CALSCALE:GREGORIAN'];
+  events.forEach((e, i)=>{
+    const start = e.date.replace(/-/g,''), end = isoPlusDays(e.date, 1).replace(/-/g,'');
+    lines.push('BEGIN:VEVENT');
+    lines.push('UID:ctgr-' + e.date + '-' + i + '@capetown-trip');
+    lines.push('DTSTAMP:' + stamp);
+    lines.push('DTSTART;VALUE=DATE:' + start);
+    lines.push('DTEND;VALUE=DATE:' + end);
+    lines.push(icsFold('SUMMARY:' + icsEscape(e.title)));
+    if(e.description) lines.push(icsFold('DESCRIPTION:' + icsEscape(e.description)));
+    lines.push('END:VEVENT');
+  });
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n') + '\r\n';
+}
+function downloadICS(filename, text){
+  const blob = new Blob([text], {type:'text/calendar;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 4000);
+  toast(tr('icsAdded'));
+}
+function icsEventForDay(i){
+  const day = ITINERARY14[i];
+  const title = (LANG==='ar' ? day.title_ar : day.title) || '';
+  const tip = (LANG==='ar' ? day.tip_ar : day.tip) || '';
+  const items = day.blocks.map(b=>{
+    const slot = LANG==='ar' ? b.slot_ar : b.slot;
+    const names = b.items.map(ref=>{
+      const it = typeof ref === 'object' ? ref : (typeof ref === 'string' ? {n:ref} : null);
+      return it ? (LANG==='ar' ? (it.n_ar||it.n) : it.n) : String(ref);
+    }).join(', ');
+    return `${slot}: ${names}`;
+  }).join('\n');
+  return {date: isoPlusDays(TRIP_START, i), title: `Day ${i+1} — ${title}`, description: [tip, items].filter(Boolean).join('\n\n')};
+}
+function downloadTripICS(dayIndex){
+  if(typeof dayIndex === 'number'){
+    downloadICS(`cape-town-trip-day-${dayIndex+1}.ics`, buildICS([icsEventForDay(dayIndex)]));
+  } else {
+    downloadICS('cape-town-trip.ics', buildICS(ITINERARY14.map((_, i)=>icsEventForDay(i))));
+  }
+}
 
 /* ---- icons (48x48, inline SVG, colours from the site palette) ---- */
 const WXC = {sun:'#f4b63a', sunEdge:'#e8961a', cloud:'#e6edf1', cloudEdge:'#a9bcc5', cloudDark:'#8fa3ad', rain:'#2f86b3', bolt:'#f2c230', wind:'#4f7f8b', moon:'#d8dfee', moonEdge:'#98a6c4'};
@@ -3843,7 +4148,7 @@ function renderDrawer(){
       items.forEach(p=>{
         const idx = PLACES.indexOf(p); const name = LANG==='ar'?p.n_ar:p.n;
         total += (p.price||0);
-        html += `<div class="d-item"><span>${name} <i class="d-price">${p.price?('· SAR '+p.price):''}</i></span><button class="rm" data-rm="${idx}">${tr('remove')}</button></div>`;
+        html += `<div class="d-item"><span>${name} <i class="d-price">${p.price?('· '+money(p.price)):''}</i></span><button class="rm" data-rm="${idx}">${tr('remove')}</button></div>`;
       });
     });
   }
@@ -3856,15 +4161,88 @@ function renderDrawer(){
       items.forEach(({item, idx})=>{
         const name = LANG==='ar'?item.n_ar:item.n;
         total += (item.price||0);
-        html += `<div class="d-item"><span>${name} <i class="d-price">${item.price?('· SAR '+item.price):''}</i></span><button class="rm" data-grrm="${idx}">${tr('remove')}</button></div>`;
+        html += `<div class="d-item"><span>${name} <i class="d-price">${item.price?('· '+money(item.price)):''}</i></span><button class="rm" data-grrm="${idx}">${tr('remove')}</button></div>`;
       });
     });
   }
-  html += `<div class="d-total">${tr('budgetTotal')} <b>≈ SAR ${total.toLocaleString()}</b></div>`;
+  html += `<div class="d-total">${tr('budgetTotal')} <b>≈ ${budgetDisplay(total)}</b></div>`;
   body.innerHTML = html;
   body.querySelectorAll('[data-rm]').forEach(btn=>{ btn.addEventListener('click', ()=>{ picked.delete(+btn.dataset.rm); renderAreas(); updateSelCount(); renderDrawer(); updateBudget(); }); });
   body.querySelectorAll('[data-grrm]').forEach(btn=>{ btn.addEventListener('click', ()=>{ grPicked.delete(+btn.dataset.grrm); renderGardenRoute(); renderDrawer(); updateBudget(); }); });
 }
+/* ---------- CURRENCY ---------- */
+// Every price in this page's data is already stored as a SAR number (fixed-rate converted at
+// authoring time — see the travel-notice caption: 1 ZAR ~= 0.21 SAR, and SAR is itself pegged
+// at exactly 3.75 to the US dollar). To offer a *live* conversion without rewriting every price
+// in the dataset back to ZAR, we recover each stored SAR figure's implied ZAR amount using that
+// same fixed authoring rate, then apply today's live rate on top of that recovered ZAR amount.
+const FX_AUTHOR_RATE = 0.21;   // ZAR -> SAR, as used when the prices in this page were written
+const FX_SAR_PER_USD = 3.75;   // real, fixed peg — not an estimate
+let FX_LIVE = null;            // {SAR, USD} = how many of each 1 ZAR buys, once fetched
+let CURRENCY = 'SAR', TRAVELERS = 2, SPLIT_PER_PERSON = false;
+try{ CURRENCY = localStorage.getItem('ctgr_currency') || 'SAR'; }catch(e){}
+try{ TRAVELERS = Math.max(1, Math.min(12, parseInt(localStorage.getItem('ctgr_travelers'), 10) || 2)); }catch(e){}
+try{ SPLIT_PER_PERSON = localStorage.getItem('ctgr_split') === '1'; }catch(e){}
+function fxRate(cur){
+  if(cur === 'ZAR') return 1;
+  if(cur === 'SAR') return (FX_LIVE && FX_LIVE.SAR) || FX_AUTHOR_RATE;
+  return (FX_LIVE && FX_LIVE.USD) || (FX_AUTHOR_RATE / FX_SAR_PER_USD);   // USD
+}
+function money(sar){
+  if(sar == null) return '';
+  const zar = sar / FX_AUTHOR_RATE;
+  const val = Math.round(zar * fxRate(CURRENCY));
+  const locale = LANG === 'ar' ? 'ar' : 'en-US';
+  const n = val.toLocaleString(locale);
+  return CURRENCY === 'USD' ? '$' + n : (CURRENCY === 'ZAR' ? 'R ' + n : 'SAR ' + n);
+}
+async function fxLoad(){
+  try{
+    FX_LIVE = await wxCached('fx|zar', 6 * 3600e3, async()=>{
+      const r = await fetch('https://open.er-api.com/v6/latest/ZAR');
+      if(!r.ok) throw new Error('fx http ' + r.status);
+      const d = await r.json();
+      if(d.result !== 'success' || !d.rates || !d.rates.SAR) throw new Error('fx bad payload');
+      return {SAR: d.rates.SAR, USD: d.rates.USD};
+    });
+  }catch(e){ /* keep the fixed fallback rate — same one the prices were authored at */ }
+  updateBudget(); renderDrawer(); renderAreas(); renderGardenRoute(); renderPlanItinerary();
+}
+function setCurrency(cur){
+  CURRENCY = cur;
+  try{ localStorage.setItem('ctgr_currency', cur); }catch(e){}
+  updateBudget(); renderDrawer(); renderAreas(); renderGardenRoute(); renderPlanItinerary();
+}
+function setTravelers(n){
+  TRAVELERS = Math.max(1, Math.min(12, n));
+  try{ localStorage.setItem('ctgr_travelers', String(TRAVELERS)); }catch(e){}
+  updateBudget(); renderDrawer();
+}
+function setSplitPerPerson(on){
+  SPLIT_PER_PERSON = on;
+  try{ localStorage.setItem('ctgr_split', on ? '1' : '0'); }catch(e){}
+  updateBudget(); renderDrawer();
+}
+function budgetDisplay(total){
+  const t = SPLIT_PER_PERSON ? total / TRAVELERS : total;
+  const suffix = SPLIT_PER_PERSON ? (LANG === 'ar' ? ' / للشخص' : ' / person') : '';
+  return money(t) + suffix;
+}
+(function initBudgetSettings(){
+  const sel = document.getElementById('currencySel'), split = document.getElementById('splitToggle'),
+    travWrap = document.getElementById('dsTravelers'), travCount = document.getElementById('travelersCount'),
+    minus = document.getElementById('travelersMinus'), plus = document.getElementById('travelersPlus');
+  if(!sel) return;
+  sel.value = CURRENCY;
+  split.checked = SPLIT_PER_PERSON;
+  travWrap.hidden = !SPLIT_PER_PERSON;
+  travCount.textContent = TRAVELERS;
+  sel.addEventListener('change', ()=> setCurrency(sel.value));
+  split.addEventListener('change', ()=>{ setSplitPerPerson(split.checked); travWrap.hidden = !split.checked; });
+  minus.addEventListener('click', ()=>{ setTravelers(TRAVELERS - 1); travCount.textContent = TRAVELERS; });
+  plus.addEventListener('click', ()=>{ setTravelers(TRAVELERS + 1); travCount.textContent = TRAVELERS; });
+})();
+
 function computeBudget(){
   let total=0, count=0;
   picked.forEach(idx=>{ const p=PLACES[idx]; if(p){ total+=(p.price||0); count++; } });
@@ -3879,11 +4257,37 @@ function updateBudget(){
   const {total, count} = computeBudget();
   if(count===0){ bar.style.display='none'; return; }
   bar.style.display='flex';
-  bar.innerHTML = `<span>♥ ${count} ${LANG==='ar'?'مختارة':'selected'}</span><span class="budget-total">≈ SAR ${total.toLocaleString()}</span><span class="budget-note">${tr('budgetApprox')}</span>`;
+  bar.innerHTML = `<span>♥ ${count} ${LANG==='ar'?'مختارة':'selected'}</span><span class="budget-total">≈ ${budgetDisplay(total)}</span><span class="budget-note">${tr('budgetApprox')}</span>`;
   bar.onclick = ()=>{ document.getElementById('drawer').classList.add('open'); document.getElementById('backdrop').classList.add('open'); };
 }
 document.getElementById('btnEn').addEventListener('click', ()=>setLang('en'));
 document.getElementById('btnAr').addEventListener('click', ()=>setLang('ar'));
+
+/* ---------- THEME (dark mode) ---------- */
+const ICON_SUN = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+const ICON_MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
+let THEME = 'light';
+function applyTheme(theme){
+  document.getElementById('htmlRoot').setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
+  if(theme !== 'dark') document.getElementById('htmlRoot').removeAttribute('data-theme');
+  const icon = document.getElementById('themeIcon');
+  if(icon) icon.innerHTML = theme === 'dark' ? ICON_MOON : ICON_SUN;
+  const btn = document.getElementById('btnTheme');
+  if(btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+}
+function setTheme(theme, persist){
+  THEME = theme === 'dark' ? 'dark' : 'light';
+  if(persist){ try{ localStorage.setItem('ctgr_theme', THEME); }catch(e){} }
+  applyTheme(THEME);
+}
+(function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('ctgr_theme'); }catch(e){}
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setTheme(saved || (prefersDark ? 'dark' : 'light'), false);
+})();
+const btnTheme = document.getElementById('btnTheme');
+if(btnTheme) btnTheme.addEventListener('click', ()=> setTheme(THEME === 'dark' ? 'light' : 'dark', true));
 
 const TAB_IDS = ['plan','capetown','gardenroute','safari'];
 const tabFromHash = ()=>{ const m = location.hash.match(/^#\/?([a-z]+)$/); return (m && TAB_IDS.includes(m[1])) ? m[1] : null; };
@@ -3895,6 +4299,7 @@ function activateTab(tab, opts){
   updateHeroTitle();
   if(tab === 'capetown' && typeof map !== 'undefined') setTimeout(()=>{ map.invalidateSize(); }, 50);
   if(!(opts && opts.noHash)){ try{ history.replaceState(history.state, '', '#/' + tab); }catch(e){} }
+  if(window.scrollFabsUpdate) setTimeout(window.scrollFabsUpdate, 60);
 }
 document.querySelectorAll('.maintab').forEach(btn=>{ btn.addEventListener('click', ()=>activateTab(btn.dataset.tab)); });
 window.addEventListener('hashchange', ()=>{ const tb = tabFromHash(); if(tb && tb !== activeTab) activateTab(tb, {noHash:true}); });
@@ -3913,6 +4318,11 @@ loadPhotos();
 loadWeather();
 renderGardenRoute();
 renderSafari();
+fxLoad();
+loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
+setInterval(updateCountdown, 60 * 60 * 1000);
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); });
+window.addEventListener('online', ()=>{ if(notesDirty.size) scheduleNotesSync(300); });
 
 /* ---------- GLOBAL SEARCH ---------- */
 function buildSearchIndex(){
@@ -3977,6 +4387,27 @@ if(searchInputEl){
     if(!e.target.closest('.search-wrap')){ document.getElementById('searchResults').style.display='none'; }
   });
 }
+
+/* ---------- SCROLL TO TOP / BOTTOM ---------- */
+(function(){
+  const fabTop = document.getElementById('fabTop'), fabBottom = document.getElementById('fabBottom');
+  if(!fabTop || !fabBottom) return;
+  let ticking = false;
+  function update(){
+    ticking = false;
+    const y = window.scrollY || document.documentElement.scrollTop;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    fabTop.classList.toggle('show', y > 500);
+    fabBottom.classList.toggle('show', maxScroll > 500 && y < maxScroll - 400);
+  }
+  function requestUpdate(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', requestUpdate, {passive:true});
+  window.addEventListener('resize', requestUpdate);
+  fabTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+  fabBottom.addEventListener('click', ()=> window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
+  window.scrollFabsUpdate = requestUpdate;
+  update();
+})();
 </script>
 </body>
 </html>

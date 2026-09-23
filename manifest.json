@@ -1,0 +1,19 @@
+{
+  "name": "Cape Town & Garden Route Trip Planner",
+  "short_name": "CT Trip",
+  "description": "Itinerary, places, budget, weather and photos for the Cape Town & Garden Route trip — works offline.",
+  "start_url": "./index.html",
+  "id": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#faf6ee",
+  "theme_color": "#123840",
+  "lang": "en",
+  "dir": "auto",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
