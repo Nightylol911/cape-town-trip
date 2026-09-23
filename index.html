@@ -71,7 +71,7 @@ if('serviceWorker' in navigator){
   --shadow:0 8px 24px rgba(18,56,64,.10);
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;background:var(--paper);}   /* keeps body's own background from being "promoted" to paint the page canvas outside body's own (filterable) box — see the dark-mode rules below */
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;line-height:1.55;}
 body.ar{font-family:'Tajawal',sans-serif;}
 h1,h2,h3,.display{font-family:'Fraunces',serif;}
@@ -148,7 +148,8 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .day-num{font-family:'JetBrains Mono',monospace;background:var(--ink);color:var(--paper);padding:4px 11px;border-radius:99px;font-size:13px;font-weight:700;}
 .day-head h3{margin:0;font-size:19px;font-weight:700;}
 .day-tip{font-size:13px;color:#6b6157;margin:2px 0 16px;font-style:italic;}
-.day-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ocean);margin-inline-start:auto;}
+.day-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ocean);}
+.day-head-right{margin-inline-start:auto;display:flex;align-items:center;gap:8px;}
 .hotel-box{display:flex;align-items:center;gap:12px;background:#f1e6fa;border:1px solid #d9c2ee;border-radius:12px;padding:12px 14px;margin-bottom:14px;flex-wrap:wrap;}
 .hotel-ic{font-size:20px;}
 .hotel-box b{font-size:14px;}
@@ -163,6 +164,13 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .itin-chip .ic-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .itin-chip .ic-book{color:var(--coral);font-size:10px;}
 .itin-chip .ic-star{color:#a3791f;font-size:11px;}
+.itin-chip-wrap{display:inline-flex;align-items:center;}
+.itin-chip-rm{border:none;background:var(--paper-2);color:#8a7f70;width:16px;height:16px;border-radius:50%;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-inline-start:-8px;z-index:1;}
+.itin-chip-rm:hover{background:#b3473b;color:#fff;}
+.itin-add-btn{border:1px dashed var(--line);background:none;color:#8a7f70;padding:6px 10px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;}
+.itin-add-btn:hover{border-color:var(--ocean);color:var(--ocean-deep);background:var(--paper-2);}
+.itin-reset-btn{border:none;background:none;color:#8a7f70;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:6px;line-height:1;}
+.itin-reset-btn:hover{background:var(--paper-2);color:var(--ocean-deep);}
 .area-head{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:18px;}
 .area-head .swatch{width:13px;height:13px;border-radius:4px;}
 .area-head h3{font-size:21px;margin:0;font-weight:600;}
@@ -232,6 +240,12 @@ body.lb-open{overflow:hidden;}
 .pp-back{position:fixed;inset:0;z-index:1100;background:rgba(18,40,44,.5);display:flex;align-items:center;justify-content:center;padding:18px;}
 .pp-back[hidden]{display:none;}
 .pp{background:var(--paper);border-radius:16px;padding:22px 24px;max-width:480px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.pp.pp-wide{max-width:640px;}
+.picker-results{max-height:min(50vh,420px);overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.picker-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;text-align:start;font:600 13.5px 'Inter',sans-serif;color:var(--ink);width:100%;}
+.picker-row:hover{background:var(--paper-2);border-color:var(--ocean);}
+.picker-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+body.ar .picker-row{font-family:'Tajawal',sans-serif;}
 .pp h3{margin:0 0 8px;font-size:20px;}
 .pp p{margin:0 0 12px;font-size:14px;color:#4d453c;}
 .pp .pp-count{font-weight:700;color:var(--ocean-deep);}
@@ -279,6 +293,16 @@ body.ar .pp-sync label input,body.ar .pp-sync label select,body.ar .pp-sync labe
 .rating-pill{font-size:11.5px;font-weight:700;color:#a3791f;background:#fdf3de;padding:3px 8px;border-radius:6px;white-space:nowrap;}
 .rating-pill i{font-style:normal;color:#8a7f70;font-weight:600;}
 .mynote{font-size:12.5px;color:#7a5a1e;background:#fff3d9;border:1px dashed #e0be6f;border-radius:8px;padding:6px 10px;}
+.unote{margin:2px 0;}
+.unote-toggle{font-size:12px;font-weight:600;color:#8a7f70;background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+.unote-toggle:hover{color:var(--ocean-deep);}
+.unote-preview{font-size:12.5px;color:var(--ink);background:var(--paper-2);border-radius:8px;padding:6px 10px;cursor:text;word-break:break-word;}
+.unote-preview:hover{background:#e9e0cb;}
+.unote-box{width:100%;box-sizing:border-box;font:13px 'Inter',sans-serif;color:var(--ink);background:var(--white);border:1.5px solid var(--line);border-radius:8px;padding:7px 10px;resize:vertical;}
+.unote-box:focus{outline:none;border-color:var(--ocean);}
+body.ar .unote-box{font-family:'Tajawal',sans-serif;}
+.unote-hint{margin:4px 0 0;font-size:11.5px;color:#8a7f70;}
+.unote-hint-local{color:#a3791f;}
 .about{font-size:13px;color:#4d453c;margin:0;line-height:1.55;}
 .wear{font-size:12.5px;color:#5c6f52;background:#eef3e9;border-radius:8px;padding:6px 10px;display:flex;gap:6px;align-items:flex-start;}
 .meta-row{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#6b6157;padding:8px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);}
@@ -308,6 +332,15 @@ body.ar .pp-sync label input,body.ar .pp-sync label select,body.ar .pp-sync labe
 .drawer-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
 .drawer-head h3{margin:0;font-size:20px;}
 .drawer-close{border:none;background:none;font-size:22px;cursor:pointer;color:var(--ink);}
+.drawer-settings{padding:12px 22px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:12.5px;background:var(--paper-2);}
+.ds-field{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);cursor:pointer;}
+.ds-field select{font:600 12.5px 'Inter',sans-serif;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;}
+body.ar .ds-field select{font-family:'Tajawal',sans-serif;}
+.ds-split input{accent-color:var(--ocean-deep);width:15px;height:15px;cursor:pointer;}
+.ds-travelers{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);}
+.ds-travelers button{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;}
+.ds-travelers button:hover{background:var(--paper-2);border-color:var(--ocean-deep);}
+.ds-travelers-label{font-weight:500;color:#6b6157;}
 .drawer-body{padding:16px 22px;overflow-y:auto;flex:1;}
 .drawer-empty{color:#8a7f70;font-size:14px;padding:30px 0;text-align:center;}
 .d-item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--paper-2);font-size:14px;}
@@ -331,6 +364,21 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .tn-link{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #c8d8e2;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;}
 .tn-link:hover{background:#dceaf1;}
 .tn-cap{font-size:11.5px;color:#5c6b73;margin:4px 0 0;}
+
+/* CURRENCY CONVERTER */
+.fx-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
+.fx-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+.fx-head h2{margin:0;font-size:20px;}
+.fx-tag{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper-2);color:#6b6157;padding:3px 10px;border-radius:99px;}
+.fx-cap{font-size:13px;color:#6b6157;margin:0 0 16px;}
+.fx-rows{display:flex;flex-direction:column;gap:10px;}
+.fx-row{display:flex;align-items:center;gap:12px;background:var(--paper-2);border-radius:12px;padding:10px 14px;}
+.fx-input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:600 16px 'JetBrains Mono',monospace;background:var(--white);color:var(--ink);}
+.fx-input:focus{outline:none;border-color:var(--ocean);}
+.fx-cur{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:var(--ocean-deep);width:38px;flex-shrink:0;}
+.fx-label{font-size:12.5px;color:#6b6157;flex:0 0 auto;display:none;}
+@media(min-width:560px){.fx-label{display:block;}}
+.fx-note{font-size:12px;color:#8a7f70;margin:12px 0 0;}
 
 /* MAIN TABS */
 .maintabs{max-width:1120px;margin:18px auto 0;padding:0 24px;display:flex;gap:8px;}
@@ -426,6 +474,9 @@ body.ar .search-input{font-family:'Tajawal',sans-serif;}
 body.ar .pdf-btn{font-family:'Tajawal',sans-serif;}
 .pdf-btn:hover{background:var(--ocean-deep);}
 .pdf-btn::before{content:"⬇";font-size:13px;}
+.pdf-btn.no-ico::before{content:none;}
+.pdf-btn.no-ico{background:var(--white);color:var(--ink);border:1px solid var(--line);margin-inline-start:8px;}
+.pdf-btn.no-ico:hover{background:var(--paper-2);}
 #printDoc{display:none;}
 @media print{
   @page{size:A4;margin:12mm 12mm 14mm;}
@@ -702,9 +753,23 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     <a href="https://tools.sars.gov.za/sarsonlinequery/traveller" target="_blank" class="tn-link">📋 <span data-t="tnCustoms"></span></a>
     <a href="https://x.com/KSAembassyza/status/2074419704664395899?s=20" target="_blank" class="tn-link">🕌 <span data-t="tnEmbassy"></span></a>
     <a href="tel:8008500286" class="tn-link">✈️ <span data-t="tnFlightTitle"></span>: <b data-t="tnFlightPhone"></b></a>
+    <a href="tel:8008440886" class="tn-link">✈️ <span data-t="tnQatarTitle"></span>: <b data-t="tnQatarPhone"></b></a>
+    <a href="https://www.qatarairways.com/en/help/feedback.html" target="_blank" class="tn-link">✉️ <span data-t="tnQatarContactForm"></span></a>
   </div>
   <p class="tn-cap" data-t="tnCaption"></p>
   <p class="tn-cap" data-t="tnFlightNote"></p>
+  <p class="tn-cap" data-t="tnQatarNote"></p>
+</div>
+
+<div class="fx-card">
+  <div class="fx-head"><h2 data-t="fxTitle"></h2><span class="fx-tag" id="fxUpdated"></span></div>
+  <p class="fx-cap" data-t="fxCaption"></p>
+  <div class="fx-rows">
+    <div class="fx-row"><input type="number" id="fxZAR" class="fx-input" dir="ltr" step="any" inputmode="decimal"><span class="fx-cur">ZAR</span><span class="fx-label">South African Rand</span></div>
+    <div class="fx-row"><input type="number" id="fxSAR" class="fx-input" dir="ltr" step="any" inputmode="decimal"><span class="fx-cur">SAR</span><span class="fx-label">Saudi Riyal</span></div>
+    <div class="fx-row"><input type="number" id="fxUSD" class="fx-input" dir="ltr" step="any" inputmode="decimal"><span class="fx-cur">USD</span><span class="fx-label">US Dollar</span></div>
+  </div>
+  <p class="fx-note" id="fxNote"></p>
 </div>
 
 <div class="wrap">
@@ -823,6 +888,16 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
       <button type="button" class="pp-primary" id="apSave" data-t="apSave"></button>
     </form>
     <div class="pp-actions" style="margin-top:14px"><button type="button" id="apClose" data-t="ppClose"></button></div>
+  </div>
+</div>
+
+<div class="pp-back" id="pickerBack" hidden>
+  <div class="pp pp-wide" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+    <h3 id="pickerTitle" data-t="pickerTitle"></h3>
+    <input type="search" id="pickerSearch" class="search-input" autocomplete="off">
+    <div class="filters" id="pickerFilters" style="margin-top:10px;"></div>
+    <div class="picker-results" id="pickerResults"></div>
+    <div class="pp-actions" style="margin-top:14px"><button type="button" id="pickerClose" data-t="ppClose"></button></div>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -957,6 +1032,8 @@ en:{
   ttCarRentalTitle:"Car rental companies in Cape Town (compare)",
   searchPlaceholder:"🔍 Search everything — activities, restaurants, coffee, safari lodges…",
   tnFlightTitle:"Ethiopian Airlines contact", tnFlightPhone:"800 8500286 (Saudi Arabia toll-free)", tnFlightNote:"Keep this handy for booking changes, baggage questions, or flight delays — Ethiopian Airlines operates the Cape Town route via Addis Ababa. Also save your booking reference (PNR) and check in online 24 hours before each flight.",
+  tnQatarTitle:"Qatar Airways contact", tnQatarPhone:"8008 4408 86 (STC) / 8008 5001 17 (other providers)", tnQatarContactForm:"Qatar Airways contact form (no direct email published)",
+  tnQatarNote:"Qatar Airways' Saudi Arabia contact centre runs 24/7 on the toll-free numbers above (STC and other providers) — double-check them closer to your trip, as airline contact numbers do change. They don't publish a direct customer-service email; the contact form above is the official channel instead.",
   freeLabel:"Free", weakSignal:"Weak signal", weakSignalTip:"Patchy or no cell coverage here — download offline maps before you go.",
   budgetTotal:"Estimated total so far:", budgetApprox:"(rough estimate, per person)",
   ttOfflineTitle:"Offline maps — do this before you leave Cape Town", ttOfflineBody:"Cell coverage gets patchy or drops out completely in several spots on this trip — Cape Point, Chapman's Peak, Tsitsikamma National Park, Cango Caves, forest activities around Wilderness/Knysna, and most safari reserves. Before you leave Cape Town (while you still have strong signal and Wi-Fi), download offline areas in Google Maps for the whole Garden Route corridor — open Google Maps → your profile icon → Offline maps → Select your own map, and drag the box to cover Cape Town to Tsitsikamma. Cards with a 📶 badge below are the spots most likely to have poor coverage.",
@@ -990,7 +1067,12 @@ en:{
   statCountdownDefault:"days to go", statCountdownToday:"Trip day", statCountdownDone:"Trip complete!",
   icsBtn:"📅 Add trip to calendar", icsDayBtn:"Add day to calendar", icsAdded:"Calendar file downloaded — open it to add these to your calendar app.",
   dsCurrency:"Currency", dsSplit:"Split per person", dsTravelers:"travelers",
-  noteAdd:"Add a note", notePlaceholder:"Type a note…",
+  noteAdd:"Add a note", notePlaceholder:"Type a note…", noteSynced:"Synced to GitHub — visible on any device you connect.",
+  itinAddBtn:"Add", itinRemove:"Remove from this day", itinAlready:"Already in this day's plan.", itinAdded:"Added to your itinerary.",
+  itinResetDay:"Reset this day to the original plan", itinReset:"Day reset to the original plan.",
+  pickerTitle:"Add to this day", pickerSearchPh:"🔍 Search restaurants, activities, shopping…",
+  fxTitle:"Currency converter", fxCaption:"Type an amount in any currency — the other two update automatically, using the same live rate as the budget tracker.",
+  fxLive:"Live rate", fxApprox:"Approximate rate", fxFallback:"Approximate rate — no live connection right now, so this uses a fixed estimate: 1 ZAR ≈ 0.21 SAR, and SAR is pegged at 3.75 per USD.",
   apOpenBtn:"➕ Add a place", apTitle:"Add a new place", apBody:"Paste a Google Maps link or coordinates and this figures out which neighbourhood (or Garden Route town) it belongs in on its own. Saved to GitHub, so it shows up for both of you, on every device.",
   apName:"Name", apNameAr:"Name (Arabic) — optional", apCategory:"Category", apLocation:"Google Maps link or coordinates",
   apDetectedEmpty:"Paste a location above to detect the section.", apDetectedFound:"📍 {area} — {dist} km away",
@@ -1037,6 +1119,8 @@ ar:{
   ttCarRentalTitle:"شركات تأجير السيارات في كيب تاون (مقارنة)",
   searchPlaceholder:"🔍 ابحثا عن أي شيء — أنشطة، مطاعم، قهوة، نُزل سفاري…",
   tnFlightTitle:"التواصل مع الخطوط الإثيوبية", tnFlightPhone:"٨٠٠ ٨٥٠٠٢٨٦ (مجاني داخل السعودية)", tnFlightNote:"احتفظا بهذا الرقم لتعديل الحجز أو استفسارات الأمتعة أو تأخير الرحلات — الخطوط الإثيوبية تشغّل رحلة كيب تاون عبر أديس أبابا. احتفظا أيضًا برقم الحجز (PNR) وسجّلا الدخول إلكترونيًا قبل كل رحلة بـ٢٤ ساعة.",
+  tnQatarTitle:"التواصل مع القطرية", tnQatarPhone:"٨٠٠٨ ٤٤٠٨ ٨٦ (STC) / ٨٠٠٨ ٥٠٠١ ١٧ (مزوّدون آخرون)", tnQatarContactForm:"نموذج تواصل القطرية (لا يوجد بريد إلكتروني مباشر منشور)",
+  tnQatarNote:"مركز اتصال القطرية بالسعودية يعمل ٢٤/٧ على الأرقام المجانية أعلاه (STC ومزوّدون آخرون) — تأكدا منها قرب موعد رحلتكما لأن أرقام التواصل قد تتغير. لا تنشر الشركة بريدًا إلكترونيًا مباشرًا لخدمة العملاء؛ نموذج التواصل أعلاه هو القناة الرسمية بدلاً منه.",
   freeLabel:"مجاني", weakSignal:"إشارة ضعيفة", weakSignalTip:"تغطية جوال ضعيفة أو منعدمة هنا — حمّلا خرائط بدون إنترنت قبل الذهاب.",
   budgetTotal:"الإجمالي التقريبي حتى الآن:", budgetApprox:"(تقدير تقريبي، للشخص الواحد)",
   ttOfflineTitle:"خرائط بدون إنترنت — افعلا هذا قبل مغادرة كيب تاون", ttOfflineBody:"تغطية الجوال تضعف أو تنقطع تمامًا في عدة أماكن في هذه الرحلة — كيب بوينت، رأس تشابمان، محمية تسيتسيكاما الوطنية، كهوف كانجو، أنشطة الغابات حول ويلدرنس/كنيسنا، ومعظم محميات السفاري. قبل مغادرة كيب تاون (وأنتما لا تزالان بإشارة قوية وواي فاي)، حمّلا مناطق بدون إنترنت في خرائط جوجل لكامل ممر طريق الحدائق — افتحا خرائط جوجل ← أيقونة الملف الشخصي ← الخرائط بدون إنترنت ← تحديد خريطتك الخاصة، واسحبا المربع ليغطي من كيب تاون إلى تسيتسيكاما. البطاقات التي عليها شارة 📶 أدناه هي الأماكن الأكثر عرضة لضعف التغطية.",
@@ -1070,7 +1154,12 @@ ar:{
   statCountdownDefault:"يومًا متبقيًا", statCountdownToday:"يوم الرحلة", statCountdownDone:"انتهت الرحلة!",
   icsBtn:"📅 أضيفا الرحلة إلى التقويم", icsDayBtn:"أضف اليوم إلى التقويم", icsAdded:"تم تنزيل ملف التقويم — افتحاه لإضافة الرحلة إلى تطبيق التقويم لديكما.",
   dsCurrency:"العملة", dsSplit:"تقسيم للشخص", dsTravelers:"مسافرين",
-  noteAdd:"أضف ملاحظة", notePlaceholder:"اكتب ملاحظة…",
+  noteAdd:"أضف ملاحظة", notePlaceholder:"اكتب ملاحظة…", noteSynced:"مُزامَنة مع GitHub — تظهر على أي جهاز تربطانه.",
+  itinAddBtn:"إضافة", itinRemove:"إزالة من هذا اليوم", itinAlready:"موجودة أصلًا في خطة هذا اليوم.", itinAdded:"أُضيفت إلى خطة رحلتكما.",
+  itinResetDay:"إعادة هذا اليوم للخطة الأصلية", itinReset:"أُعيد اليوم إلى الخطة الأصلية.",
+  pickerTitle:"إضافة إلى هذا اليوم", pickerSearchPh:"🔍 ابحثا عن مطاعم، أنشطة، تسوّق…",
+  fxTitle:"محوّل العملات", fxCaption:"اكتبا مبلغًا بأي عملة — والعملتان الأخريان تتحدّثان تلقائيًا، بنفس السعر الحي المستخدم في متتبع الميزانية.",
+  fxLive:"سعر حي", fxApprox:"سعر تقريبي", fxFallback:"سعر تقريبي — لا يوجد اتصال حي حاليًا، فيُستخدم تقدير ثابت: ١ راند جنوب أفريقي ≈ ٠.٢١ ريال سعودي، والريال السعودي مربوط بـ٣.٧٥ لكل دولار.",
   apOpenBtn:"➕ أضف مكانًا", apTitle:"إضافة مكان جديد", apBody:"الصقا رابط خرائط جوجل أو الإحداثيات وسيُحدَّد الحي (أو بلدة طريق الحدائق) تلقائيًا. يُحفظ في GitHub فيظهر لكما على أي جهاز.",
   apName:"الاسم", apNameAr:"الاسم بالعربي — اختياري", apCategory:"التصنيف", apLocation:"رابط خرائط جوجل أو الإحداثيات",
   apDetectedEmpty:"الصقا موقعًا أعلاه لتحديد القسم.", apDetectedFound:"📍 {area} — على بعد {dist} كم",
@@ -2050,6 +2139,7 @@ function unoteBlock(key){
     ${val ? `<div class="unote-preview" data-noteedit="${escHtml(key)}">🖊️ ${escHtml(preview)}</div>`
           : `<button type="button" class="unote-toggle" data-noteedit="${escHtml(key)}">🖊️ ${tr('noteAdd')}</button>`}
     <textarea class="unote-box" rows="2" data-notesave="${escHtml(key)}" placeholder="${tr('notePlaceholder')}" hidden>${escHtml(val)}</textarea>
+    <p class="unote-hint" hidden></p>
   </div>`;
 }
 function wireNoteEvents(container){
@@ -2057,10 +2147,16 @@ function wireNoteEvents(container){
     el.addEventListener('click', ()=>{
       const wrap = el.closest('[data-notewrap]');
       const box = wrap.querySelector('[data-notesave]');
+      const hint = wrap.querySelector('.unote-hint');
       el.style.display = 'none';
       box.hidden = false;
       box.focus();
       const v = box.value; box.value = ''; box.value = v; // put the caret at the end
+      if(hint){
+        hint.hidden = false;
+        hint.textContent = canEdit() ? '☁ ' + tr('noteSynced') : '📱 ' + tr('ghHint');
+        hint.classList.toggle('unote-hint-local', !canEdit());
+      }
     });
   });
   container.querySelectorAll('[data-notesave]').forEach(box=>{
@@ -2894,6 +2990,7 @@ function setLang(lang){
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
   renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather();
   updateCountdown();
+  fxWidgetRefresh();
 }
 function updateHeroTitle(){
   const el = document.querySelector('[data-html="heroTitle"]');
@@ -3610,6 +3707,114 @@ const ITINERARY14 = [
  ]},
 ];
 
+/* ---------- CUSTOMIZE THE DAY-BY-DAY PLAN (per device — not synced) ----------
+   The curated ITINERARY14 array is never mutated. Instead each day+slot can carry an override
+   — items removed from the curated list, and items the user added — kept in localStorage and
+   merged in at render time. Whatever's on screen is also what the PDF/ICS export uses, since
+   both read through effectiveSlotItems(). */
+let ITIN_OVERRIDES = {};
+try{ ITIN_OVERRIDES = JSON.parse(localStorage.getItem('ctgr_itin_overrides') || '{}') || {}; }catch(e){}
+const saveItinOverrides = ()=>{ try{ localStorage.setItem('ctgr_itin_overrides', JSON.stringify(ITIN_OVERRIDES)); }catch(e){} };
+const slotKey = (day, slot)=> day + ':' + slot;
+function slotOverride(day, slot){ return ITIN_OVERRIDES[slotKey(day, slot)] || {removed:[], added:[]}; }
+function effectiveSlotItems(day, slot, baseItems){
+  const o = slotOverride(day, slot);
+  return baseItems.filter(n=> typeof n !== 'string' || !o.removed.includes(n)).concat(o.added);
+}
+function dayHasOverrides(day, blocksLen){
+  for(let j = 0; j < blocksLen; j++){ const o = ITIN_OVERRIDES[slotKey(day, j)]; if(o && (o.removed.length || o.added.length)) return true; }
+  return false;
+}
+function resetItinDay(day, blocksLen){
+  for(let j = 0; j < blocksLen; j++) delete ITIN_OVERRIDES[slotKey(day, j)];
+  saveItinOverrides();
+  renderPlanItinerary();
+  toast(tr('itinReset'));
+}
+function removeFromSlot(day, slot, name){
+  const key = slotKey(day, slot);
+  const o = ITIN_OVERRIDES[key] || {removed:[], added:[]};
+  if(o.added.includes(name)) o.added = o.added.filter(n=>n!==name);
+  else if(!o.removed.includes(name)) o.removed.push(name);
+  ITIN_OVERRIDES[key] = o;
+  saveItinOverrides();
+  renderPlanItinerary();
+}
+function addToSlot(day, slot, name){
+  const base = ITINERARY14[day].blocks[slot].items;
+  if(effectiveSlotItems(day, slot, base).includes(name)){ toast(tr('itinAlready')); return; }
+  const key = slotKey(day, slot);
+  const o = ITIN_OVERRIDES[key] || {removed:[], added:[]};
+  if(o.removed.includes(name)) o.removed = o.removed.filter(n=>n!==name);
+  else o.added.push(name);
+  ITIN_OVERRIDES[key] = o;
+  saveItinOverrides();
+  renderPlanItinerary();
+  closePicker();
+  toast(tr('itinAdded'));
+}
+
+/* the "+ Add" picker: a search + category list over everything in PLACES / GARDEN_ROUTE / SAFARI */
+let pickerTarget = null, pickerCat = 'all';
+function buildPickerIndex(){
+  const idx = [];
+  PLACES.forEach(p=> idx.push({n:p.n, n_ar:p.n_ar, c:p.c, rating:p.rating}));
+  GARDEN_ROUTE.forEach(t=> t.items.forEach(item=> idx.push({n:item.n, n_ar:item.n_ar, c:item.c, rating:item.rating})));
+  SAFARI.forEach(s=> idx.push({n:s.n, n_ar:s.n_ar, c:'activity', rating:s.rating}));
+  return idx;
+}
+function openPicker(day, slot){
+  pickerTarget = {day, slot};
+  pickerCat = 'all';
+  const search = document.getElementById('pickerSearch');
+  search.value = '';
+  search.placeholder = tr('pickerSearchPh');
+  renderPickerFilters();
+  renderPickerResults();
+  document.getElementById('pickerBack').hidden = false;
+  search.focus();
+}
+function closePicker(){ document.getElementById('pickerBack').hidden = true; pickerTarget = null; }
+function renderPickerFilters(){
+  const el = document.getElementById('pickerFilters');
+  const cats = ['all', ...Object.keys(CATS[LANG])];
+  el.innerHTML = cats.map(k=>{
+    const label = k === 'all' ? tr('allChip') : CATS[LANG][k].label;
+    const dot = k === 'all' ? '' : `<span class="dot" style="background:${CATS[LANG][k].color}"></span>`;
+    return `<button type="button" class="chip ${pickerCat===k?'active':''}" data-pcat="${k}">${dot}${label}</button>`;
+  }).join('');
+  el.querySelectorAll('[data-pcat]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ pickerCat = btn.dataset.pcat; renderPickerFilters(); renderPickerResults(); });
+  });
+}
+function renderPickerResults(){
+  const q = (document.getElementById('pickerSearch').value || '').trim().toLowerCase();
+  const el = document.getElementById('pickerResults');
+  const list = buildPickerIndex().filter(it=>{
+    if(pickerCat !== 'all' && it.c !== pickerCat) return false;
+    if(!q) return true;
+    const name = ((LANG==='ar' ? it.n_ar : it.n) || it.n || '').toLowerCase();
+    return name.includes(q) || (it.n||'').toLowerCase().includes(q);
+  }).slice(0, 80);
+  if(!list.length){ el.innerHTML = `<div class="sr-empty">${LANG==='ar'?'لا نتائج':'No results'}</div>`; return; }
+  el.innerHTML = list.map(it=>{
+    const name = LANG==='ar' ? (it.n_ar||it.n) : it.n;
+    const color = (CATS[LANG][it.c] || {}).color || '#6f8c5f';
+    return `<button type="button" class="picker-row" data-pick="${escHtml(it.n)}"><span class="ic-dot" style="background:${color}"></span><span class="picker-name">${escHtml(name)}</span>${it.rating?`<span class="ic-star">★${it.rating.toFixed(1)}</span>`:''}</button>`;
+  }).join('');
+  el.querySelectorAll('[data-pick]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ if(pickerTarget) addToSlot(pickerTarget.day, pickerTarget.slot, btn.dataset.pick); });
+  });
+}
+function initItinPicker(){
+  const search = document.getElementById('pickerSearch'), closeBtn = document.getElementById('pickerClose'), back = document.getElementById('pickerBack');
+  if(!search) return;
+  search.addEventListener('input', renderPickerResults);
+  closeBtn.addEventListener('click', closePicker);
+  back.addEventListener('click', (e)=>{ if(e.target === back) closePicker(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && !back.hidden) closePicker(); });
+}
+
 function unifiedChip(ref){
   if(!ref) return '';
   if(typeof ref === 'object'){
@@ -3647,22 +3852,34 @@ function renderPlanItinerary(){
     const title = LANG==='ar' ? day.title_ar : day.title;
     const tip = LANG==='ar' ? day.tip_ar : day.tip;
     const dayLabel = LANG==='ar' ? `اليوم ${i+1}` : `Day ${i+1}`;
-    html += `<div class="day-card"><div class="day-head"><span class="day-num">${dayLabel}</span><h3>${title}</h3><div class="day-head-right">${day.date?`<span class="day-date">${day.date}</span>`:''}<button type="button" class="day-cal-btn" data-icsday="${i}" aria-label="${tr('icsDayBtn')}" title="${tr('icsDayBtn')}">📅</button></div></div><p class="day-tip">${tip}</p>`;
+    const resetBtn = dayHasOverrides(i, day.blocks.length) ? `<button type="button" class="itin-reset-btn" data-resetday="${i}" aria-label="${tr('itinResetDay')}" title="${tr('itinResetDay')}">↺</button>` : '';
+    html += `<div class="day-card"><div class="day-head"><span class="day-num">${dayLabel}</span><h3>${title}</h3><div class="day-head-right">${day.date?`<span class="day-date">${day.date}</span>`:''}${resetBtn}</div></div><p class="day-tip">${tip}</p>`;
     if(day.hotel){
       const h = day.hotel;
       const hname = LANG==='ar' ? (h.n_ar||h.n) : h.n;
       html += `<div class="hotel-box"><span class="hotel-ic">🏨</span><div><b>${hname}</b><div class="hotel-meta">${h.rating?`★ ${h.rating.toFixed(1)} (${h.ratingCount.toLocaleString()}) · `:''}${LANG==='ar'?h.note_ar:h.note}</div></div><a class="mini-link primary" href="${h.g}" target="_blank">📍 ${tr('directions')}</a></div>`;
     }
-    day.blocks.forEach(b=>{
+    day.blocks.forEach((b,j)=>{
       const slot = LANG==='ar' ? b.slot_ar : b.slot;
-      const chips = b.items.map(unifiedChip).join('');
-      html += `<div class="slot"><div class="slot-label">${slot}</div><div class="slot-items">${chips}</div></div>`;
+      const items = effectiveSlotItems(i, j, b.items);
+      const chips = items.map(ref=>{
+        const chip = unifiedChip(ref);
+        if(typeof ref !== 'string') return chip;
+        return `<span class="itin-chip-wrap">${chip}<button type="button" class="itin-chip-rm" data-rmday="${i}" data-rmslot="${j}" data-rmname="${escHtml(ref)}" aria-label="${tr('itinRemove')}" title="${tr('itinRemove')}">×</button></span>`;
+      }).join('');
+      html += `<div class="slot"><div class="slot-label">${slot}</div><div class="slot-items">${chips}<button type="button" class="itin-add-btn" data-addday="${i}" data-addslot="${j}">+ ${tr('itinAddBtn')}</button></div></div>`;
     });
     html += `</div>`;
   });
   el.innerHTML = html;
-  el.querySelectorAll('[data-icsday]').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{ e.stopPropagation(); downloadTripICS(+btn.dataset.icsday); });
+  el.querySelectorAll('[data-rmday]').forEach(btn=>{
+    btn.addEventListener('click', ()=> removeFromSlot(+btn.dataset.rmday, +btn.dataset.rmslot, btn.dataset.rmname));
+  });
+  el.querySelectorAll('[data-addday]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openPicker(+btn.dataset.addday, +btn.dataset.addslot));
+  });
+  el.querySelectorAll('[data-resetday]').forEach(btn=>{
+    btn.addEventListener('click', ()=> resetItinDay(+btn.dataset.resetday, ITINERARY14[+btn.dataset.resetday].blocks.length));
   });
 }
 
@@ -3857,7 +4074,7 @@ function buildPrintModel(){
   const used = new Set(); let stay = null;
   const days = ITINERARY14.map((d, i)=>{
     if(d.hotel) stay = d.hotel;
-    const blocks = d.blocks.map(b=>({label:pt(b,'slot'), items:b.items.map(r=>{ const it = resolveRef(r); if(it) used.add(it.id); return it; }).filter(Boolean)}));
+    const blocks = d.blocks.map((b,j)=>({label:pt(b,'slot'), items:effectiveSlotItems(i, j, b.items).map(r=>{ const it = resolveRef(r); if(it) used.add(it.id); return it; }).filter(Boolean)}));
     return {i, title:pt(d,'title'), tip:pt(d,'tip'), date:d.date||'', hotel:d.hotel ? resolveRef(d.hotel) : null, stay:(i === ITINERARY14.length-1) ? null : (stay ? resolveRef(stay) : null), blocks};
   });
   const groups = {}, already = [];
@@ -4046,9 +4263,9 @@ function icsEventForDay(i){
   const day = ITINERARY14[i];
   const title = (LANG==='ar' ? day.title_ar : day.title) || '';
   const tip = (LANG==='ar' ? day.tip_ar : day.tip) || '';
-  const items = day.blocks.map(b=>{
+  const items = day.blocks.map((b,j)=>{
     const slot = LANG==='ar' ? b.slot_ar : b.slot;
-    const names = b.items.map(ref=>{
+    const names = effectiveSlotItems(i, j, b.items).map(ref=>{
       const it = typeof ref === 'object' ? ref : (typeof ref === 'string' ? {n:ref} : null);
       return it ? (LANG==='ar' ? (it.n_ar||it.n) : it.n) : String(ref);
     }).join(', ');
@@ -4477,6 +4694,49 @@ async function fxLoad(){
     });
   }catch(e){ /* keep the fixed fallback rate — same one the prices were authored at */ }
   updateBudget(); renderDrawer(); renderAreas(); renderGardenRoute(); renderPlanItinerary();
+  fxWidgetRefresh();
+}
+
+/* ---------- CURRENCY CONVERTER WIDGET (Plan tab) ----------
+   A free-standing, bidirectional converter — type an amount in any of the three currencies and
+   the other two recompute live — separate from the CURRENCY setting above (which controls what
+   currency every price *on the site* is displayed in). Reuses the exact same fxRate()/FX_LIVE
+   data, so it's never a second, inconsistent source of truth for the rate. */
+const FX_WIDGET_CURS = ['ZAR','SAR','USD'];
+function fxWidgetInputs(){
+  return Object.fromEntries(FX_WIDGET_CURS.map(c=>[c, document.getElementById('fx'+c)]));
+}
+function fxWidgetRecalc(sourceCur){
+  const inputs = fxWidgetInputs();
+  if(!inputs.ZAR) return;
+  const amount = parseFloat(inputs[sourceCur].value);
+  if(!isFinite(amount)){
+    FX_WIDGET_CURS.forEach(c=>{ if(c !== sourceCur) inputs[c].value = ''; });
+    return;
+  }
+  const zar = sourceCur === 'ZAR' ? amount : amount / fxRate(sourceCur);
+  FX_WIDGET_CURS.forEach(c=>{
+    if(c === sourceCur) return;
+    inputs[c].value = (zar * fxRate(c)).toFixed(2);
+  });
+}
+function fxWidgetRefresh(){
+  const inputs = fxWidgetInputs();
+  if(!inputs.ZAR) return;
+  const tag = document.getElementById('fxUpdated'), note = document.getElementById('fxNote');
+  if(tag) tag.textContent = FX_LIVE ? tr('fxLive') : tr('fxApprox');
+  if(note) note.textContent = FX_LIVE ? '' : tr('fxFallback');
+  // recompute from whichever field currently has focus, else from ZAR
+  const active = document.activeElement && FX_WIDGET_CURS.includes(document.activeElement.id.replace('fx',''))
+    ? document.activeElement.id.replace('fx','') : 'ZAR';
+  fxWidgetRecalc(active);
+}
+function initFxWidget(){
+  const inputs = fxWidgetInputs();
+  if(!inputs.ZAR) return;
+  FX_WIDGET_CURS.forEach(c=> inputs[c].addEventListener('input', ()=> fxWidgetRecalc(c)));
+  inputs.ZAR.value = '1000';
+  fxWidgetRefresh();
 }
 function setCurrency(cur){
   CURRENCY = cur;
@@ -4590,6 +4850,8 @@ renderSafari();
 fxLoad();
 loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
 initAddPlace();
+initItinPicker();
+initFxWidget();
 loadCustomPlaces();
 setInterval(updateCountdown, 60 * 60 * 1000);
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); });
