@@ -569,7 +569,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
 <div class="budget-bar" id="budgetBar" style="display:none;"></div>
 
 <div class="search-wrap">
-  <input type="text" id="searchInput" class="search-input" placeholder="">
+  <input type="text" id="searchInput" class="search-input" placeholder="" name="ctgr-trip-search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="search" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
   <div class="search-results" id="searchResults" style="display:none;"></div>
 </div>
 
@@ -704,6 +704,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     </section>
     <section class="pp-sync" id="ppLocalSec">
       <p class="pp-count" id="ppCount"></p>
+      <p class="pp-status" id="ppUploadStatus"></p>
       <div class="pp-actions">
         <button type="button" class="pp-primary" id="ppUpload"></button>
         <button type="button" id="ppExport" data-t="ppExport"></button>
@@ -793,7 +794,7 @@ en:{
   heroLead:"Every place you two shortlisted — the story behind it, practical info, when to go, what to wear, real menus and booking pages where they exist. Tap ○ to shortlist, tap a photo to view it full size, tap + to add your own.",
   statPlaces:"Places curated", statAreasL:"Neighbourhoods", statBookingL:"Need pre-booking",
   weatherTitle:"Weather & what to pack", weatherDate:"28 Oct – 10 Nov 2026",
-  weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", ppClearPublished:"Delete ALL {n} published photos (for everyone)", ppConfirmClearPublished:"Delete all {n} photos published on the website? This removes them for everyone, right away, in one go. Photos only saved on a device are not affected. This can't be undone.", ghAllCleared:"All published photos deleted. You can start adding photos again now.",  wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
+  weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", ppClearPublished:"Delete ALL {n} published photos (for everyone)", ppConfirmClearPublished:"Delete all {n} photos published on the website? This removes them for everyone, right away, in one go. Photos only saved on a device are not affected. This can't be undone.", ghAllCleared:"All published photos deleted. You can start adding photos again now.", ppRetryNow:"Retry now ({n})", ghQueueBusy:"Uploading now…", ghQueueRetry:"Upload failed — retrying automatically… ({n} waiting)", ghQueueWaiting:"{n} waiting to upload",   wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
   wTypicalHigh:"Typical daytime high", wTypicalLow:"Typical overnight low", wSea:"Sea temperature (cold!)",
   wWind:"Wind (\"Cape Doctor\" SE wind is common)", wRain:"Chance of rain on a given day", wUV:"UV index — sun protection needed",
   wSunrise:"Sunrise (28 Oct → 10 Nov)", wSunset:"Sunset (28 Oct → 10 Nov)",
@@ -862,7 +863,7 @@ ar:{
   heroLead:"كل مكان اخترتماه — قصته، معلومات عملية، أفضل وقت للزيارة، ماذا ترتديان، قوائم طعام حقيقية، وروابط حجز فعلية إن وُجدت. اضغطا على ○ لإضافته لقائمتكما، واضغطا على الصورة لعرضها بالحجم الكامل، وعلى + لإضافة صورتكما.",
   statPlaces:"مكانًا منسقًا", statAreasL:"حيًا", statBookingL:"يحتاج حجزًا مسبقًا",
   weatherTitle:"الطقس وماذا تحضران", weatherDate:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦",
-  weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", ppClearPublished:"حذف كل الصور المنشورة والبالغ عددها {n} (للجميع)", ppConfirmClearPublished:"حذف جميع الصور المنشورة على الموقع وعددها {n}؟ سيُحذفن للجميع فورًا دفعة واحدة. الصور المحفوظة على جهاز فقط لن تتأثر. لا يمكن التراجع عن هذا.", ghAllCleared:"تم حذف كل الصور المنشورة. يمكنكما البدء بإضافة صور من جديد الآن.",  wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
+  weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", ppClearPublished:"حذف كل الصور المنشورة والبالغ عددها {n} (للجميع)", ppConfirmClearPublished:"حذف جميع الصور المنشورة على الموقع وعددها {n}؟ سيُحذفن للجميع فورًا دفعة واحدة. الصور المحفوظة على جهاز فقط لن تتأثر. لا يمكن التراجع عن هذا.", ghAllCleared:"تم حذف كل الصور المنشورة. يمكنكما البدء بإضافة صور من جديد الآن.", ppRetryNow:"إعادة المحاولة الآن ({n})", ghQueueBusy:"جارٍ الرفع الآن…", ghQueueRetry:"فشل الرفع — تجري إعادة المحاولة تلقائيًا… ({n} في الانتظار)", ghQueueWaiting:"{n} في انتظار الرفع",   wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
   wTypicalHigh:"الحرارة العظمى المعتادة نهارًا", wTypicalLow:"الحرارة الصغرى المعتادة ليلاً", wSea:"حرارة البحر (باردة!)",
   wWind:"الرياح (رياح \"الطبيب الكيبي\" الجنوبية الشرقية شائعة)", wRain:"احتمال هطول المطر في يوم معين", wUV:"مؤشر الأشعة فوق البنفسجية — الحماية من الشمس ضرورية",
   wSunrise:"الشروق (٢٨ أكتوبر ← ١٠ نوفمبر)", wSunset:"الغروب (٢٨ أكتوبر ← ١٠ نوفمبر)",
@@ -1800,7 +1801,7 @@ function ghSerial(task){
   ghChain = run.catch(()=>{});
   return run;
 }
-let uploadTimer = null;
+let uploadTimer = null, uploadFails = 0, uploadState = 'idle';   // 'idle' | 'uploading' | 'retrying'
 function scheduleUpload(delay){
   clearTimeout(uploadTimer);
   uploadTimer = setTimeout(()=>ghSerial(uploadQueued), delay == null ? 2500 : delay);
@@ -1808,12 +1809,14 @@ function scheduleUpload(delay){
 function pendingUploadBases(){
   return [...new Set(Object.keys(photoData).filter(k=>!pendingMap[k]).map(k=>k.split(':')[0]))];
 }
+function pendingUploadCount(){ return Object.keys(photoData).filter(k=>!pendingMap[k]).length + pendingRemoves.size; }
 async function uploadQueued(){
   const cfg = ghConfig(); if(!cfg) return;
   const adds = Object.entries(photoData).filter(([k])=>!pendingMap[k]).map(([key, v])=>({key, blob:v.blob, thumb:v.thumb, filename:v.filename}));
   const removeKeys = [...pendingRemoves];
-  if(!adds.length && !removeKeys.length) return;
+  if(!adds.length && !removeKeys.length){ uploadState = 'idle'; uploadFails = 0; return; }
   const n = adds.length + removeKeys.length;
+  uploadState = 'uploading'; refreshUploadStatus();
   toast(n > 1 ? tr('ghUploadingN').replace('{n}', n) : tr('ghUploading'));
   const bases = [...new Set([...adds.map(a=>a.key.split(':')[0]), ...removeKeys.map(k=>k.split(':')[0])])];
   try{
@@ -1822,16 +1825,28 @@ async function uploadQueued(){
     removeKeys.forEach(k=>{ pendingRemoves.delete(k); delete sharedPhotos[k]; });
     savePending(); savePendingRemoves();
     toast(tr('ghDone'));
+    uploadFails = 0; uploadState = 'idle';
   }catch(err){
     console.error('GitHub upload failed', err);
     toast(ghErrText(err));
-    scheduleUpload(20000);      // try again shortly; nothing is lost, it just stays "not yet uploaded" until then
+    uploadFails++; uploadState = 'retrying';
+    // retry automatically: quick at first (a hiccup usually clears fast), backing off up to once a minute so it
+    // doesn't hammer GitHub if something is actually wrong (e.g. an expired token) — nothing is ever lost meanwhile.
+    scheduleUpload(Math.min(60000, 4000 * Math.pow(1.8, uploadFails - 1)) + Math.random() * 1000);
   }
   bases.forEach(b=>{ refreshSlideshow(b); if(lbOpen() && bases.includes(lb.base)) lbShow(lb.i); });
+  refreshUploadStatus();
 }
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && (pendingUploadBases().length || pendingRemoves.size)) scheduleUpload(300); });
-window.addEventListener('online', ()=>{ if(pendingUploadBases().length || pendingRemoves.size) scheduleUpload(300); });
-setInterval(()=>{ if(!document.hidden && (pendingUploadBases().length || pendingRemoves.size)) scheduleUpload(0); }, 60000);
+function refreshUploadStatus(){
+  const el = document.getElementById('ppUploadStatus'); if(!el) return;
+  const n = pendingUploadCount();
+  el.textContent = uploadState === 'uploading' ? tr('ghQueueBusy')
+    : uploadState === 'retrying' ? tr('ghQueueRetry').replace('{n}', n)
+    : n ? tr('ghQueueWaiting').replace('{n}', n) : '';
+}
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && pendingUploadCount()) scheduleUpload(300); });
+window.addEventListener('online', ()=>{ if(pendingUploadCount()) scheduleUpload(300); });
+setInterval(()=>{ if(!document.hidden && pendingUploadCount()) scheduleUpload(0); }, 60000);
 
 async function removeLocalPhoto(base, key){
   if(!photoData[key]) return;
@@ -2140,7 +2155,8 @@ function openPanel(){
   document.getElementById('ghDisconnect').style.display = cfg ? '' : 'none';
   const up = document.getElementById('ppUpload');
   up.style.display = (cfg && unsent.length) ? '' : 'none';
-  up.textContent = tr('ppUpload').replace('{n}', unsent.length);
+  up.textContent = tr(uploadState === 'retrying' ? 'ppRetryNow' : 'ppUpload').replace('{n}', unsent.length);
+  refreshUploadStatus();
   if(!cfg){
     const g = ghGuess();
     document.getElementById('ghOwner').value = document.getElementById('ghOwner').value || g.owner;
@@ -2212,7 +2228,7 @@ document.getElementById('ppThumbs').addEventListener('click', async ()=>{
   catch(err){ console.error(err); toast(ghErrText(err)); }
 });
 document.getElementById('ppUpload').addEventListener('click', async ()=>{
-  clearTimeout(uploadTimer);
+  clearTimeout(uploadTimer); uploadFails = 0;      // a manual tap resets the backoff and tries right away
   await ghSerial(uploadQueued);
   renderAreas(); renderGardenRoute(); openPanel();
 });
