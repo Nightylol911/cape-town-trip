@@ -72,7 +72,7 @@ if('serviceWorker' in navigator){
   --shadow:0 8px 24px rgba(18,56,64,.10);
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;background:var(--paper);}   /* keeps body's own background from being "promoted" to paint the page canvas outside body's own (filterable) box — see the dark-mode rules below */
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;line-height:1.55;}
 body.ar{font-family:'Tajawal',sans-serif;}
 h1,h2,h3,.display{font-family:'Fraunces',serif;}
@@ -605,8 +605,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
    for every rule, we invert the page's lightness and spin the hue back to where it started.
    Photos, the map, the photo-viewer chrome and hand-colored art (the logo, weather icons) get
    the same filter a second time, which cancels the inversion for just that subtree. */
-:root[data-theme="dark"]{ color-scheme:dark; }
-:root[data-theme="dark"] html{ background:#0e1614; }
+:root[data-theme="dark"]{ color-scheme:dark; background:#0e1614; }   /* :root IS html — no descendant combinator needed/possible here */
 :root[data-theme="dark"] body{ filter:invert(1) hue-rotate(180deg); }
 :root[data-theme="dark"] img,
 :root[data-theme="dark"] video,
