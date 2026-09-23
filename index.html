@@ -23,12 +23,11 @@ if('serviceWorker' in navigator){
 }
 </script>
 <script>
-/* Set the theme before first paint so a saved/system dark preference doesn't flash light first. */
+/* Set the theme before first paint so a saved choice doesn't flash light first. Light is the
+   default regardless of the device's system preference — dark mode is opt-in via the toggle. */
 (function(){
   try{
-    var saved = localStorage.getItem('ctgr_theme');
-    var theme = saved || ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light');
-    if(theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    if(localStorage.getItem('ctgr_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   }catch(e){}
 })();
 </script>
@@ -248,11 +247,15 @@ body.ar .pp-actions button{font-family:'Tajawal',sans-serif;}
 .pp-sync h4{margin:0 0 6px;font-size:15px;}
 .pp-status{font-weight:600;color:var(--ocean-deep);font-size:13px;}
 .pp-sync label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
-.pp-sync label input{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:14px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
-.pp-sync label input:focus{outline:none;border-color:var(--ocean);}
-.pp-sync > button,#ghForm > button{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--white);font:600 14px 'Inter',sans-serif;color:var(--ink);cursor:pointer;}
-#ghForm > button.pp-primary{background:var(--ink);color:var(--paper);border-color:var(--ink);}
-body.ar .pp-sync label input,body.ar .pp-sync > button,body.ar #ghForm > button{font-family:'Tajawal',sans-serif;}
+.pp-sync label input,.pp-sync label select,.pp-sync label textarea,#apForm label input,#apForm label select,#apForm label textarea{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:14px 'Inter',sans-serif;background:var(--white);color:var(--ink);box-sizing:border-box;}
+.pp-sync label input:focus,.pp-sync label select:focus,.pp-sync label textarea:focus,#apForm label input:focus,#apForm label select:focus,#apForm label textarea:focus{outline:none;border-color:var(--ocean);}
+#apForm label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
+#apForm textarea{resize:vertical;font-family:inherit;}
+.ap-detected{background:var(--paper-2);border-radius:10px;padding:8px 12px;font-size:12.5px;margin:-2px 0 10px;}
+.ap-detected.ap-empty{color:#8a7f70;}
+.pp-sync > button,#ghForm > button,#apForm > button{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--white);font:600 14px 'Inter',sans-serif;color:var(--ink);cursor:pointer;}
+#ghForm > button.pp-primary,#apForm > button.pp-primary{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+body.ar .pp-sync label input,body.ar .pp-sync label select,body.ar .pp-sync label textarea,body.ar .pp-sync > button,body.ar #ghForm > button,body.ar #apForm label input,body.ar #apForm label select,body.ar #apForm label textarea,body.ar #apForm > button{font-family:'Tajawal',sans-serif;}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:99px;font-size:13.5px;font-weight:600;z-index:1300;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center;}
 .toast.show{opacity:1;transform:translateX(-50%);}
 @media(prefers-reduced-motion:reduce){.lb-stage.loading::after{animation-duration:2.4s;} .toast{transition:none;}}
@@ -579,17 +582,20 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
 
 /* DARK MODE — the whole page is one consistent light palette built from a handful of custom
    properties plus a lot of hand-picked warm grays, so instead of re-deriving a second palette
-   for every rule, we invert the page's lightness and spin the hue back to where it started.
-   Photos, the map, the photo-viewer chrome and hand-colored art (the logo, weather icons) get
-   the same filter a second time, which cancels the inversion for just that subtree. */
-:root[data-theme="dark"]{ color-scheme:dark; background:#0e1614; }   /* :root IS html — no descendant combinator needed/possible here */
-:root[data-theme="dark"] body{ filter:invert(1) hue-rotate(180deg); }
+   for every rule, we invert the page's lightness and spin the hue back to where it started, then
+   pull the contrast in a bit (contrast(.8)) so blacks land on a soft charcoal instead of a harsh
+   near-black and whites land on a gentle off-white instead of a glaring pure white.
+   Photos, the map, the photo-viewer chrome and hand-colored art (the logo, weather icons) get the
+   exact inverse filter — contrast(1.25) then the same hue-rotate/invert, in reverse order — which
+   cancels out to a no-op for just that subtree, so none of that softening touches them. */
+:root[data-theme="dark"]{ color-scheme:dark; background:#1c2420; }   /* :root IS html — no descendant combinator needed/possible here */
+:root[data-theme="dark"] body{ filter:invert(1) hue-rotate(180deg) contrast(.8); }
 :root[data-theme="dark"] img,
 :root[data-theme="dark"] video,
 :root[data-theme="dark"] #map,
 :root[data-theme="dark"] .lb,
 :root[data-theme="dark"] .wx-svg,
-:root[data-theme="dark"] .site-logo{ filter:invert(1) hue-rotate(180deg); }
+:root[data-theme="dark"] .site-logo{ filter:contrast(1.25) hue-rotate(180deg) invert(1); }
 @media print{ :root[data-theme="dark"] body{ filter:none !important; } }
 .theme-icon{display:block;}
 </style>
@@ -622,6 +628,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
   </div>
   <div class="langbtns">
     <button class="langbtn" id="btnTheme" type="button" aria-label="Toggle dark mode" data-t-aria="themeToggle" aria-pressed="false"><svg class="theme-icon" id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+    <button class="langbtn" id="btnAddPlace" data-t="apOpenBtn" style="display:none"></button>
     <button class="langbtn" id="btnPhotos" data-t="myPhotos"></button>
     <button class="langbtn active" id="btnEn">English</button>
     <button class="langbtn" id="btnAr">العربية</button>
@@ -798,6 +805,26 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     <div class="pp-actions" style="margin-top:14px"><button type="button" id="ppClose" data-t="ppClose"></button></div>
   </div>
 </div>
+
+<div class="pp-back" id="addPlaceBack" hidden>
+  <div class="pp" role="dialog" aria-modal="true" aria-labelledby="apTitle">
+    <h3 id="apTitle" data-t="apTitle"></h3>
+    <p data-t="apBody"></p>
+    <form id="apForm" autocomplete="off" onsubmit="return false;">
+      <label><span data-t="apName"></span><input id="apName" autocomplete="off"></label>
+      <label><span data-t="apNameAr"></span><input id="apNameAr" autocomplete="off" dir="rtl"></label>
+      <label><span data-t="apCategory"></span><select id="apCategory"></select></label>
+      <label><span data-t="apLocation"></span><input id="apLocation" autocomplete="off"></label>
+      <div class="ap-detected ap-empty" id="apDetected" data-t="apDetectedEmpty"></div>
+      <label id="apSectionWrap" hidden><span data-t="apSectionOverride"></span><select id="apSection"></select></label>
+      <label><span data-t="apPrice"></span><input id="apPrice" type="number" min="0" step="1" inputmode="numeric" autocomplete="off"></label>
+      <label><span data-t="apAbout"></span><textarea id="apAbout" rows="3"></textarea></label>
+      <p class="pp-status" id="apStatus"></p>
+      <button type="button" class="pp-primary" id="apSave" data-t="apSave"></button>
+    </form>
+    <div class="pp-actions" style="margin-top:14px"><button type="button" id="apClose" data-t="ppClose"></button></div>
+  </div>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <div class="scroll-fabs" id="scrollFabs">
@@ -958,7 +985,18 @@ en:{
   directions:"Directions", menuBtn:"Menu", bookBadge:"Pre-booking recommended", howToBook:"How to book",
   official:"Official booking page →", findOperator:"Find operator →",
   best:"Best time", dur:"Duration", wear:"Wear / bring", tapPhoto:"Tap to add a photo", addPhoto:"Add photo", replacePhoto:"Replace", removePhoto:"Remove", downloadPhoto:"Download", closeViewer:"Close", zoomIn:"Zoom in", zoomOut:"Zoom out", zoomReset:"Fit to screen", prevPhoto:"Previous photo", nextPhoto:"Next photo", viewFull:"View full size", photoSaving:"Saving…", photoSaved:"Saved on this device", photoFail:"Couldn't read that image. Try a JPG or PNG.", photoLimit:"Up to {n} photos per place.", confirmRemove:"Remove this photo from this device?", myPhotos:"📷 Photos", ppTitle:"Your photos", ppBody:"Photos you add are stored in this browser only. To show them to everyone who opens the site, download them here and upload the files to your website's photos folder.", ppCount:"Photos on this device: {n}", ppNone:"No photos added on this device yet.", ppExport:"Download photos for the website (ZIP)", ppClear:"Delete photos from this device", ppConfirmClear:"Delete all photos saved on this device? Photos already published on the website are not affected.", ppClose:"Close", ppShared:"Published", ppLocal:"Only on this device", ghTitle:"Add & edit photos", ghBody:"Only devices connected with your GitHub token can add, replace or delete photos. Everyone else can only view them. Use a token that only has Contents: Read and write access to this one repository.", ghOwner:"GitHub username", ghRepo:"Repository name", ghToken:"Access token", ghConnect:"Connect", ghDisconnect:"Disconnect this device", ghConnected:"Connected to {r}. New photos are saved to GitHub.", ghNotConnected:"Not connected. Photos stay on this device.", ghChecking:"Checking…", ghBadToken:"GitHub rejected the token. Check it and try again.", ghNoAccess:"This token can't write to the repository. Give it Contents: Read and write.", ghNotFound:"Repository not found. Check the username and repository name.", ghUploading:"Uploading to GitHub…", ghUploadingN:"Uploading {n} photos to GitHub…", ghDone:"Saved to GitHub. Everyone sees it in about a minute.", ghFail:"Upload failed ({e}). The photo is saved on this device.", ghHint:"Saved on this device only. Connect GitHub in 📷 Photos to share it.", ppUpload:"Upload {n} photo(s) from this device to GitHub", ppPending:"Saved to GitHub, going live", confirmRemoveAll:"Delete this photo for everyone?", nothingPicked:"Nothing picked yet — tap ○ on any place to add it here.", remove:"remove",
-  allChip:"All"
+  allChip:"All",
+  scrollTop:"Back to top", scrollBottom:"Jump to bottom", themeToggle:"Toggle dark mode",
+  statCountdownDefault:"days to go", statCountdownToday:"Trip day", statCountdownDone:"Trip complete!",
+  icsBtn:"📅 Add trip to calendar", icsDayBtn:"Add day to calendar", icsAdded:"Calendar file downloaded — open it to add these to your calendar app.",
+  dsCurrency:"Currency", dsSplit:"Split per person", dsTravelers:"travelers",
+  noteAdd:"Add a note", notePlaceholder:"Type a note…",
+  apOpenBtn:"➕ Add a place", apTitle:"Add a new place", apBody:"Paste a Google Maps link or coordinates and this figures out which neighbourhood (or Garden Route town) it belongs in on its own. Saved to GitHub, so it shows up for both of you, on every device.",
+  apName:"Name", apNameAr:"Name (Arabic) — optional", apCategory:"Category", apLocation:"Google Maps link or coordinates",
+  apDetectedEmpty:"Paste a location above to detect the section.", apDetectedFound:"📍 {area} — {dist} km away",
+  apSectionOverride:"Section (auto-detected — change if it's wrong)", apPrice:"Price in SAR (optional)", apAbout:"Short description (optional)",
+  apSave:"Save place", apSaving:"Saving…", apSaved:"Added! It'll appear on the site in a moment.", apFail:"Couldn't save ({e}). Try again.",
+  apNeedName:"Give it a name first.", apNeedLocation:"Paste a Google Maps link or \"lat, lng\" coordinates — a shortened share link (maps.app.goo.gl) won't work, use the full address-bar link or plain coordinates."
 },
 ar:{
   eyebrow:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦ · ١٤ يومًا / ١٣ ليلة · لكما فقط",
@@ -1027,7 +1065,18 @@ ar:{
   directions:"الاتجاهات", menuBtn:"القائمة", bookBadge:"يُنصح بالحجز المسبق", howToBook:"كيفية الحجز",
   official:"صفحة الحجز الرسمية ←", findOperator:"ابحثا عن المشغّل ←",
   best:"أفضل وقت", dur:"المدة", wear:"الملابس / ما تحضرانه", tapPhoto:"اضغطي لإضافة صورة", addPhoto:"إضافة صورة", replacePhoto:"استبدال", removePhoto:"حذف", downloadPhoto:"تنزيل", closeViewer:"إغلاق", zoomIn:"تكبير", zoomOut:"تصغير", zoomReset:"ملاءمة الشاشة", prevPhoto:"الصورة السابقة", nextPhoto:"الصورة التالية", viewFull:"عرض بالحجم الكامل", photoSaving:"جارٍ الحفظ…", photoSaved:"تم الحفظ على هذا الجهاز", photoFail:"تعذّرت قراءة الصورة. جرّبا صيغة JPG أو PNG.", photoLimit:"الحد الأقصى {n} صور لكل مكان.", confirmRemove:"حذف هذه الصورة من هذا الجهاز؟", myPhotos:"📷 الصور", ppTitle:"صوركما", ppBody:"الصور التي تضيفانها تُحفظ في هذا المتصفح فقط. لعرضها لكل من يفتح الموقع، نزّلاها من هنا ثم ارفعا الملفات إلى مجلد photos في موقعكما.", ppCount:"عدد الصور على هذا الجهاز: {n}", ppNone:"لم تُضف أي صور على هذا الجهاز بعد.", ppExport:"تنزيل الصور للموقع (ZIP)", ppClear:"حذف الصور من هذا الجهاز", ppConfirmClear:"حذف كل الصور المحفوظة على هذا الجهاز؟ الصور المنشورة على الموقع لن تتأثر.", ppClose:"إغلاق", ppShared:"منشورة", ppLocal:"على هذا الجهاز فقط", ghTitle:"إضافة الصور وتعديلها", ghBody:"الأجهزة المرتبطة برمز GitHub الخاص بكما فقط تستطيع إضافة الصور أو استبدالها أو حذفها، والبقية تشاهدها فقط. استخدما رمزًا بصلاحية Contents: Read and write لهذا المستودع وحده.", ghOwner:"اسم المستخدم في GitHub", ghRepo:"اسم المستودع", ghToken:"رمز الوصول", ghConnect:"ربط", ghDisconnect:"فصل هذا الجهاز", ghConnected:"تم الربط مع {r}. الصور الجديدة تُحفظ في GitHub.", ghNotConnected:"غير مرتبط. الصور تبقى على هذا الجهاز.", ghChecking:"جارٍ التحقق…", ghBadToken:"رفض GitHub الرمز. تحققا منه وحاولا مرة أخرى.", ghNoAccess:"هذا الرمز لا يملك صلاحية الكتابة في المستودع. أعطياه Contents: Read and write.", ghNotFound:"المستودع غير موجود. تحققا من اسم المستخدم واسم المستودع.", ghUploading:"جارٍ الرفع إلى GitHub…", ghUploadingN:"جارٍ رفع {n} صور إلى GitHub…", ghDone:"تم الحفظ في GitHub. سيراها الجميع خلال دقيقة تقريبًا.", ghFail:"فشل الرفع ({e}). الصورة محفوظة على هذا الجهاز.", ghHint:"محفوظة على هذا الجهاز فقط. اربطا GitHub من 📷 الصور لمشاركتها.", ppUpload:"رفع {n} صورة من هذا الجهاز إلى GitHub", ppPending:"محفوظة في GitHub، ستظهر قريبًا", confirmRemoveAll:"حذف هذه الصورة للجميع؟", nothingPicked:"لم تختارا شيئًا بعد — اضغطي ○ على أي مكان لإضافته هنا.", remove:"إزالة",
-  allChip:"الكل"
+  allChip:"الكل",
+  scrollTop:"العودة للأعلى", scrollBottom:"الانتقال للأسفل", themeToggle:"تبديل الوضع الداكن",
+  statCountdownDefault:"يومًا متبقيًا", statCountdownToday:"يوم الرحلة", statCountdownDone:"انتهت الرحلة!",
+  icsBtn:"📅 أضيفا الرحلة إلى التقويم", icsDayBtn:"أضف اليوم إلى التقويم", icsAdded:"تم تنزيل ملف التقويم — افتحاه لإضافة الرحلة إلى تطبيق التقويم لديكما.",
+  dsCurrency:"العملة", dsSplit:"تقسيم للشخص", dsTravelers:"مسافرين",
+  noteAdd:"أضف ملاحظة", notePlaceholder:"اكتب ملاحظة…",
+  apOpenBtn:"➕ أضف مكانًا", apTitle:"إضافة مكان جديد", apBody:"الصقا رابط خرائط جوجل أو الإحداثيات وسيُحدَّد الحي (أو بلدة طريق الحدائق) تلقائيًا. يُحفظ في GitHub فيظهر لكما على أي جهاز.",
+  apName:"الاسم", apNameAr:"الاسم بالعربي — اختياري", apCategory:"التصنيف", apLocation:"رابط خرائط جوجل أو الإحداثيات",
+  apDetectedEmpty:"الصقا موقعًا أعلاه لتحديد القسم.", apDetectedFound:"📍 {area} — على بعد {dist} كم",
+  apSectionOverride:"القسم (تم تحديده تلقائيًا — غيّراه إن كان خطأ)", apPrice:"السعر بالريال السعودي (اختياري)", apAbout:"وصف مختصر (اختياري)",
+  apSave:"حفظ المكان", apSaving:"جارٍ الحفظ…", apSaved:"أُضيف! سيظهر في الموقع خلال لحظات.", apFail:"تعذّر الحفظ ({e}). حاولا مرة أخرى.",
+  apNeedName:"أدخلا اسمًا أولاً.", apNeedLocation:"الصقا رابط خرائط جوجل أو إحداثيات \"lat, lng\" — الرابط المختصر (maps.app.goo.gl) لن يعمل، استخدما الرابط الكامل من شريط العنوان أو إحداثيات مباشرة."
 }
 };
 let LANG='en';
@@ -1821,6 +1870,179 @@ async function loadNotes(){
   }catch(e){}
   if(ghConfig() && notesDirty.size) scheduleNotesSync(1000);
 }
+
+/* ---------- ADD A PLACE (GitHub-connected devices only) ----------
+   New cards are appended to custom-places.json in the repo (same read-merge-write pattern as
+   notes.json above) and merged into PLACES / GARDEN_ROUTE at load time, so every existing
+   feature — picks, notes, the budget, search, the map — treats them exactly like a curated
+   place. The section (Cape Town neighbourhood, or Garden Route town) is auto-detected from
+   whichever already-known location is geographically closest to the coordinates given. */
+const GR_TOWN_COORDS = {
+  'Hermanus':{lat:-34.4187,lng:19.2345}, 'Mossel Bay':{lat:-34.1830,lng:22.1460}, 'George':{lat:-33.9628,lng:22.4619},
+  'Oudtshoorn':{lat:-33.5906,lng:22.2014}, 'Wilderness':{lat:-33.9989,lng:22.5793}, 'Sedgefield':{lat:-34.0206,lng:22.7943},
+  'Knysna':{lat:-34.0363,lng:23.0471}, 'Plettenberg Bay':{lat:-34.0527,lng:23.3716}, 'Tsitsikamma':{lat:-34.0176,lng:23.8879}
+};
+function haversineKm(lat1, lng1, lat2, lng2){
+  const R = 6371, toRad = d=>d*Math.PI/180;
+  const dLat = toRad(lat2-lat1), dLng = toRad(lng2-lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLng/2)**2;
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+function detectSection(lat, lng){
+  let best = null, bestDist = Infinity;
+  Object.entries(AREAS_META).forEach(([key, m])=>{
+    const d = haversineKm(lat, lng, m.lat, m.lng);
+    if(d < bestDist){ bestDist = d; best = {kind:'ct', key}; }
+  });
+  Object.entries(GR_TOWN_COORDS).forEach(([town, c])=>{
+    const d = haversineKm(lat, lng, c.lat, c.lng);
+    if(d < bestDist){ bestDist = d; best = {kind:'gr', town}; }
+  });
+  return best ? Object.assign({distanceKm: bestDist}, best) : null;
+}
+function parseLatLng(input){
+  input = (input || '').trim();
+  let m = input.match(/^(-?\d{1,3}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)$/);
+  if(m) return {lat:+m[1], lng:+m[2]};
+  m = input.match(/@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/);
+  if(m) return {lat:+m[1], lng:+m[2]};
+  m = input.match(/[?&](?:q|ll|daddr)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/);
+  if(m) return {lat:+m[1], lng:+m[2]};
+  return null;
+}
+function apSectionOptionsHtml(){
+  const parts = [];
+  Object.entries(AREAS_META).forEach(([key, m])=> parts.push(`<option value="ct:${key}">${LANG==='ar'?m.ar:m.en}</option>`));
+  Object.keys(GR_TOWN_COORDS).forEach(town=>{
+    const t = GARDEN_ROUTE.find(x=>x.town===town);
+    const label = t ? (LANG==='ar'?t.town_ar:t.town) : town;
+    parts.push(`<option value="gr:${town}">${label} (${LANG==='ar'?'طريق الحدائق':'Garden Route'})</option>`);
+  });
+  return parts.join('');
+}
+function mergeCustomPlace(place){
+  if(place._kind === 'gr'){
+    const t = GARDEN_ROUTE.find(x=>x.town === place._town);
+    if(t) t.items.push(place);
+  } else if(place.a){
+    PLACES.push(place);
+    if(!byArea[place.a]) byArea[place.a] = [];
+    byArea[place.a].push(place);
+  }
+}
+async function loadCustomPlaces(){
+  try{
+    const r = await fetch('custom-places.json?v=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) return;
+    const list = await r.json();
+    if(!Array.isArray(list) || !list.length) return;
+    list.forEach(mergeCustomPlace);
+    SEARCH_INDEX = null;
+    document.getElementById('statTotal').textContent = PLACES.length;
+    document.getElementById('mapCount').textContent = PLACES.length;
+    document.getElementById('statAreas').textContent = Object.keys(byArea).length;
+    renderAreas(); renderGardenRoute(); renderMarkers();
+  }catch(e){}
+}
+async function saveCustomPlace(place){
+  const cfg = ghConfig();
+  if(!cfg) throw new Error('not connected');
+  const branch = (await ghJson(cfg, '')).default_branch || 'main';
+  let sha, list = [];
+  const r = await ghFetch(cfg, '/contents/custom-places.json?ref=' + encodeURIComponent(branch), {headers:{'Accept':'application/vnd.github+json'}});
+  if(r.ok){ const d = await r.json(); sha = d.sha; list = JSON.parse(b64ToText(d.content)) || []; if(!Array.isArray(list)) list = []; }
+  else if(r.status !== 404){ throw Object.assign(new Error('GitHub ' + r.status), {status: r.status}); }
+  list.push(place);
+  const content = await blobToB64(new Blob([JSON.stringify(list, null, 1)], {type:'application/json'}));
+  await ghJson(cfg, '/contents/custom-places.json', {method:'PUT', body:{message:'Add place: ' + place.n, content, sha, branch}});
+  return list;
+}
+function initAddPlace(){   // called later, once canEdit()/ghConfig() etc. below are defined — see the init calls near the bottom of the script
+  const back = document.getElementById('addPlaceBack'), btn = document.getElementById('btnAddPlace');
+  if(!back || !btn) return;
+  const nameEl = document.getElementById('apName'), nameArEl = document.getElementById('apNameAr'),
+    catEl = document.getElementById('apCategory'), locEl = document.getElementById('apLocation'),
+    detectedEl = document.getElementById('apDetected'), sectionWrap = document.getElementById('apSectionWrap'),
+    sectionEl = document.getElementById('apSection'), priceEl = document.getElementById('apPrice'),
+    aboutEl = document.getElementById('apAbout'), statusEl = document.getElementById('apStatus'),
+    saveBtn = document.getElementById('apSave'), closeBtn = document.getElementById('apClose');
+  let detected = null;
+
+  function refreshAddPlaceBtn(){ btn.style.display = canEdit() ? '' : 'none'; }
+  refreshAddPlaceBtn();
+  window.addEventListener('ctgr-gh-changed', refreshAddPlaceBtn);
+
+  function resetDetected(){
+    detected = null;
+    detectedEl.textContent = tr('apDetectedEmpty'); detectedEl.classList.add('ap-empty');
+    sectionWrap.hidden = true;
+  }
+  function openForm(){
+    catEl.innerHTML = Object.entries(CATS[LANG]).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+    sectionEl.innerHTML = apSectionOptionsHtml();
+    nameEl.value = ''; nameArEl.value = ''; locEl.value = ''; priceEl.value = ''; aboutEl.value = ''; statusEl.textContent = '';
+    resetDetected();
+    back.hidden = false;
+    nameEl.focus();
+  }
+  function closeForm(){ back.hidden = true; }
+  btn.addEventListener('click', openForm);
+  closeBtn.addEventListener('click', closeForm);
+  back.addEventListener('click', (e)=>{ if(e.target === back) closeForm(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && !back.hidden) closeForm(); });
+
+  locEl.addEventListener('input', ()=>{
+    const coords = parseLatLng(locEl.value);
+    if(!coords){ resetDetected(); return; }
+    const d = detectSection(coords.lat, coords.lng);
+    if(!d){ resetDetected(); return; }
+    detected = Object.assign({}, coords, d);
+    const areaLabel = detected.kind === 'ct'
+      ? (LANG==='ar' ? AREAS_META[detected.key].ar : AREAS_META[detected.key].en)
+      : (function(){ const t = GARDEN_ROUTE.find(x=>x.town===detected.town); return t ? (LANG==='ar'?t.town_ar:t.town) : detected.town; })();
+    detectedEl.textContent = tr('apDetectedFound').replace('{area}', areaLabel).replace('{dist}', detected.distanceKm.toFixed(1));
+    detectedEl.classList.remove('ap-empty');
+    sectionEl.value = detected.kind === 'ct' ? ('ct:' + detected.key) : ('gr:' + detected.town);
+    sectionWrap.hidden = false;
+  });
+
+  saveBtn.addEventListener('click', async ()=>{
+    const name = nameEl.value.trim();
+    if(!name){ statusEl.textContent = tr('apNeedName'); return; }
+    const coords = parseLatLng(locEl.value);
+    if(!coords || !detected){ statusEl.textContent = tr('apNeedLocation'); return; }
+    const sectionVal = sectionEl.value || (detected.kind==='ct' ? 'ct:'+detected.key : 'gr:'+detected.town);
+    const [kind, keyOrTown] = sectionVal.split(':');
+    const priceVal = priceEl.value ? Math.round(+priceEl.value) : 0;
+    const about = aboutEl.value.trim();
+    const g = `https://www.google.com/maps?q=${coords.lat},${coords.lng}`;
+    const place = kind === 'ct'
+      ? {n:name, c:catEl.value, a:keyOrTown, g, lat:coords.lat, lng:coords.lng, price:priceVal, about}
+      : {_kind:'gr', _town:keyOrTown, n:name, c:catEl.value, g, price:priceVal, about};
+    if(nameArEl.value.trim()) place.n_ar = nameArEl.value.trim();
+    if(about) place.about_ar = about;   // no auto-translation available — keeps the card from showing blank in Arabic
+
+    saveBtn.disabled = true;
+    statusEl.textContent = tr('apSaving');
+    try{
+      await saveCustomPlace(place);
+      mergeCustomPlace(place);
+      SEARCH_INDEX = null;
+      document.getElementById('statTotal').textContent = PLACES.length;
+      document.getElementById('mapCount').textContent = PLACES.length;
+      document.getElementById('statAreas').textContent = Object.keys(byArea).length;
+      renderAreas(); renderGardenRoute(); renderMarkers();
+      statusEl.textContent = tr('apSaved');
+      toast(tr('apSaved'));
+      setTimeout(closeForm, 900);
+    }catch(e){
+      statusEl.textContent = tr('apFail').replace('{e}', (e && (e.detail || e.message)) || '?');
+    }finally{
+      saveBtn.disabled = false;
+    }
+  });
+}
+
 function unoteBlock(key){
   const val = USER_NOTES[key] || '';
   const preview = val.length > 70 ? val.slice(0, 70) + '…' : val;
@@ -2439,10 +2661,12 @@ document.getElementById('ghConnect').addEventListener('click', async ()=>{
     toast(tr('ghConnected').replace('{r}', cfg.owner + '/' + cfg.repo));
     openPanel(); renderAreas(); renderGardenRoute();
     if(notesDirty.size) scheduleNotesSync(500); else loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
+    window.dispatchEvent(new Event('ctgr-gh-changed'));
   }catch(err){ toast(ghErrText(err)); }
 });
 document.getElementById('ghDisconnect').addEventListener('click', ()=>{
   ghSaveConfig(null);
+  window.dispatchEvent(new Event('ctgr-gh-changed'));
   clearTimeout(uploadTimer);   // cancel any scheduled retry; an already-running upload stops itself within seconds (see the check inside uploadQueued)
   uploadState = 'idle'; uploadFails = 0;
   openPanel(); renderAreas(); renderGardenRoute();
@@ -3201,7 +3425,6 @@ function renderTransport(){
       <h3 style="margin-top:16px;font-size:14px;">${tr('ttCarRentalTitle')}</h3>
       <div class="tt-rental-grid">${rentalCards}</div>
     </div>
-    <div class="tt-block"><h3>🗺️ ${tr('ttOfflineTitle')}</h3><p>${tr('ttOfflineBody')}</p></div>
     <div class="tt-block">
       <h3>🚑 ${tr('emgTitle')}</h3>
       <p>${tr('emgIntro')}</p>
@@ -4330,8 +4553,7 @@ function setTheme(theme, persist){
 (function initTheme(){
   let saved = null;
   try{ saved = localStorage.getItem('ctgr_theme'); }catch(e){}
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  setTheme(saved || (prefersDark ? 'dark' : 'light'), false);
+  setTheme(saved || 'light', false);   // light is the default; dark is opt-in via the toggle
 })();
 const btnTheme = document.getElementById('btnTheme');
 if(btnTheme) btnTheme.addEventListener('click', ()=> setTheme(THEME === 'dark' ? 'light' : 'dark', true));
@@ -4367,6 +4589,8 @@ renderGardenRoute();
 renderSafari();
 fxLoad();
 loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
+initAddPlace();
+loadCustomPlaces();
 setInterval(updateCountdown, 60 * 60 * 1000);
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); });
 window.addEventListener('online', ()=>{ if(notesDirty.size) scheduleNotesSync(300); });
