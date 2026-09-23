@@ -724,12 +724,12 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
       <p data-t="ghBody"></p>
       <p class="pp-status" id="ghStatus"></p>
       <p class="pp-status" id="ppPub"></p>
-      <div id="ghForm">
+      <form id="ghForm" autocomplete="off" onsubmit="return false;">
         <label><span data-t="ghOwner"></span><input id="ghOwner" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
         <label><span data-t="ghRepo"></span><input id="ghRepo" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
-        <label><span data-t="ghToken"></span><input id="ghToken" type="password" autocomplete="off" spellcheck="false"></label>
+        <label><span data-t="ghToken"></span><input id="ghToken" type="password" autocomplete="new-password" spellcheck="false"></label>
         <button type="button" class="pp-primary" id="ghConnect" data-t="ghConnect"></button>
-      </div>
+      </form>
       <button type="button" id="ppThumbs" data-t="ppThumbs"></button>
       <button type="button" class="pp-danger" id="ppClearPublished" data-t="ppClearPublished" style="display:none"></button>
       <button type="button" id="ghDisconnect" data-t="ghDisconnect"></button>
