@@ -699,6 +699,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
         <button type="button" class="pp-primary" id="ghConnect" data-t="ghConnect"></button>
       </div>
       <button type="button" id="ppThumbs" data-t="ppThumbs"></button>
+      <button type="button" class="pp-danger" id="ppClearPublished" data-t="ppClearPublished" style="display:none"></button>
       <button type="button" id="ghDisconnect" data-t="ghDisconnect"></button>
     </section>
     <section class="pp-sync" id="ppLocalSec">
@@ -792,7 +793,7 @@ en:{
   heroLead:"Every place you two shortlisted — the story behind it, practical info, when to go, what to wear, real menus and booking pages where they exist. Tap ○ to shortlist, tap a photo to view it full size, tap + to add your own.",
   statPlaces:"Places curated", statAreasL:"Neighbourhoods", statBookingL:"Need pre-booking",
   weatherTitle:"Weather & what to pack", weatherDate:"28 Oct – 10 Nov 2026",
-  weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
+  weatherCaption:"Live weather from Open-Meteo. Use the tabs for your trip dates, the next 16 days, or any date you pick. Dates beyond the 16-day forecast show typical weather (average of the last 5 years) and past dates show recorded weather. Sea temperature, UV, sunrise and sunset in the tiles are seasonal estimates.", wxLoading:"Loading live weather…", wxFail:"Live weather isn't available right now. Check your connection and tap Refresh.", wxNowIn:"Right now in Cape Town", wxFeels:"Feels like", wxWind:"Wind", wxGusts:"gusts", wxHumidity:"Humidity", wxLocalTime:"Cape Town time", wxTripTitle:"Your trip, day by day", wxForecast:"Forecast", wxTypical:"Typical", wxCT:"Cape Town", wxGR:"Garden Route", wxUpdated:"Updated {t}.", wxOffline:"Offline: showing saved weather.", noPhotoYet:"No photo yet", needToken:"Connect your GitHub token in 📷 Photos to add photos.", ppPublished:"Published photos on the website: {n}", ppThumbs:"Speed up published photos (make small versions)", thumbsWorking:"Creating small versions… {a}/{b}", thumbsNone:"All published photos already have small versions.", thumbsDone:"Small versions saved. They go live in about a minute.", ppClearPublished:"Delete ALL {n} published photos (for everyone)", ppConfirmClearPublished:"Delete all {n} photos published on the website? This removes them for everyone, right away, in one go. Photos only saved on a device are not affected. This can't be undone.", ghAllCleared:"All published photos deleted. You can start adding photos again now.",  wxTabTrip:"Trip dates", wxTabLive:"Next 16 days", wxTabDate:"Pick a date", wxToday:"Today", wxRecorded:"Recorded", wxLive:"LIVE", wxHourly:"Next 24 hours", wxNowShort:"Now", wxHigh:"High", wxLow:"Low", wxRain:"Rain", wxUV:"UV index", wxSunrise:"Sunrise", wxSunset:"Sunset", wxNoteForecast:"Live forecast from Open-Meteo, updated automatically.", wxNoteRecorded:"Recorded weather for this past date.", wxNoteTypical:"Too far ahead for a forecast, so this is the typical weather for this date (average of the last 5 years).", wxCredit:"Weather data by Open-Meteo.com", wxRefreshBtn:"↻ Refresh", 
   wTypicalHigh:"Typical daytime high", wTypicalLow:"Typical overnight low", wSea:"Sea temperature (cold!)",
   wWind:"Wind (\"Cape Doctor\" SE wind is common)", wRain:"Chance of rain on a given day", wUV:"UV index — sun protection needed",
   wSunrise:"Sunrise (28 Oct → 10 Nov)", wSunset:"Sunset (28 Oct → 10 Nov)",
@@ -861,7 +862,7 @@ ar:{
   heroLead:"كل مكان اخترتماه — قصته، معلومات عملية، أفضل وقت للزيارة، ماذا ترتديان، قوائم طعام حقيقية، وروابط حجز فعلية إن وُجدت. اضغطا على ○ لإضافته لقائمتكما، واضغطا على الصورة لعرضها بالحجم الكامل، وعلى + لإضافة صورتكما.",
   statPlaces:"مكانًا منسقًا", statAreasL:"حيًا", statBookingL:"يحتاج حجزًا مسبقًا",
   weatherTitle:"الطقس وماذا تحضران", weatherDate:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦",
-  weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
+  weatherCaption:"طقس مباشر من Open-Meteo. استخدما التبويبات لعرض تواريخ الرحلة أو الـ١٦ يومًا القادمة أو أي تاريخ تختارانه. التواريخ التي تتجاوز التنبؤ (١٦ يومًا) تعرض الطقس المعتاد (متوسط آخر ٥ سنوات)، والتواريخ الماضية تعرض الطقس المسجّل. حرارة البحر والأشعة فوق البنفسجية والشروق والغروب في البطاقات تقديرات موسمية.", wxLoading:"جارٍ تحميل الطقس المباشر…", wxFail:"الطقس المباشر غير متاح الآن. تحققا من الاتصال واضغطا تحديث.", wxNowIn:"الآن في كيب تاون", wxFeels:"الإحساس", wxWind:"الرياح", wxGusts:"هبات", wxHumidity:"الرطوبة", wxLocalTime:"توقيت كيب تاون", wxTripTitle:"رحلتكما يومًا بيوم", wxForecast:"توقع", wxTypical:"معتاد", wxCT:"كيب تاون", wxGR:"طريق الحدائق", wxUpdated:"آخر تحديث {t}.", wxOffline:"لا يوجد اتصال: تُعرض بيانات محفوظة.", noPhotoYet:"لا توجد صورة بعد", needToken:"اربطا رمز GitHub من 📷 الصور لإضافة الصور.", ppPublished:"الصور المنشورة على الموقع: {n}", ppThumbs:"تسريع الصور المنشورة (إنشاء نسخ صغيرة)", thumbsWorking:"جارٍ إنشاء النسخ الصغيرة… {a}/{b}", thumbsNone:"كل الصور المنشورة لها نسخ صغيرة بالفعل.", thumbsDone:"تم حفظ النسخ الصغيرة. ستعمل خلال دقيقة تقريبًا.", ppClearPublished:"حذف كل الصور المنشورة والبالغ عددها {n} (للجميع)", ppConfirmClearPublished:"حذف جميع الصور المنشورة على الموقع وعددها {n}؟ سيُحذفن للجميع فورًا دفعة واحدة. الصور المحفوظة على جهاز فقط لن تتأثر. لا يمكن التراجع عن هذا.", ghAllCleared:"تم حذف كل الصور المنشورة. يمكنكما البدء بإضافة صور من جديد الآن.",  wxTabTrip:"تواريخ الرحلة", wxTabLive:"الـ١٦ يومًا القادمة", wxTabDate:"اختيار تاريخ", wxToday:"اليوم", wxRecorded:"مسجّل", wxLive:"مباشر", wxHourly:"الـ٢٤ ساعة القادمة", wxNowShort:"الآن", wxHigh:"العظمى", wxLow:"الصغرى", wxRain:"المطر", wxUV:"الأشعة فوق البنفسجية", wxSunrise:"الشروق", wxSunset:"الغروب", wxNoteForecast:"توقعات مباشرة من Open-Meteo تُحدَّث تلقائيًا.", wxNoteRecorded:"طقس مسجّل لهذا التاريخ الماضي.", wxNoteTypical:"التاريخ بعيد جدًا للتنبؤ، لذا هذا هو الطقس المعتاد لهذا التاريخ (متوسط آخر ٥ سنوات).", wxCredit:"بيانات الطقس من Open-Meteo.com", wxRefreshBtn:"↻ تحديث", 
   wTypicalHigh:"الحرارة العظمى المعتادة نهارًا", wTypicalLow:"الحرارة الصغرى المعتادة ليلاً", wSea:"حرارة البحر (باردة!)",
   wWind:"الرياح (رياح \"الطبيب الكيبي\" الجنوبية الشرقية شائعة)", wRain:"احتمال هطول المطر في يوم معين", wUV:"مؤشر الأشعة فوق البنفسجية — الحماية من الشمس ضرورية",
   wSunrise:"الشروق (٢٨ أكتوبر ← ١٠ نوفمبر)", wSunset:"الغروب (٢٨ أكتوبر ← ١٠ نوفمبر)",
@@ -2129,7 +2130,11 @@ function openPanel(){
   const cfg = ghConfig(), unsent = Object.keys(photoData).filter(k=>!pendingMap[k]);
   document.getElementById('ppLocalSec').style.display = n ? '' : 'none';
   document.getElementById('ppThumbs').style.display = cfg ? '' : 'none';
-  document.getElementById('ppPub').textContent = tr('ppPublished').replace('{n}', Object.keys(sharedManifest).filter(k=>/^(gr-)?\d+:\d+$/.test(k)).length);
+  const pubKeys = Object.keys(sharedManifest).filter(k=>/^(gr-)?\d+:\d+$/.test(k));
+  document.getElementById('ppPub').textContent = tr('ppPublished').replace('{n}', pubKeys.length);
+  const cp = document.getElementById('ppClearPublished');
+  cp.style.display = (cfg && pubKeys.length) ? '' : 'none';
+  cp.textContent = tr('ppClearPublished').replace('{n}', pubKeys.length);
   document.getElementById('ghStatus').textContent = cfg ? tr('ghConnected').replace('{r}', cfg.owner + '/' + cfg.repo) : tr('ghNotConnected');
   document.getElementById('ghForm').style.display = cfg ? 'none' : '';
   document.getElementById('ghDisconnect').style.display = cfg ? '' : 'none';
@@ -2163,6 +2168,27 @@ document.getElementById('ghConnect').addEventListener('click', async ()=>{
   }catch(err){ toast(ghErrText(err)); }
 });
 document.getElementById('ghDisconnect').addEventListener('click', ()=>{ ghSaveConfig(null); openPanel(); renderAreas(); renderGardenRoute(); });
+document.getElementById('ppClearPublished').addEventListener('click', async ()=>{
+  const cfg = ghConfig(); if(!cfg) return;
+  const keys = Object.keys(sharedManifest).filter(k=>/^(gr-)?\d+:\d+$/.test(k));
+  if(!keys.length) return;
+  if(!confirm(tr('ppConfirmClearPublished').replace('{n}', keys.length))) return;
+  document.getElementById('ppClearPublished').disabled = true;
+  toast(tr('ghUploadingN').replace('{n}', keys.length));
+  try{
+    await ghSerial(()=>ghCommit(cfg, {removeKeys:keys, message:'Clear all ' + keys.length + ' published photos'}));
+    keys.forEach(k=>{ delete sharedPhotos[k]; delete pendingMap[k]; pendingRemoves.delete(k); });
+    savePending(); savePendingRemoves();
+    toast(tr('ghAllCleared'));
+  }catch(err){
+    console.error(err); toast(ghErrText(err));
+    keys.forEach(k=>{ delete sharedPhotos[k]; pendingRemoves.add(k); });   // hide them locally now, finish deleting on GitHub in the background
+    savePendingRemoves();
+    scheduleUpload(20000);
+  }
+  document.getElementById('ppClearPublished').disabled = false;
+  renderAreas(); renderGardenRoute(); openPanel();
+});
 document.getElementById('ppThumbs').addEventListener('click', async ()=>{
   const cfg = ghConfig(); if(!cfg) return;
   const entries = Object.entries(sharedManifest).filter(([k])=>/^(gr-)?\d+:\d+$/.test(k));
