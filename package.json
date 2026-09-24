@@ -7,7 +7,8 @@
     "folders": "node tools/make-folders.js",
     "photos": "node tools/build-photos.js",
     "missing": "node tools/build-photos.js --missing",
-    "icons": "node tools/make-icons.js"
+    "icons": "node tools/make-icons.js",
+    "app-icons": "node tools/make-app-icons.js"
   },
   "devDependencies": {
     "jsdom": "^26.0.0",

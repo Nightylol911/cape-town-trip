@@ -266,6 +266,18 @@ body.ar .pp-actions button{font-family:'Tajawal',sans-serif;}
 #apForm label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
 #apForm textarea{resize:vertical;font-family:inherit;}
 .onboard-field{display:block;margin-bottom:14px;font-size:12.5px;font-weight:600;color:#6b6157;}
+.onboard-grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}
+@media(max-width:480px){.onboard-grid2{grid-template-columns:1fr;}}
+.onboard-subhead{margin:18px 0 10px;font-size:14.5px;}
+.onboard-city-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--paper-2);border-radius:10px;padding:10px;margin-bottom:8px;}
+.onboard-city-row select{flex:1 1 150px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
+.onboard-city-row .onboard-city-days{width:64px;flex:0 0 64px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
+.onboard-city-row .onboard-city-hotel{flex:1 1 160px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
+.onboard-city-row .onboard-city-hotel:disabled{background:var(--line);color:#8a7f70;}
+.onboard-city-check{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#6b6157;white-space:nowrap;}
+.onboard-city-check input{accent-color:var(--ocean-deep);width:14px;height:14px;}
+.onboard-city-rm{border:none;background:none;color:#b3473b;cursor:pointer;font-size:15px;padding:2px 4px;flex-shrink:0;}
+body.ar .onboard-city-row select,body.ar .onboard-city-row .onboard-city-days,body.ar .onboard-city-row .onboard-city-hotel{font-family:'Tajawal',sans-serif;}
 #onboardSkip{background:none;border:none;color:#8a7f70;text-decoration:underline;text-underline-offset:2px;}
 .ap-detected{background:var(--paper-2);border-radius:10px;padding:8px 12px;font-size:12.5px;margin:-2px 0 10px;}
 .ap-detected.ap-empty{color:#8a7f70;}
@@ -381,6 +393,20 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .fx-label{font-size:12.5px;color:#6b6157;flex:0 0 auto;display:none;}
 @media(min-width:560px){.fx-label{display:block;}}
 .fx-note{font-size:12px;color:#8a7f70;margin:12px 0 0;}
+
+/* USEFUL APPS */
+.apps-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
+.apps-card h2{margin:0;font-size:20px;}
+.apps-cap{font-size:13px;color:#6b6157;margin:4px 0 16px;}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.app-tile{display:flex;gap:12px;align-items:flex-start;background:var(--paper-2);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--ink);border:1px solid transparent;}
+.app-tile:hover{border-color:var(--ocean);background:var(--white);}
+.app-icon{flex-shrink:0;width:40px;height:40px;}
+.app-icon img{width:40px;height:40px;border-radius:9px;object-fit:cover;display:block;}
+.app-icon-fallback{width:40px;height:40px;border-radius:9px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.app-name{font-weight:700;font-size:13.5px;margin-bottom:2px;}
+.app-desc{font-size:12px;color:#6b6157;line-height:1.4;}
+body.ar .app-name,body.ar .app-desc{font-family:'Tajawal',sans-serif;}
 
 /* MAIN TABS */
 .maintabs{max-width:1120px;margin:18px auto 0;padding:0 24px;display:flex;gap:8px;}
@@ -772,6 +798,12 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
   <p class="fx-note" id="fxNote"></p>
 </div>
 
+<div class="apps-card">
+  <h2 data-t="appsTitle"></h2>
+  <p class="apps-cap" data-t="appsCaption"></p>
+  <div class="apps-grid" id="appsGrid"></div>
+</div>
+
 <div class="wrap">
   <div class="section-title"><h2 data-t="planTitle"></h2><span class="n" data-t="planTag"></span></div>
   <p class="section-sub" data-t="planSub"></p>
@@ -902,10 +934,23 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
 </div>
 
 <div class="pp-back" id="onboardBack" hidden>
-  <div class="pp" role="dialog" aria-modal="true" aria-labelledby="onboardTitle">
+  <div class="pp pp-wide" role="dialog" aria-modal="true" aria-labelledby="onboardTitle">
     <h3 id="onboardTitle" data-t="onboardTitle"></h3>
     <p data-t="onboardBody"></p>
-    <label class="onboard-field"><span data-t="onboardDateLabel"></span><input type="date" id="onboardDate"></label>
+
+    <div class="onboard-grid2">
+      <label class="onboard-field"><span data-t="onboardArrival"></span><input type="date" id="onboardArrivalDate"></label>
+      <label class="onboard-field"><span data-t="onboardArrivalTime"></span><input type="time" id="onboardArrivalTime"></label>
+      <label class="onboard-field"><span data-t="onboardDeparture"></span><input type="date" id="onboardDepartDate"></label>
+      <label class="onboard-field"><span data-t="onboardDepartureTime"></span><input type="time" id="onboardDepartTime"></label>
+    </div>
+    <p class="pp-status" id="onboardTotalDays"></p>
+
+    <h4 class="onboard-subhead" data-t="onboardCitiesTitle"></h4>
+    <div id="onboardCities"></div>
+    <button type="button" id="onboardAddCity" class="itin-add-btn" data-t="onboardAddCity"></button>
+    <p class="pp-status" id="onboardDaysCheck"></p>
+
     <p class="pp-status" id="onboardStatus"></p>
     <div class="pp-actions">
       <button type="button" class="pp-primary" id="onboardSave" data-t="onboardSave"></button>
@@ -1085,8 +1130,15 @@ en:{
   pickerTitle:"Add to this day", pickerSearchPh:"🔍 Search restaurants, activities, shopping…",
   fxTitle:"Currency converter", fxCaption:"Type an amount in any currency — the other two update automatically, using the same live rate as the budget tracker.",
   fxLive:"Live rate", fxApprox:"Approximate rate", fxFallback:"Approximate rate — no live connection right now, so this uses a fixed estimate: 1 ZAR ≈ 0.21 SAR, and SAR is pegged at 3.75 per USD.",
-  onboardTitle:"When's your trip?", onboardBody:"This itinerary is built around a specific Cape Town & Garden Route trip. Enter your own arrival date in Cape Town and the calendar, weather forecast and everything else re-dates itself to match — same 14-day plan, your dates.",
-  onboardDateLabel:"Arrival date in Cape Town", onboardSave:"Use my dates", onboardSkip:"Just show me the example dates", onboardNeedDate:"Pick a date first.",
+  appsTitle:"📱 Useful apps", appsCaption:"Tap any app to open its page on the App Store. Links go to an App Store search for the app's exact name, so you land on the right listing for the store you're in — some of these (Mr D, Takealot) are South Africa–specific and may only show up in the South African store.",
+  onboardTitle:"Plan your own trip", onboardBody:"This site is built around a specific Cape Town & Garden Route trip. Give it your own arrival/departure and where you're staying, and it builds you an empty day-by-day plan on those dates and cities — then use \"+ Add\" on any day to fill it in from everything curated here.",
+  onboardArrival:"Arrival date", onboardArrivalTime:"Arrival time", onboardDeparture:"Departure date", onboardDepartureTime:"Departure time",
+  onboardNeedDates:"Pick both dates to see your trip length.", onboardTotalDaysText:"Trip length: {n} days",
+  onboardCitiesTitle:"Where are you staying, and for how long?", onboardAddCity:"+ Add another city",
+  onboardDaysPh:"days", onboardHotelPh:"Hotel name (optional)", onboardNotDecided:"Not decided yet",
+  onboardDaysMatch:"✓ Matches your trip length.", onboardDaysMismatch:"{sum} of {total} days assigned so far — adjust before continuing.",
+  onboardHotelTBD:"Hotel not decided yet", onboardNeedName:"Give every city at least 1 day.",
+  onboardSave:"Build my itinerary", onboardSkip:"Just show me the example trip", onboardNeedDate:"Pick a date first.",
   apOpenBtn:"➕ Add a place", apTitle:"Add a new place", apBody:"Paste a Google Maps link or coordinates and this figures out which neighbourhood (or Garden Route town) it belongs in on its own. Saved to GitHub, so it shows up for both of you, on every device.",
   apName:"Name", apNameAr:"Name (Arabic) — optional", apCategory:"Category", apLocation:"Google Maps link or coordinates",
   apDetectedEmpty:"Paste a location above to detect the section.", apDetectedFound:"📍 {area} — {dist} km away",
@@ -1173,8 +1225,15 @@ ar:{
   pickerTitle:"إضافة إلى هذا اليوم", pickerSearchPh:"🔍 ابحثا عن مطاعم، أنشطة، تسوّق…",
   fxTitle:"محوّل العملات", fxCaption:"اكتبا مبلغًا بأي عملة — والعملتان الأخريان تتحدّثان تلقائيًا، بنفس السعر الحي المستخدم في متتبع الميزانية.",
   fxLive:"سعر حي", fxApprox:"سعر تقريبي", fxFallback:"سعر تقريبي — لا يوجد اتصال حي حاليًا، فيُستخدم تقدير ثابت: ١ راند جنوب أفريقي ≈ ٠.٢١ ريال سعودي، والريال السعودي مربوط بـ٣.٧٥ لكل دولار.",
-  onboardTitle:"متى رحلتكما؟", onboardBody:"خطة الرحلة هذه مبنية على رحلة محددة لكيب تاون وطريق الحدائق. أدخلا تاريخ وصولكما إلى كيب تاون وستتغيّر التواريخ والطقس وكل شيء آخر ليطابق تاريخكما — نفس خطة الـ١٤ يومًا، بتواريخكما أنتما.",
-  onboardDateLabel:"تاريخ الوصول إلى كيب تاون", onboardSave:"استخدما تواريخي", onboardSkip:"أرياني التواريخ المثال فقط", onboardNeedDate:"اختارا تاريخًا أولاً.",
+  appsTitle:"📱 تطبيقات مفيدة", appsCaption:"اضغطا على أي تطبيق لفتح صفحته في App Store. الروابط تفتح بحثًا باسم التطبيق بالضبط، فتصلان للنتيجة الصحيحة حسب متجركما — بعضها (Mr D، Takealot) خاص بجنوب أفريقيا وقد لا يظهر إلا في متجرها.",
+  onboardTitle:"خططا لرحلتكما الخاصة", onboardBody:"هذا الموقع مبني على رحلة محددة لكيب تاون وطريق الحدائق. أدخلا تاريخي وصولكما ومغادرتكما ومدنكما، وسيُنشئ لكما خطة يومية فارغة بتلك التواريخ والمدن — ثم استخدما \"+ إضافة\" في أي يوم لملئها من كل ما هو منسّق هنا.",
+  onboardArrival:"تاريخ الوصول", onboardArrivalTime:"وقت الوصول", onboardDeparture:"تاريخ المغادرة", onboardDepartureTime:"وقت المغادرة",
+  onboardNeedDates:"اختارا التاريخين لمعرفة طول رحلتكما.", onboardTotalDaysText:"طول الرحلة: {n} يومًا",
+  onboardCitiesTitle:"أين ستقيمان، ولكم من الوقت؟", onboardAddCity:"+ أضيفا مدينة أخرى",
+  onboardDaysPh:"أيام", onboardHotelPh:"اسم الفندق (اختياري)", onboardNotDecided:"لم يتقرر بعد",
+  onboardDaysMatch:"✓ يطابق طول رحلتكما.", onboardDaysMismatch:"تم تحديد {sum} من {total} يومًا — عدّلا قبل المتابعة.",
+  onboardHotelTBD:"لم يتقرر الفندق بعد", onboardNeedName:"أعطيا كل مدينة يومًا واحدًا على الأقل.",
+  onboardSave:"أنشئا خطة رحلتنا", onboardSkip:"أرياني الرحلة المثال فقط", onboardNeedDate:"اختارا تاريخًا أولاً.",
   apOpenBtn:"➕ أضف مكانًا", apTitle:"إضافة مكان جديد", apBody:"الصقا رابط خرائط جوجل أو الإحداثيات وسيُحدَّد الحي (أو بلدة طريق الحدائق) تلقائيًا. يُحفظ في GitHub فيظهر لكما على أي جهاز.",
   apName:"الاسم", apNameAr:"الاسم بالعربي — اختياري", apCategory:"التصنيف", apLocation:"رابط خرائط جوجل أو الإحداثيات",
   apDetectedEmpty:"الصقا موقعًا أعلاه لتحديد القسم.", apDetectedFound:"📍 {area} — على بعد {dist} كم",
@@ -3003,7 +3062,7 @@ function setLang(lang){
   document.getElementById('packList').innerHTML = UI[lang].pack.map(t=>`<div class="pack-item"><span class="ic">✔</span><span>${t}</span></div>`).join('');
   const searchEl = document.getElementById('searchInput');
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
-  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather();
+  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather(); renderApps();
   updateCountdown();
   updateDateDisplays();
   fxWidgetRefresh();
@@ -3522,6 +3581,43 @@ const CAR_RENTALS = [
   {n:"Europcar — Cape Town Airport", n_ar:"يوروكار — مطار كيب تاون", rating:3.6, ratingCount:1311, g:gsearch("Europcar Cape Town Airport"), site:"https://www.europcar.co.za/"},
   {n:"First Car Rental — Cape Town Int'l Airport", n_ar:"فيرست كار رنتال — مطار كيب تاون الدولي", rating:3.6, ratingCount:639, g:gsearch("First Car Rental Cape Town International Airport"), site:"https://www.firstcarrental.co.za/"},
 ];
+
+/* App Store links point at a search for the app's exact name rather than a hardcoded numeric
+   app ID — ids are easy to get wrong (or go stale), and a search always lands you on the right
+   listing for whichever country's store you're in. The "za" storefront is used deliberately: a
+   few of these (Mr D, Takealot) are South Africa–specific and may not list at all elsewhere.
+   Icons: each app looks for icons/apps/<slug>.png first (a plain colored-monogram placeholder
+   ships there today — see tools/make-app-icons.js). Drop the real app icon in at that exact
+   path (square, 128px+) any time and it replaces the placeholder automatically, no code change —
+   same GitHub upload flow as adding photos. Falls back to the emoji only if even that 404s. */
+const appStoreSearch = q => 'https://apps.apple.com/za/search?term=' + encodeURIComponent(q);
+const USEFUL_APPS = [
+  {slug:'uber', icon:'🚕', name:'Uber', search:'Uber', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
+  {slug:'bolt', icon:'⚡', name:'Bolt', search:'Bolt Taxi', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
+  {slug:'uber-eats', icon:'🍔', name:'Uber Eats', search:'Uber Eats', desc:"Order food delivery", desc_ar:"طلب توصيل طعام"},
+  {slug:'mr-d', icon:'🛒', name:'Mr D', search:'Mr D Food', desc:"Order groceries & takeaway", desc_ar:"طلب بقالة ووجبات جاهزة"},
+  {slug:'pnp-asap', icon:'🛒', name:'Pick n Pay ASAP!', search:'Pick n Pay asap', desc:"Order grocery delivery", desc_ar:"طلب توصيل بقالة"},
+  {slug:'pnp-smartshopper', icon:'🛍️', name:'Smart Shopper', search:'Smart Shopper Pick n Pay', desc:"Pick n Pay's rewards & shopping app", desc_ar:"تطبيق بيك أند باي للمكافآت والتسوق"},
+  {slug:'checkers-sixty60', icon:'🛒', name:'Checkers Sixty60', search:'Checkers Sixty60', desc:"Order grocery delivery in ~60 minutes", desc_ar:"طلب توصيل بقالة خلال ~٦٠ دقيقة"},
+  {slug:'getyourguide', icon:'🎫', name:'GetYourGuide', search:'GetYourGuide', desc:"Plan your trip and book tours & events", desc_ar:"خططا لرحلتكما واحجزا جولات وفعاليات"},
+  {slug:'klook', icon:'🎡', name:'Klook', search:'Klook Travel', desc:"Book travel and activities", desc_ar:"احجزا سفرًا وأنشطة سياحية"},
+  {slug:'airalo', icon:'🌐', name:'Airalo', search:'Airalo eSIM', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
+  {slug:'nomad', icon:'📶', name:'Nomad', search:'Nomad eSIM', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
+  {slug:'rova', icon:'📡', name:'Rova by STC', search:'Rova eSIM STC', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
+  {slug:'flush', icon:'🚻', name:'Flush', search:'Flush Toilet Finder', desc:"Find a public bathroom, with ratings", desc_ar:"إيجاد حمامات عامة مع تقييمات"},
+  {slug:'skyscanner', icon:'✈️', name:'Skyscanner', search:'Skyscanner Flights', desc:"Compare flight prices", desc_ar:"مقارنة أسعار تذاكر الطيران"},
+  {slug:'wego', icon:'🛫', name:'Wego', search:'Wego Flights Hotels', desc:"Compare flight prices", desc_ar:"مقارنة أسعار تذاكر الطيران"},
+  {slug:'airbnb', icon:'🏠', name:'Airbnb', search:'Airbnb', desc:"Book an apartment to stay in", desc_ar:"حجز شقق للإقامة"},
+  {slug:'takealot', icon:'🛍️', name:'Takealot', search:'Takealot', desc:"South Africa's online retail store", desc_ar:"متجر جنوب أفريقيا الإلكتروني"},
+];
+function renderApps(){
+  const el = document.getElementById('appsGrid');
+  if(!el) return;
+  el.innerHTML = USEFUL_APPS.map(a=>`<a class="app-tile" href="${appStoreSearch(a.search)}" target="_blank" rel="noopener">
+    <span class="app-icon"><img src="icons/apps/${a.slug}.png" alt="" width="40" height="40" loading="lazy" onerror="this.outerHTML='<span class=&quot;app-icon-fallback&quot;>${a.icon}</span>'"></span>
+    <span><span class="app-name">${a.name}</span><span class="app-desc">${LANG==='ar'?a.desc_ar:a.desc}</span></span>
+  </a>`).join('');
+}
 function renderTransport(){
   const el = document.getElementById('transportSection');
   if(!el) return;
@@ -3757,7 +3853,7 @@ function removeFromSlot(day, slot, name){
   renderPlanItinerary();
 }
 function addToSlot(day, slot, name){
-  const base = ITINERARY14[day].blocks[slot].items;
+  const base = currentItinerary()[day].blocks[slot].items;
   if(effectiveSlotItems(day, slot, base).includes(name)){ toast(tr('itinAlready')); return; }
   const key = slotKey(day, slot);
   const o = ITIN_OVERRIDES[key] || {removed:[], added:[]};
@@ -3864,7 +3960,7 @@ function renderPlanItinerary(){
   const el = document.getElementById('planItinerary');
   if(!el) return;
   let html = '';
-  ITINERARY14.forEach((day,i)=>{
+  currentItinerary().forEach((day,i)=>{
     const title = LANG==='ar' ? day.title_ar : day.title;
     const tip = LANG==='ar' ? day.tip_ar : day.tip;
     const dayLabel = LANG==='ar' ? `اليوم ${i+1}` : `Day ${i+1}`;
@@ -3896,7 +3992,7 @@ function renderPlanItinerary(){
     btn.addEventListener('click', ()=> openPicker(+btn.dataset.addday, +btn.dataset.addslot));
   });
   el.querySelectorAll('[data-resetday]').forEach(btn=>{
-    btn.addEventListener('click', ()=> resetItinDay(+btn.dataset.resetday, ITINERARY14[+btn.dataset.resetday].blocks.length));
+    btn.addEventListener('click', ()=> resetItinDay(+btn.dataset.resetday, currentItinerary()[+btn.dataset.resetday].blocks.length));
   });
 }
 
@@ -4089,10 +4185,11 @@ function resolveRef(ref){
 
 function buildPrintModel(){
   const used = new Set(); let stay = null;
-  const days = ITINERARY14.map((d, i)=>{
+  const itin = currentItinerary();
+  const days = itin.map((d, i)=>{
     if(d.hotel) stay = d.hotel;
     const blocks = d.blocks.map((b,j)=>({label:pt(b,'slot'), items:effectiveSlotItems(i, j, b.items).map(r=>{ const it = resolveRef(r); if(it) used.add(it.id); return it; }).filter(Boolean)}));
-    return {i, title:pt(d,'title'), tip:pt(d,'tip'), date:dayDateLabel(isoPlusDays(effectiveTripStart(), i)), hotel:d.hotel ? resolveRef(d.hotel) : null, stay:(i === ITINERARY14.length-1) ? null : (stay ? resolveRef(stay) : null), blocks};
+    return {i, title:pt(d,'title'), tip:pt(d,'tip'), date:dayDateLabel(isoPlusDays(effectiveTripStart(), i)), hotel:d.hotel ? resolveRef(d.hotel) : null, stay:(i === itin.length-1) ? null : (stay ? resolveRef(stay) : null), blocks};
   });
   const groups = {}, already = [];
   const add = (label, it)=>{ if(!it) return; if(used.has(it.id)){ already.push(it.name); return; } (groups[label] = groups[label] || []).push(it); };
@@ -4210,16 +4307,24 @@ document.getElementById('icsBtnPlan').addEventListener('click', ()=>downloadTrip
    - Dates beyond the 16-day forecast show typical weather (average of the same dates over the last 5 years).
    - Past dates show recorded weather. Falls back to the last saved data when offline. */
 const WX_LOC = {ct:{lat:-33.9249, lon:18.4241}, gr:{lat:-34.0361, lon:23.0487}};   // Cape Town, Knysna (Garden Route)
-/* REAL_TRIP_START is the owner's actual booked trip. Everyone else who isn't GitHub-connected
-   (see isOwner()) picks their own arrival date on first visit (see the onboarding modal below),
-   kept in VISITOR_START — the same 14-day day-by-day plan just gets re-dated onto whatever date
-   they choose. effectiveTripStart() is what the rest of the page (itinerary dates, weather
-   window, countdown, ICS export) should always read instead of a fixed constant. */
+/* REAL_TRIP_START/TRIP_DAYS are the owner's actual booked trip (the ITINERARY14 array below).
+   Everyone else who isn't GitHub-connected (see isOwner()) either skips onboarding — and gets
+   that same real 14-day plan, just so they can see what it looks like — or builds their own
+   trip (own arrival/departure, own cities and day-counts, own hotels) in the onboarding modal,
+   which generates a day-by-day skeleton into CUSTOM_ITIN for them to fill in with the same
+   "+ Add" picker the real plan uses. currentItinerary()/effectiveTripStart()/effectiveTripDays()
+   are what the rest of the page should always read instead of the fixed constants directly. */
 const REAL_TRIP_START = '2026-10-28', TRIP_DAYS = 14;
-let VISITOR_START = null;
+let VISITOR_START = null, CUSTOM_ITIN = null;
 try{ VISITOR_START = localStorage.getItem('ctgr_visitor_start'); }catch(e){}
+try{
+  const saved = JSON.parse(localStorage.getItem('ctgr_custom_itin') || 'null');
+  if(Array.isArray(saved) && saved.length) CUSTOM_ITIN = saved;
+}catch(e){}
 function isOwner(){ return !!ghConfig(); }
 function effectiveTripStart(){ return isOwner() ? REAL_TRIP_START : (VISITOR_START || REAL_TRIP_START); }
+function currentItinerary(){ return (!isOwner() && CUSTOM_ITIN) ? CUSTOM_ITIN : ITINERARY14; }
+function effectiveTripDays(){ return (!isOwner() && CUSTOM_ITIN) ? CUSTOM_ITIN.length : TRIP_DAYS; }
 const WX_HIST_YEARS = 5, WX_LS = 'ctgr_wxc_v2';
 let wxTab = 'trip', wxLoc = 'ct', wxPick = '', wxSeq = 0, wxStale = false, wxBusy = false, wxLastFetch = 0;
 const WX = {now:null, hourly:[], today:'', updated:0, status:'loading'};
@@ -4251,28 +4356,31 @@ function shortDateLabel(iso){   // "28 Oct" / "٢٨ أكتوبر" — no weekday
   const d = new Date(iso + 'T00:00:00');
   return LANG === 'ar' ? `${d.getDate()} ${MONTHS_AR[d.getMonth()]}` : `${d.getDate()} ${MONTHS_EN[d.getMonth()]}`;
 }
+const arDigits = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
 function dateRangeLabel(startIso, days){   // "28 Oct – 10 Nov 2026" / "٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦"
   const endIso = isoPlusDays(startIso, days - 1), e = new Date(endIso + 'T00:00:00');
-  const endYear = LANG === 'ar' ? String(e.getFullYear()).replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[d]) : e.getFullYear();
+  const endYear = LANG === 'ar' ? arDigits(e.getFullYear()) : e.getFullYear();
   return `${shortDateLabel(startIso)} – ${shortDateLabel(endIso)} ${endYear}`;
 }
 /* Re-derives every on-screen date-range string from effectiveTripStart() — called after
    language changes and whenever a visitor picks (or the owner's identity determines) the
    trip's dates. Kept as one function so nothing here can drift out of sync with the others. */
 function updateDateDisplays(){
-  const start = effectiveTripStart();
-  const range = dateRangeLabel(start, TRIP_DAYS);
-  const startShort = shortDateLabel(start), endShort = shortDateLabel(isoPlusDays(start, TRIP_DAYS - 1));
+  const start = effectiveTripStart(), days = effectiveTripDays();
+  const range = dateRangeLabel(start, days);
+  const startShort = shortDateLabel(start), endShort = shortDateLabel(isoPlusDays(start, days - 1));
   const ar = LANG === 'ar';
 
+  const nDays = ar ? arDigits(days) : days, nNights = ar ? arDigits(days - 1) : (days - 1);
+
   const eyebrowEl = document.querySelector('.eyebrow');
-  if(eyebrowEl) eyebrowEl.textContent = `${range} · ${ar ? '١٤ يومًا / ١٣ ليلة · لكما فقط' : '14 Days / 13 Nights · Just the two of you'}`;
+  if(eyebrowEl) eyebrowEl.textContent = `${range} · ${ar ? `${nDays} يومًا / ${nNights} ليلة · لكما فقط` : `${nDays} Days / ${nNights} Nights · Just the two of you`}`;
 
   const wxTag = document.querySelector('.weather-tag');
   if(wxTag) wxTag.textContent = range;
 
   const planTag = document.querySelector('[data-t="planTag"]');
-  if(planTag) planTag.textContent = `${range} · ${ar ? '١٤ يومًا / ١٣ ليلة' : '14 days / 13 nights'}`;
+  if(planTag) planTag.textContent = `${range} · ${ar ? `${nDays} يومًا / ${nNights} ليلة` : `${nDays} days / ${nNights} nights`}`;
 
   const sunriseLbl = document.querySelector('[data-t="wSunrise"]');
   if(sunriseLbl) sunriseLbl.textContent = ar ? `الشروق (${startShort} ← ${endShort})` : `Sunrise (${startShort} → ${endShort})`;
@@ -4284,40 +4392,175 @@ function updateDateDisplays(){
     planSub.textContent = isOwner()
       ? (ar ? `الوصول ${startShort} الساعة ١٠:٣٠ص حتى المغادرة ${endShort} الساعة ١٢:٣٥ظ — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية عبر ٥ إقامات. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
              : `Arrival ${startShort} at 10:30am to departure ${endShort} at 12:35pm — that's 14 calendar days and 13 hotel nights across 5 stays. Transport details first, full itinerary below.`)
-      : (ar ? `الوصول ${startShort} حتى المغادرة ${endShort} — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية، بنفس خطة الرحلة الأصلية يومًا بيوم. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
-             : `Arrival ${startShort} to departure ${endShort} — 14 calendar days and 13 hotel nights, using the same day-by-day plan as the original trip. Transport details first, full itinerary below.`);
+      : (ar ? `الوصول ${startShort} حتى المغادرة ${endShort} — أي ${nDays} يومًا تقويميًا و${nNights} ليلة فندقية عبر توقفاتكما. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
+             : `Arrival ${startShort} to departure ${endShort} — ${nDays} calendar days and ${nNights} hotel nights across your stops. Transport details first, full itinerary below.`);
   }
 }
 
 /* ---------- ONBOARDING (visitors who aren't the owner) ----------
    isOwner() (a saved GitHub token — see ghConfig()) is treated as "signed in" per how the rest
-   of the site already uses that connection. Anyone else picks their own arrival date once; it's
-   remembered from then on (ctgr_visitor_start), and everything date-related re-derives from it
-   via effectiveTripStart() instead of the owner's real, fixed trip dates. */
+   of the site already uses that connection. Anyone else either skips (sees the real 14-day trip
+   as an example, unchanged) or builds their own: their own arrival/departure, their own cities
+   and day-counts, their own hotels (or "not decided yet"). That builds an empty day-by-day
+   skeleton (CUSTOM_ITIN) on those dates/cities, which currentItinerary() then serves everywhere
+   instead of ITINERARY14 — the existing "+ Add" picker, notes, budget etc. all already work on
+   "whatever the itinerary array is" and need no changes to handle it. */
+const ONBOARD_CITIES = [
+  {key:'cape-town', en:'Cape Town', ar:'كيب تاون', region:'cape-town'},
+  {key:'Hermanus', en:'Hermanus', ar:'هيرمانوس', region:'garden-route'},
+  {key:'Mossel Bay', en:'Mossel Bay', ar:'موسيل باي', region:'garden-route'},
+  {key:'George', en:'George', ar:'جورج', region:'garden-route'},
+  {key:'Oudtshoorn', en:'Oudtshoorn', ar:'أودتسهورن', region:'garden-route'},
+  {key:'Wilderness', en:'Wilderness', ar:'ويلدرنس', region:'garden-route'},
+  {key:'Sedgefield', en:'Sedgefield', ar:'سيدجفيلد', region:'garden-route'},
+  {key:'Knysna', en:'Knysna', ar:'كنيسنا', region:'garden-route'},
+  {key:'Plettenberg Bay', en:'Plettenberg Bay', ar:'بليتنبرغ باي', region:'garden-route'},
+  {key:'Tsitsikamma', en:'Tsitsikamma', ar:'تسيتسيكاما', region:'garden-route'},
+  {key:'safari', en:'Safari lodge', ar:'نزل سفاري', region:'safari'},
+];
+const ONBOARD_SLOTS = [
+  {slot:'Breakfast', slot_ar:'الفطور'}, {slot:'Morning', slot_ar:'الصباح'}, {slot:'Lunch', slot_ar:'الغداء'},
+  {slot:'Afternoon', slot_ar:'بعد الظهر'}, {slot:'Dinner', slot_ar:'العشاء'},
+];
 function onDateChanged(){
   updateDateDisplays();
   renderPlanItinerary();
   updateCountdown();
   loadWeather(true);
 }
+function onboardCityLabel(key){
+  const c = ONBOARD_CITIES.find(x=>x.key===key);
+  return c ? (LANG==='ar' ? c.ar : c.en) : key;
+}
+function onboardCityRowHtml(){
+  return `<div class="onboard-city-row">
+    <select class="onboard-city-select">${ONBOARD_CITIES.map(c=>`<option value="${c.key}">${LANG==='ar'?c.ar:c.en}</option>`).join('')}</select>
+    <input type="number" class="onboard-city-days" min="1" max="60" placeholder="${tr('onboardDaysPh')}">
+    <input type="text" class="onboard-city-hotel" placeholder="${tr('onboardHotelPh')}">
+    <label class="onboard-city-check"><input type="checkbox" class="onboard-city-nodecide">${tr('onboardNotDecided')}</label>
+    <button type="button" class="onboard-city-rm" aria-label="${tr('itinRemove')}">✕</button>
+  </div>`;
+}
+function wireOnboardCityRow(row){
+  row.querySelector('.onboard-city-days').addEventListener('input', updateOnboardDaysCheck);
+  row.querySelector('.onboard-city-nodecide').addEventListener('change', (e)=>{
+    const hotelInput = row.querySelector('.onboard-city-hotel');
+    hotelInput.disabled = e.target.checked;
+    if(e.target.checked) hotelInput.value = '';
+  });
+  row.querySelector('.onboard-city-rm').addEventListener('click', ()=>{
+    if(document.querySelectorAll('.onboard-city-row').length <= 1) return;
+    row.remove();
+    updateOnboardDaysCheck();
+  });
+}
+function addOnboardCityRow(){
+  const wrap = document.getElementById('onboardCities');
+  wrap.insertAdjacentHTML('beforeend', onboardCityRowHtml());
+  wireOnboardCityRow(wrap.lastElementChild);
+  updateOnboardDaysCheck();
+}
+function computeOnboardTotalDays(){
+  const aD = document.getElementById('onboardArrivalDate').value, dD = document.getElementById('onboardDepartDate').value;
+  if(!aD || !dD) return null;
+  const a = new Date(aD + 'T00:00:00'), d = new Date(dD + 'T00:00:00');
+  const days = Math.round((d - a) / 864e5) + 1;
+  return days > 0 ? days : null;
+}
+function updateOnboardDaysCheck(){
+  const total = computeOnboardTotalDays();
+  const totalEl = document.getElementById('onboardTotalDays'), checkEl = document.getElementById('onboardDaysCheck'), saveBtn = document.getElementById('onboardSave');
+  totalEl.textContent = total ? tr('onboardTotalDaysText').replace('{n}', LANG==='ar'?arDigits(total):total) : tr('onboardNeedDates');
+  const sum = [...document.querySelectorAll('.onboard-city-days')].reduce((s,i)=> s + (parseInt(i.value,10) || 0), 0);
+  if(!total){ checkEl.textContent = ''; saveBtn.disabled = true; return; }
+  if(sum === total){ checkEl.textContent = tr('onboardDaysMatch'); checkEl.style.color = 'var(--sage)'; saveBtn.disabled = false; }
+  else{ checkEl.textContent = tr('onboardDaysMismatch').replace('{sum}', LANG==='ar'?arDigits(sum):sum).replace('{total}', LANG==='ar'?arDigits(total):total); checkEl.style.color = '#b3473b'; saveBtn.disabled = true; }
+}
+function onboardArrivalTip(cityLabel, time){
+  return LANG==='ar'
+    ? `تصلان اليوم${time?` الساعة ${time}`:''}. خصصا اليوم الأول للاستقرار — تسجيل الدخول، استراحة، وجولة هادئة أولى في ${cityLabel}.`
+    : `You arrive today${time?` at ${time}`:''}. Keep day one easy — check in, settle in, and a gentle first look around ${cityLabel}.`;
+}
+function onboardDepartureTip(time){
+  return LANG==='ar'
+    ? `رحلة المغادرة اليوم${time?` الساعة ${time}`:''}. أبقيا الصباح لتناول الفطور وتسجيل الخروج فقط.`
+    : `Your flight leaves today${time?` at ${time}`:''}. Keep the morning to breakfast and checkout, nothing more.`;
+}
+function onboardTravelTip(cityLabel){
+  return LANG==='ar' ? `يوم انتقال إلى ${cityLabel}.` : `Travel day to ${cityLabel}.`;
+}
+function onboardStayTip(cityLabel){
+  return LANG==='ar'
+    ? `يوم حر في ${cityLabel} — استخدما زر "+ إضافة" في كل فترة لاختيار أنشطتكما من القائمة.`
+    : `Free day in ${cityLabel} — use the "+ Add" button on each time slot to pick your own activities from the list.`;
+}
+function buildCustomSkeleton(plan){
+  const days = [], totalDays = plan.cities.reduce((s,c)=>s+c.days, 0);
+  let dayIdx = 0;
+  plan.cities.forEach((c, cIdx)=>{
+    const meta = ONBOARD_CITIES.find(x=>x.key===c.key) || {en:c.key, ar:c.key, region:'cape-town'};
+    const cityLabel = LANG==='ar' ? meta.ar : meta.en;
+    const hotelName = c.undecided || !c.hotel ? tr('onboardHotelTBD') : c.hotel;
+    for(let k=0; k<c.days; k++){
+      const isFirst = dayIdx===0, isLast = dayIdx===totalDays-1, isCityFirst = k===0;
+      let tip;
+      if(isFirst) tip = onboardArrivalTip(cityLabel, plan.arrivalTime);
+      else if(isLast) tip = onboardDepartureTip(plan.departTime);
+      else if(isCityFirst && cIdx>0) tip = onboardTravelTip(cityLabel);
+      else tip = onboardStayTip(cityLabel);
+      const title = isCityFirst && cIdx>0 ? (LANG==='ar'?`الانتقال إلى ${cityLabel}`:`Travel to ${cityLabel}`) : cityLabel;
+      days.push({
+        title, title_ar:title, tip, tip_ar:tip, region:meta.region,
+        hotel: isCityFirst ? {n:hotelName, n_ar:hotelName, g:gsearch(hotelName+' '+cityLabel), note:'', note_ar:'', hotel:true} : null,
+        blocks: ONBOARD_SLOTS.map(s=>({slot:s.slot, slot_ar:s.slot_ar, items:[]})),
+      });
+      dayIdx++;
+    }
+  });
+  return days;
+}
 function initOnboarding(){
   const back = document.getElementById('onboardBack');
   if(!back) return;
-  const dateInput = document.getElementById('onboardDate'), status = document.getElementById('onboardStatus'),
-    saveBtn = document.getElementById('onboardSave'), skipBtn = document.getElementById('onboardSkip');
+  const status = document.getElementById('onboardStatus'), saveBtn = document.getElementById('onboardSave'), skipBtn = document.getElementById('onboardSkip');
   function maybeShow(){ back.hidden = isOwner() || !!VISITOR_START; }
   maybeShow();
+  if(!document.querySelector('.onboard-city-row')) addOnboardCityRow();
+  document.getElementById('onboardAddCity').addEventListener('click', addOnboardCityRow);
+  ['onboardArrivalDate','onboardDepartDate'].forEach(id=> document.getElementById(id).addEventListener('input', updateOnboardDaysCheck));
+  wireOnboardCityRow(document.querySelector('.onboard-city-row'));
+
   saveBtn.addEventListener('click', ()=>{
-    const val = dateInput.value;
-    if(!val){ status.textContent = tr('onboardNeedDate'); return; }
-    VISITOR_START = val;
-    try{ localStorage.setItem('ctgr_visitor_start', val); }catch(e){}
+    const arrivalDate = document.getElementById('onboardArrivalDate').value, arrivalTime = document.getElementById('onboardArrivalTime').value;
+    const departDate = document.getElementById('onboardDepartDate').value, departTime = document.getElementById('onboardDepartTime').value;
+    const total = computeOnboardTotalDays();
+    if(!arrivalDate || !departDate || !total){ status.textContent = tr('onboardNeedDates'); return; }
+    const rows = [...document.querySelectorAll('.onboard-city-row')];
+    const cities = rows.map(row=>({
+      key: row.querySelector('.onboard-city-select').value,
+      days: parseInt(row.querySelector('.onboard-city-days').value, 10) || 0,
+      hotel: row.querySelector('.onboard-city-hotel').value.trim(),
+      undecided: row.querySelector('.onboard-city-nodecide').checked,
+    }));
+    if(cities.some(c=>c.days < 1)){ status.textContent = tr('onboardNeedName'); return; }
+    const sum = cities.reduce((s,c)=>s+c.days, 0);
+    if(sum !== total){ status.textContent = tr('onboardDaysMismatch').replace('{sum}', sum).replace('{total}', total); return; }
+
+    VISITOR_START = arrivalDate;
+    CUSTOM_ITIN = buildCustomSkeleton({arrivalTime, departTime, cities});
+    try{
+      localStorage.setItem('ctgr_visitor_start', arrivalDate);
+      localStorage.setItem('ctgr_custom_itin', JSON.stringify(CUSTOM_ITIN));
+      localStorage.removeItem('ctgr_itin_overrides');   // a fresh plan shouldn't inherit stray add/remove deltas from anything earlier
+    }catch(e){}
+    ITIN_OVERRIDES = {};
     back.hidden = true;
     onDateChanged();
   });
   skipBtn.addEventListener('click', ()=>{
     VISITOR_START = REAL_TRIP_START;
-    try{ localStorage.setItem('ctgr_visitor_start', VISITOR_START); }catch(e){}
+    CUSTOM_ITIN = null;
+    try{ localStorage.setItem('ctgr_visitor_start', VISITOR_START); localStorage.removeItem('ctgr_custom_itin'); }catch(e){}
     back.hidden = true;
     onDateChanged();
   });
@@ -4326,16 +4569,16 @@ function initOnboarding(){
 function updateCountdown(){
   const b = document.getElementById('statCountdown'), lbl = document.getElementById('countdownLabel');
   if(!b || !lbl) return;
-  const todayIso = isoToday();
+  const todayIso = isoToday(), days = effectiveTripDays();
   const start = new Date(effectiveTripStart() + 'T00:00:00'), today = new Date(todayIso + 'T00:00:00');
-  const end = new Date(isoPlusDays(effectiveTripStart(), TRIP_DAYS - 1) + 'T00:00:00');
+  const end = new Date(isoPlusDays(effectiveTripStart(), days - 1) + 'T00:00:00');
   const daysTo = Math.round((start - today) / 864e5);
   if(daysTo > 0){
     b.textContent = daysTo.toLocaleString(LANG==='ar' ? 'ar' : 'en-US');
     lbl.textContent = tr('statCountdownDefault');
   } else if(today <= end){
     const dayNum = Math.round((today - start) / 864e5) + 1;
-    b.textContent = dayNum + ' / ' + TRIP_DAYS;
+    b.textContent = dayNum + ' / ' + days;
     lbl.textContent = tr('statCountdownToday');
   } else {
     b.textContent = '🎉';
@@ -4379,7 +4622,7 @@ function downloadICS(filename, text){
   toast(tr('icsAdded'));
 }
 function icsEventForDay(i){
-  const day = ITINERARY14[i];
+  const day = currentItinerary()[i];
   const title = (LANG==='ar' ? day.title_ar : day.title) || '';
   const tip = (LANG==='ar' ? day.tip_ar : day.tip) || '';
   const items = day.blocks.map((b,j)=>{
@@ -4396,7 +4639,7 @@ function downloadTripICS(dayIndex){
   if(typeof dayIndex === 'number'){
     downloadICS(`cape-town-trip-day-${dayIndex+1}.ics`, buildICS([icsEventForDay(dayIndex)]));
   } else {
-    downloadICS('cape-town-trip.ics', buildICS(ITINERARY14.map((_, i)=>icsEventForDay(i))));
+    downloadICS('cape-town-trip.ics', buildICS(currentItinerary().map((_, i)=>icsEventForDay(i))));
   }
 }
 
@@ -4662,7 +4905,7 @@ function wxRenderDetail(){
 /* tiles under the strip: typical Cape Town numbers for the trip dates */
 async function wxTiles(){
   try{
-    const typ = (await wxTypicalWindow('ct', effectiveTripStart(), TRIP_DAYS)).filter(Boolean);
+    const typ = (await wxTypicalWindow('ct', effectiveTripStart(), effectiveTripDays())).filter(Boolean);
     if(!typ.length) return;
     const rng = f=>{ const v = typ.map(f); return [Math.round(Math.min(...v)), Math.round(Math.max(...v))]; };
     const r = a=>a[0] === a[1] ? String(a[0]) : a[0] + '–' + a[1];
@@ -4680,8 +4923,9 @@ async function wxShow(){
   let days = [];
   try{
     if(wxTab === 'trip'){
-      const [ct, gr] = await Promise.all([wxDaysFor('ct', effectiveTripStart(), TRIP_DAYS), wxDaysFor('gr', effectiveTripStart(), TRIP_DAYS)]);
-      days = ct.map((d, i)=>(ITINERARY14[i] && ITINERARY14[i].region === 'garden-route') ? gr[i] : d);
+      const [ct, gr] = await Promise.all([wxDaysFor('ct', effectiveTripStart(), effectiveTripDays()), wxDaysFor('gr', effectiveTripStart(), effectiveTripDays())]);
+      const itin = currentItinerary();
+      days = ct.map((d, i)=>(itin[i] && itin[i].region === 'garden-route') ? gr[i] : d);
     }else if(wxTab === 'live'){
       days = await wxDaysFor(wxLoc, WX.today || wxIsoToday(), 16);
     }else{
