@@ -169,6 +169,8 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .itin-chip-rm:hover{background:#b3473b;color:#fff;}
 .itin-add-btn{border:1px dashed var(--line);background:none;color:#8a7f70;padding:6px 10px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;}
 .itin-add-btn:hover{border-color:var(--ocean);color:var(--ocean-deep);background:var(--paper-2);}
+.itin-add-btn:disabled{opacity:.45;cursor:not-allowed;}
+.itin-add-btn:disabled:hover{border-color:var(--line);color:#8a7f70;background:none;}
 .itin-reset-btn{border:none;background:none;color:#8a7f70;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:6px;line-height:1;}
 .itin-reset-btn:hover{background:var(--paper-2);color:var(--ocean-deep);}
 .area-head{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:18px;}
@@ -271,7 +273,7 @@ body.ar .pp-actions button{font-family:'Tajawal',sans-serif;}
 .onboard-subhead{margin:18px 0 10px;font-size:14.5px;}
 .onboard-city-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--paper-2);border-radius:10px;padding:10px;margin-bottom:8px;}
 .onboard-city-row select{flex:1 1 150px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
-.onboard-city-row .onboard-city-days{width:64px;flex:0 0 64px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
+.onboard-city-row .onboard-city-days{width:84px;flex:0 0 84px;padding:8px 6px 8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
 .onboard-city-row .onboard-city-hotel{flex:1 1 160px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
 .onboard-city-row .onboard-city-hotel:disabled{background:var(--line);color:#8a7f70;}
 .onboard-city-check{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#6b6157;white-space:nowrap;}
@@ -786,9 +788,14 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     <a href="https://x.com/KSAembassyza/status/2074419704664395899?s=20" target="_blank" class="tn-link">🕌 <span data-t="tnEmbassy"></span></a>
     <a href="tel:8008440886" class="tn-link">✈️ <span data-t="tnQatarTitle"></span>: <b data-t="tnQatarPhone"></b></a>
     <a href="https://www.qatarairways.com/en/help/feedback.html" target="_blank" class="tn-link">✉️ <span data-t="tnQatarContactForm"></span></a>
+    <a href="tel:8008500286" class="tn-link">✈️ <span data-t="tnEthiopianTitle"></span>: <b data-t="tnEthiopianPhone"></b></a>
+    <a href="https://www.ethiopianairlines.com/sa/services/help-and-contact/support-and-feedback" target="_blank" class="tn-link">✉️ <span data-t="tnEthiopianContactForm"></span></a>
+    <a href="tel:8008500022" class="tn-link">✈️ <span data-t="tnEmiratesTitle"></span>: <b data-t="tnEmiratesPhone"></b></a>
+    <a href="https://www.emirates.com/sa/english/help/" target="_blank" class="tn-link">✉️ <span data-t="tnEmiratesContactForm"></span></a>
   </div>
   <p class="tn-cap" data-t="tnCaption"></p>
   <p class="tn-cap" data-t="tnQatarNote"></p>
+  <p class="tn-cap" data-t="tnOtherAirlinesNote"></p>
 </div>
 
 <div class="fx-card">
@@ -1059,7 +1066,8 @@ en:{
   eyebrow:"28 Oct – 10 Nov 2026 · 14 Days / 13 Nights · Just the two of you",
   heroTitle:'Choose your own<br><em>Cape Town</em>',
   heroTitles:{
-    plan:'Your 14-Day, 13-Night<br><em>South Africa</em> trip',
+    // 'plan' is intentionally absent — updateHeroTitle() builds it fresh via planHeroTitle()
+    // since it states the trip's actual length, which varies by viewer (see visitorPending()).
     capetown:'Choose your own<br><em>Cape Town</em>',
     gardenroute:'Explore the<br><em>Garden Route</em>',
     safari:'Choose your<br><em>Safari</em>',
@@ -1095,6 +1103,9 @@ en:{
   searchPlaceholder:"🔍 Search everything — activities, restaurants, coffee, safari lodges…",
   tnQatarTitle:"Qatar Airways contact", tnQatarPhone:"8008 4408 86 (STC) / 8008 5001 17 (other providers)", tnQatarContactForm:"Qatar Airways contact form (no direct email published)",
   tnQatarNote:"Qatar Airways' Saudi Arabia contact centre runs 24/7 on the toll-free numbers above (STC and other providers) — double-check them closer to your trip, as airline contact numbers do change. They don't publish a direct customer-service email; the contact form above is the official channel instead. Keep this handy for booking changes, baggage questions, or delays — both flights route through Doha. Save your booking reference (PNR) and check in online 24 hours before each flight.",
+  tnEthiopianTitle:"Ethiopian Airlines contact", tnEthiopianPhone:"800 850 0286 (Saudi Arabia toll-free)", tnEthiopianContactForm:"Ethiopian Airlines support & feedback form",
+  tnEmiratesTitle:"Emirates contact", tnEmiratesPhone:"800 850 0022 (KSA) / 800 844 2000 (roaming)", tnEmiratesContactForm:"Emirates help & contact (Saudi Arabia)",
+  tnOtherAirlinesNote:"The Riyadh–Doha–Cape Town flights above are on Qatar Airways — Ethiopian and Emirates are included too since a visitor building their own itinerary here may be flying either of those instead.",
   freeLabel:"Free", weakSignal:"Weak signal", weakSignalTip:"Patchy or no cell coverage here — download offline maps before you go.",
   budgetTotal:"Estimated total so far:", budgetApprox:"(rough estimate, per person)",
   ttOfflineTitle:"Offline maps — do this before you leave Cape Town", ttOfflineBody:"Cell coverage gets patchy or drops out completely in several spots on this trip — Cape Point, Chapman's Peak, Tsitsikamma National Park, Cango Caves, forest activities around Wilderness/Knysna, and most safari reserves. Before you leave Cape Town (while you still have strong signal and Wi-Fi), download offline areas in Google Maps for the whole Garden Route corridor — open Google Maps → your profile icon → Offline maps → Select your own map, and drag the box to cover Cape Town to Tsitsikamma. Cards with a 📶 badge below are the spots most likely to have poor coverage.",
@@ -1156,7 +1167,6 @@ ar:{
   eyebrow:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦ · ١٤ يومًا / ١٣ ليلة · لكما فقط",
   heroTitle:'اختارا رحلتكما في<br><em>كيب تاون</em>',
   heroTitles:{
-    plan:'رحلتكما لـ١٤ يومًا و١٣ ليلة في<br><em>جنوب أفريقيا</em>',
     capetown:'اختارا رحلتكما في<br><em>كيب تاون</em>',
     gardenroute:'اكتشفا<br><em>طريق الحدائق</em>',
     safari:'اختارا رحلة<br><em>السفاري</em>',
@@ -1192,6 +1202,9 @@ ar:{
   searchPlaceholder:"🔍 ابحثا عن أي شيء — أنشطة، مطاعم، قهوة، نُزل سفاري…",
   tnQatarTitle:"التواصل مع القطرية", tnQatarPhone:"٨٠٠٨ ٤٤٠٨ ٨٦ (STC) / ٨٠٠٨ ٥٠٠١ ١٧ (مزوّدون آخرون)", tnQatarContactForm:"نموذج تواصل القطرية (لا يوجد بريد إلكتروني مباشر منشور)",
   tnQatarNote:"مركز اتصال القطرية بالسعودية يعمل ٢٤/٧ على الأرقام المجانية أعلاه (STC ومزوّدون آخرون) — تأكدا منها قرب موعد رحلتكما لأن أرقام التواصل قد تتغير. لا تنشر الشركة بريدًا إلكترونيًا مباشرًا لخدمة العملاء؛ نموذج التواصل أعلاه هو القناة الرسمية بدلاً منه. احتفظا بهذا الرقم لتعديل الحجز أو استفسارات الأمتعة أو التأخير — كلا الرحلتين عبر الدوحة. احتفظا برقم الحجز (PNR) وسجّلا الدخول إلكترونيًا قبل كل رحلة بـ٢٤ ساعة.",
+  tnEthiopianTitle:"التواصل مع الإثيوبية", tnEthiopianPhone:"٨٠٠ ٨٥٠ ٠٢٨٦ (مجاني داخل السعودية)", tnEthiopianContactForm:"نموذج الدعم والتواصل للخطوط الإثيوبية",
+  tnEmiratesTitle:"التواصل مع طيران الإمارات", tnEmiratesPhone:"٨٠٠ ٨٥٠ ٠٠٢٢ (داخل السعودية) / ٨٠٠ ٨٤٤ ٢٠٠٠ (تجوال)", tnEmiratesContactForm:"صفحة المساعدة والتواصل لطيران الإمارات (السعودية)",
+  tnOtherAirlinesNote:"رحلات الرياض–الدوحة–كيب تاون أعلاه على متن القطرية — أُضيفت الإثيوبية والإمارات أيضًا لأن أي زائر يبني خطته الخاصة هنا قد يسافر على متن إحداهما بدلاً من ذلك.",
   freeLabel:"مجاني", weakSignal:"إشارة ضعيفة", weakSignalTip:"تغطية جوال ضعيفة أو منعدمة هنا — حمّلا خرائط بدون إنترنت قبل الذهاب.",
   budgetTotal:"الإجمالي التقريبي حتى الآن:", budgetApprox:"(تقدير تقريبي، للشخص الواحد)",
   ttOfflineTitle:"خرائط بدون إنترنت — افعلا هذا قبل مغادرة كيب تاون", ttOfflineBody:"تغطية الجوال تضعف أو تنقطع تمامًا في عدة أماكن في هذه الرحلة — كيب بوينت، رأس تشابمان، محمية تسيتسيكاما الوطنية، كهوف كانجو، أنشطة الغابات حول ويلدرنس/كنيسنا، ومعظم محميات السفاري. قبل مغادرة كيب تاون (وأنتما لا تزالان بإشارة قوية وواي فاي)، حمّلا مناطق بدون إنترنت في خرائط جوجل لكامل ممر طريق الحدائق — افتحا خرائط جوجل ← أيقونة الملف الشخصي ← الخرائط بدون إنترنت ← تحديد خريطتك الخاصة، واسحبا المربع ليغطي من كيب تاون إلى تسيتسيكاما. البطاقات التي عليها شارة 📶 أدناه هي الأماكن الأكثر عرضة لضعف التغطية.",
@@ -2814,11 +2827,10 @@ function openPanel(){
   up.style.display = (cfg && unsent.length) ? '' : 'none';
   up.textContent = tr(uploadState === 'retrying' ? 'ppRetryNow' : 'ppUpload').replace('{n}', unsent.length);
   refreshUploadStatus();
-  if(!cfg){
-    const g = ghGuess();
-    document.getElementById('ghOwner').value = document.getElementById('ghOwner').value || g.owner;
-    document.getElementById('ghRepo').value = document.getElementById('ghRepo').value || g.repo;
-  }
+  // Owner/repo are never pre-filled: this popup is reachable by any visitor, connected or not, and
+  // guessing them from location.hostname/pathname (GitHub Pages URLs are <owner>.github.io/<repo>/)
+  // would show the site owner's real GitHub username and repo name to a stranger who never asked
+  // for them. Anyone who actually has a token for this repo already knows both values.
   ppBack.hidden = false;
 }
 const closePanel = ()=>{ ppBack.hidden = true; };
@@ -2908,10 +2920,6 @@ document.getElementById('ppClear').addEventListener('click', async ()=>{
 /* ---- GitHub sync (saves photos into your repo so every device sees them) ---- */
 function ghConfig(){ try{ const c = JSON.parse(localStorage.getItem('ctgr_gh') || 'null'); return (c && c.token && c.owner && c.repo) ? c : null; }catch(e){ return null; } }
 function ghSaveConfig(c){ try{ if(c) localStorage.setItem('ctgr_gh', JSON.stringify(c)); else localStorage.removeItem('ctgr_gh'); }catch(e){} }
-function ghGuess(){
-  const m = location.hostname.match(/^([^.]+)\.github\.io$/i), seg = location.pathname.split('/').filter(Boolean)[0] || '';
-  return {owner: m ? m[1] : '', repo: (m && seg && !/\.html?$/i.test(seg)) ? seg : ''};
-}
 async function ghFetch(cfg, path, opt){
   opt = opt || {};
   // GitHub's API sends its own Cache-Control headers on GET responses (e.g. the ref/commit/contents
@@ -3075,10 +3083,20 @@ function setLang(lang){
   updateDateDisplays();
   fxWidgetRefresh();
 }
+function planHeroTitle(){
+  const ar = LANG === 'ar';
+  if(visitorPending()) return ar ? 'خططا لرحلتكما إلى<br><em>جنوب أفريقيا</em>' : 'Plan your<br><em>South Africa</em> trip';
+  const days = effectiveTripDays(), nights = days - 1;
+  const nDays = ar ? arDigits(days) : days, nNights = ar ? arDigits(nights) : nights;
+  return ar ? `رحلتكما لـ${nDays} يومًا و${nNights} ليلة<br><em>جنوب أفريقيا</em>` : `Your ${nDays}-Day, ${nNights}-Night<br><em>South Africa</em> trip`;
+}
 function updateHeroTitle(){
   const el = document.querySelector('[data-html="heroTitle"]');
   if(!el) return;
-  el.innerHTML = (UI[LANG].heroTitles && UI[LANG].heroTitles[activeTab]) || UI[LANG].heroTitle;
+  // The "plan" tab's title states the trip's actual length, so it's built fresh every time from
+  // effectiveTripDays() (owner's real 14/13, a visitor's own custom count, or a generic line while
+  // they haven't entered dates yet) rather than read from the static UI.heroTitles.plan string.
+  el.innerHTML = activeTab === 'plan' ? planHeroTitle() : ((UI[LANG].heroTitles && UI[LANG].heroTitles[activeTab]) || UI[LANG].heroTitle);
 }
 
 function renderFilters(){
@@ -4443,6 +4461,16 @@ function isOwner(){ return !!ghConfig(); }
 function effectiveTripStart(){ return isOwner() ? REAL_TRIP_START : (VISITOR_START || REAL_TRIP_START); }
 function currentItinerary(){ return (!isOwner() && CUSTOM_ITIN) ? CUSTOM_ITIN : ITINERARY14; }
 function effectiveTripDays(){ return (!isOwner() && CUSTOM_ITIN) ? CUSTOM_ITIN.length : TRIP_DAYS; }
+// A non-owner who hasn't saved their own dates yet (or skipped) has no VISITOR_START — the
+// functions above quietly fall back to the REAL trip's dates/length in that case, which is fine
+// for calculations but means text built from them would show Yazeed's actual Oct 28–Nov 10 dates
+// to a total stranger who hasn't asked for them yet. Anything user-facing that names real dates
+// or day/night counts should check this first and show something generic instead while pending.
+function visitorPending(){ return !isOwner() && !VISITOR_START; }
+// True for the owner, and for a visitor who explicitly clicked "skip" (same real trip, on purpose)
+// — the only two cases where showing the real couple's-trip framing ("Just the two of you") is
+// accurate. A visitor with their own custom itinerary gets neutral wording instead.
+function usingRealTrip(){ return isOwner() || (!!VISITOR_START && !CUSTOM_ITIN); }
 const WX_HIST_YEARS = 5, WX_LS = 'ctgr_wxc_v2';
 let wxTab = 'trip', wxLoc = 'ct', wxPick = '', wxSeq = 0, wxStale = false, wxBusy = false, wxLastFetch = 0;
 const WX = {now:null, hourly:[], today:'', updated:0, status:'loading'};
@@ -4484,6 +4512,7 @@ function dateRangeLabel(startIso, days){   // "28 Oct – 10 Nov 2026" / "٢٨ �
    language changes and whenever a visitor picks (or the owner's identity determines) the
    trip's dates. Kept as one function so nothing here can drift out of sync with the others. */
 function updateDateDisplays(){
+  const pending = visitorPending(), usingReal = usingRealTrip();
   const start = effectiveTripStart(), days = effectiveTripDays();
   const range = dateRangeLabel(start, days);
   const startShort = shortDateLabel(start), endShort = shortDateLabel(isoPlusDays(start, days - 1));
@@ -4492,13 +4521,26 @@ function updateDateDisplays(){
   const nDays = ar ? arDigits(days) : days, nNights = ar ? arDigits(days - 1) : (days - 1);
 
   const eyebrowEl = document.querySelector('.eyebrow');
-  if(eyebrowEl) eyebrowEl.textContent = `${range} · ${ar ? `${nDays} يومًا / ${nNights} ليلة · لكما فقط` : `${nDays} Days / ${nNights} Nights · Just the two of you`}`;
+  if(eyebrowEl){
+    eyebrowEl.textContent = pending
+      ? (ar ? 'أدخلا تواريخ رحلتكما لرؤية خطة مخصصة لكما' : 'Enter your travel dates to get a trip built around you')
+      : usingReal
+        ? `${range} · ${ar ? `${nDays} يومًا / ${nNights} ليلة · لكما فقط` : `${nDays} Days / ${nNights} Nights · Just the two of you`}`
+        : `${range} · ${ar ? `${nDays} يومًا / ${nNights} ليلة` : `${nDays} Days / ${nNights} Nights`}`;
+  }
 
   const wxTag = document.querySelector('.weather-tag');
-  if(wxTag) wxTag.textContent = range;
+  if(wxTag) wxTag.textContent = pending ? (ar ? 'أدخلا تواريخكما' : 'Enter your dates') : range;
+
+  const planTitleEl = document.querySelector('[data-t="planTitle"]');
+  if(planTitleEl){
+    planTitleEl.textContent = pending
+      ? (ar ? 'رحلتكما، يومًا بيوم' : 'Your trip, day by day')
+      : (ar ? `رحلتكما لـ${nDays} يومًا و${nNights} ليلة، يومًا بيوم` : `Your ${nDays}-day, ${nNights}-night trip, day by day`);
+  }
 
   const planTag = document.querySelector('[data-t="planTag"]');
-  if(planTag) planTag.textContent = `${range} · ${ar ? `${nDays} يومًا / ${nNights} ليلة` : `${nDays} days / ${nNights} nights`}`;
+  if(planTag) planTag.textContent = pending ? (ar ? 'أدخلا تواريخكما أدناه' : 'Enter your dates below') : `${range} · ${ar ? `${nDays} يومًا / ${nNights} ليلة` : `${nDays} days / ${nNights} nights`}`;
 
   const sunriseLbl = document.querySelector('[data-t="wSunrise"]');
   if(sunriseLbl) sunriseLbl.textContent = ar ? `الشروق (${startShort} ← ${endShort})` : `Sunrise (${startShort} → ${endShort})`;
@@ -4507,11 +4549,14 @@ function updateDateDisplays(){
 
   const planSub = document.querySelector('[data-t="planSub"]');
   if(planSub){
-    planSub.textContent = isOwner()
-      ? (ar ? `الوصول ${startShort} الساعة ١٠:٣٠ص حتى المغادرة ${endShort} الساعة ١٢:٣٥ظ — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية عبر ٥ إقامات. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
-             : `Arrival ${startShort} at 10:30am to departure ${endShort} at 12:35pm — that's 14 calendar days and 13 hotel nights across 5 stays. Transport details first, full itinerary below.`)
-      : (ar ? `الوصول ${startShort} حتى المغادرة ${endShort} — أي ${nDays} يومًا تقويميًا و${nNights} ليلة فندقية عبر توقفاتكما. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
-             : `Arrival ${startShort} to departure ${endShort} — ${nDays} calendar days and ${nNights} hotel nights across your stops. Transport details first, full itinerary below.`);
+    planSub.textContent = pending
+      ? (ar ? 'أضيفا تواريخ الوصول والمغادرة، والمدن التي ستزورانها، لنبني خطتكما اليومية أدناه.'
+             : "Add your arrival and departure dates, and the cities you're visiting, and we'll build your day-by-day plan below.")
+      : usingReal
+        ? (ar ? `الوصول ${startShort} الساعة ١٠:٣٠ص حتى المغادرة ${endShort} الساعة ١٢:٣٥ظ — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية عبر ٥ إقامات. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
+               : `Arrival ${startShort} at 10:30am to departure ${endShort} at 12:35pm — that's 14 calendar days and 13 hotel nights across 5 stays. Transport details first, full itinerary below.`)
+        : (ar ? `الوصول ${startShort} حتى المغادرة ${endShort} — أي ${nDays} يومًا تقويميًا و${nNights} ليلة فندقية عبر توقفاتكما. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
+               : `Arrival ${startShort} to departure ${endShort} — ${nDays} calendar days and ${nNights} hotel nights across your stops. Transport details first, full itinerary below.`);
   }
 }
 
@@ -4541,6 +4586,7 @@ const ONBOARD_SLOTS = [
   {slot:'Afternoon', slot_ar:'بعد الظهر'}, {slot:'Dinner', slot_ar:'العشاء'},
 ];
 function onDateChanged(){
+  updateHeroTitle();
   updateDateDisplays();
   renderPlanItinerary();
   updateCountdown();
@@ -4588,9 +4634,13 @@ function computeOnboardTotalDays(){
 function updateOnboardDaysCheck(){
   const total = computeOnboardTotalDays();
   const totalEl = document.getElementById('onboardTotalDays'), checkEl = document.getElementById('onboardDaysCheck'), saveBtn = document.getElementById('onboardSave');
+  const addBtn = document.getElementById('onboardAddCity');
   totalEl.textContent = total ? tr('onboardTotalDaysText').replace('{n}', LANG==='ar'?arDigits(total):total) : tr('onboardNeedDates');
   const sum = [...document.querySelectorAll('.onboard-city-days')].reduce((s,i)=> s + (parseInt(i.value,10) || 0), 0);
-  if(!total){ checkEl.textContent = ''; saveBtn.disabled = true; return; }
+  if(!total){ checkEl.textContent = ''; saveBtn.disabled = true; if(addBtn) addBtn.disabled = false; return; }
+  // No days left to hand to a new city once the allocated days already reach the trip length —
+  // re-enable the button the moment a shorter stay on an existing city frees a day back up.
+  if(addBtn) addBtn.disabled = sum >= total;
   if(sum === total){ checkEl.textContent = tr('onboardDaysMatch'); checkEl.style.color = 'var(--sage)'; saveBtn.disabled = false; }
   else{ checkEl.textContent = tr('onboardDaysMismatch').replace('{sum}', LANG==='ar'?arDigits(sum):sum).replace('{total}', LANG==='ar'?arDigits(total):total); checkEl.style.color = '#b3473b'; saveBtn.disabled = true; }
 }
@@ -4682,7 +4732,7 @@ function initOnboarding(){
     back.hidden = true;
     onDateChanged();
   });
-  window.addEventListener('ctgr-gh-changed', ()=>{ updateDateDisplays(); maybeShow(); });
+  window.addEventListener('ctgr-gh-changed', ()=>{ updateHeroTitle(); updateDateDisplays(); maybeShow(); });
 }
 function updateCountdown(){
   const b = document.getElementById('statCountdown'), lbl = document.getElementById('countdownLabel');
