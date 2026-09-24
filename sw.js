@@ -8,7 +8,7 @@
 
    Bump CACHE_NAME (e.g. v1 -> v2) whenever you want to force everyone's cached copy dropped —
    otherwise this file only needs to be touched if the caching *strategy* changes. */
-const CACHE_NAME = 'ctgr-cache-v1';
+const CACHE_NAME = 'ctgr-cache-v2';   // bumped: icons/apps/*.png used to be cached stale-while-revalidate, so a newly-uploaded icon could sit hidden behind an old cached copy until a hard reload
 const APP_SHELL = ['./', 'index.html', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (event) => {
@@ -40,14 +40,21 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (PASSTHROUGH_HOSTS.includes(url.hostname)) return;
 
-  if (isNavigation(req) || (url.origin === self.location.origin && url.pathname.endsWith('/index.html'))) {
-    // The page itself: always prefer a fresh copy; fall back to cache only when offline.
+  // icons/apps/*.png are user-uploaded and re-uploaded to the *same* filename each time (so the
+  // reference on the page never has to change) — which is exactly the case stale-while-revalidate
+  // handles badly: it happily keeps serving last time's file instantly and only refreshes its
+  // cache in the background, so a normal reload right after uploading a new icon can still show
+  // the old one. Treat these like the page itself: always try the network first (bypassing the
+  // browser's own HTTP cache too, via {cache:'no-store'}, in case the host sends cache headers),
+  // and only fall back to whatever's cached when there's truly no network.
+  const isAppIcon = url.origin === self.location.origin && /\/icons\/apps\/[^/]+\.png$/.test(url.pathname);
+  if (isNavigation(req) || isAppIcon || (url.origin === self.location.origin && url.pathname.endsWith('/index.html'))) {
     event.respondWith(
-      fetch(req).then((res) => {
+      fetch(req, { cache: 'no-store' }).then((res) => {
         const copy = res.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         return res;
-      }).catch(() => caches.match(req).then((res) => res || caches.match('index.html')))
+      }).catch(() => caches.match(req).then((res) => res || (isAppIcon ? undefined : caches.match('index.html'))))
     );
     return;
   }

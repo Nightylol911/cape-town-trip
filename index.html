@@ -398,16 +398,16 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .apps-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
 .apps-card h2{margin:0;font-size:20px;}
 .apps-cap{font-size:13px;color:#6b6157;margin:4px 0 16px;}
-.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
 .app-tile{position:relative;background:var(--paper-2);border-radius:12px;border:1px solid transparent;}
-.app-link{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;text-decoration:none;color:var(--ink);}
+.app-link{display:flex;width:100%;gap:12px;align-items:center;padding:12px 14px;text-decoration:none;color:var(--ink);border:none;background:none;font:inherit;text-align:start;cursor:pointer;}
 .app-tile:hover{border-color:var(--ocean);background:var(--white);}
-.app-icon{flex-shrink:0;width:40px;height:40px;}
-.app-icon img{width:40px;height:40px;border-radius:9px;object-fit:cover;display:block;}
-.app-icon-fallback{width:40px;height:40px;border-radius:9px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.app-icon{flex-shrink:0;width:56px;height:56px;}
+.app-icon img{width:56px;height:56px;border-radius:13px;object-fit:cover;display:block;}
+.app-icon-fallback{width:56px;height:56px;border-radius:13px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;}
 .app-info{display:flex;flex-direction:column;gap:4px;min-width:0;}
-.app-name{font-weight:700;font-size:13.5px;}
-.app-desc{font-size:12px;color:#6b6157;line-height:1.4;}
+.app-name{font-weight:700;font-size:14.5px;}
+.app-desc{font-size:12.5px;color:#6b6157;line-height:1.4;}
 body.ar .app-name,body.ar .app-desc{font-family:'Tajawal',sans-serif;}
 .app-icon-upload{position:absolute;top:6px;inset-inline-end:6px;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:#6b6157;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;}
 .app-icon-upload:hover{background:var(--paper-2);color:var(--ocean-deep);}
@@ -3590,15 +3590,40 @@ const CAR_RENTALS = [
   {n:"First Car Rental — Cape Town Int'l Airport", n_ar:"فيرست كار رنتال — مطار كيب تاون الدولي", rating:3.6, ratingCount:639, g:gsearch("First Car Rental Cape Town International Airport"), site:"https://www.firstcarrental.co.za/"},
 ];
 
-/* App Store links point at a search for the app's exact name rather than a hardcoded numeric
-   app ID — ids are easy to get wrong (or go stale), and a search always lands you on the right
-   listing for whichever country's store you're in. The "za" storefront is used deliberately: a
-   few of these (Mr D, Takealot) are South Africa–specific and may not list at all elsewhere.
+/* App Store links: apps.apple.com has no public "/search?term=" page (that was my mistake last
+   round — it 404s, there's no such route). The iTunes Search API is the real, public, documented
+   Apple endpoint (itunes.apple.com/search) and returns each result's actual, live storefront URL
+   (trackViewUrl) — so instead of guessing a link, every tap looks the app up for real and opens
+   whatever Apple's own index says is the correct page for the "sa" (Saudi) storefront.
+   window.open() is called synchronously on click (before the lookup) and only *retargeted* once
+   the answer comes back — calling window.open() itself after an await gets blocked as a pop-up
+   by most browsers, since by then it's no longer inside the original click.
    Icons: each app looks for icons/apps/<slug>.png first (a plain colored-monogram placeholder
    ships there today — see tools/make-app-icons.js). Drop the real app icon in at that exact
    path (square, 128px+) any time and it replaces the placeholder automatically, no code change —
    same GitHub upload flow as adding photos. Falls back to the emoji only if even that 404s. */
-const appStoreSearch = q => 'https://apps.apple.com/sa/search?term=' + encodeURIComponent(q);
+async function resolveAppStoreUrl(search){
+  let cache = {};
+  try{ cache = JSON.parse(localStorage.getItem('ctgr_appstore_cache') || '{}'); }catch(e){}
+  const hit = cache[search];
+  if(hit && (Date.now() - hit.t) < 30 * 86400e3) return hit.url;
+  const r = await fetch('https://itunes.apple.com/search?country=sa&entity=software&limit=1&term=' + encodeURIComponent(search));
+  if(!r.ok) throw new Error('lookup failed');
+  const data = await r.json();
+  const url = data.results && data.results[0] && data.results[0].trackViewUrl;
+  if(!url) throw new Error('no results');
+  cache[search] = {url, t: Date.now()};
+  try{ localStorage.setItem('ctgr_appstore_cache', JSON.stringify(cache)); }catch(e){}
+  return url;
+}
+async function openAppStoreLink(search){
+  const win = window.open('', '_blank');
+  try{ if(win) win.document.write('<title>' + escHtml(search) + '</title><body style="font:15px -apple-system,sans-serif;padding:40px;color:#555">Opening the App Store…</body>'); }catch(e){}
+  let url;
+  try{ url = await resolveAppStoreUrl(search); }
+  catch(e){ url = 'https://www.google.com/search?q=' + encodeURIComponent(search + ' app store'); }
+  if(win) win.location.href = url; else window.open(url, '_blank');
+}
 const USEFUL_APPS = [
   {slug:'uber', icon:'🚕', name:'Uber', search:'Uber', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
   {slug:'bolt', icon:'⚡', name:'Bolt', search:'Bolt Taxi', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
@@ -3679,7 +3704,7 @@ function wireAppIconUploads(el){
         toast(tr('appIconUploading'));
         const blob = await processAppIcon(file);
         await uploadAppIcon(slug, blob);
-        input.closest('.app-tile').querySelector('.app-icon').innerHTML = `<img src="icons/apps/${slug}.png?v=${Date.now()}" alt="" width="40" height="40">`;
+        input.closest('.app-tile').querySelector('.app-icon').innerHTML = `<img src="icons/apps/${slug}.png?v=${Date.now()}" alt="" width="56" height="56">`;
         toast(tr('appIconUploaded'));
       }catch(e){
         toast(tr('appIconFail').replace('{e}', (e && (e.detail || e.message)) || '?'));
@@ -3692,13 +3717,16 @@ function renderApps(){
   const el = document.getElementById('appsGrid');
   if(!el) return;
   el.innerHTML = USEFUL_APPS.map(a=>`<div class="app-tile" data-slug="${a.slug}">
-    <a class="app-link" href="${appStoreSearch(a.search)}" target="_blank" rel="noopener">
-      <span class="app-icon"><img src="icons/apps/${a.slug}.png" alt="" width="40" height="40" loading="lazy"></span>
+    <button type="button" class="app-link" data-search="${escHtml(a.search)}">
+      <span class="app-icon"><img src="icons/apps/${a.slug}.png" alt="" width="56" height="56" loading="lazy"></span>
       <span class="app-info"><span class="app-name">${a.name}</span><span class="app-desc">${LANG==='ar'?a.desc_ar:a.desc}</span></span>
-    </a>
+    </button>
     <button type="button" class="app-icon-upload" data-slug="${a.slug}" aria-label="${tr('appIconUpload')}" title="${tr('appIconUpload')}">📤</button>
     <input type="file" class="app-icon-file" data-slug="${a.slug}" accept="image/*" hidden>
   </div>`).join('');
+  el.querySelectorAll('.app-link').forEach(btn=>{
+    btn.addEventListener('click', ()=> openAppStoreLink(btn.dataset.search));
+  });
   wireAppIconError(el);
   wireAppIconUploads(el);
   if(!appIconGhListenerAdded){
