@@ -399,14 +399,18 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .apps-card h2{margin:0;font-size:20px;}
 .apps-cap{font-size:13px;color:#6b6157;margin:4px 0 16px;}
 .apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
-.app-tile{display:flex;gap:12px;align-items:flex-start;background:var(--paper-2);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--ink);border:1px solid transparent;}
+.app-tile{position:relative;background:var(--paper-2);border-radius:12px;border:1px solid transparent;}
+.app-link{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;text-decoration:none;color:var(--ink);}
 .app-tile:hover{border-color:var(--ocean);background:var(--white);}
 .app-icon{flex-shrink:0;width:40px;height:40px;}
 .app-icon img{width:40px;height:40px;border-radius:9px;object-fit:cover;display:block;}
 .app-icon-fallback{width:40px;height:40px;border-radius:9px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;}
-.app-name{font-weight:700;font-size:13.5px;margin-bottom:2px;}
+.app-info{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.app-name{font-weight:700;font-size:13.5px;}
 .app-desc{font-size:12px;color:#6b6157;line-height:1.4;}
 body.ar .app-name,body.ar .app-desc{font-family:'Tajawal',sans-serif;}
+.app-icon-upload{position:absolute;top:6px;inset-inline-end:6px;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:#6b6157;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;}
+.app-icon-upload:hover{background:var(--paper-2);color:var(--ocean-deep);}
 
 /* MAIN TABS */
 .maintabs{max-width:1120px;margin:18px auto 0;padding:0 24px;display:flex;gap:8px;}
@@ -1130,7 +1134,9 @@ en:{
   pickerTitle:"Add to this day", pickerSearchPh:"🔍 Search restaurants, activities, shopping…",
   fxTitle:"Currency converter", fxCaption:"Type an amount in any currency — the other two update automatically, using the same live rate as the budget tracker.",
   fxLive:"Live rate", fxApprox:"Approximate rate", fxFallback:"Approximate rate — no live connection right now, so this uses a fixed estimate: 1 ZAR ≈ 0.21 SAR, and SAR is pegged at 3.75 per USD.",
-  appsTitle:"📱 Useful apps", appsCaption:"Tap any app to open its page on the App Store. Links go to an App Store search for the app's exact name, so you land on the right listing for the store you're in — some of these (Mr D, Takealot) are South Africa–specific and may only show up in the South African store.",
+  appsTitle:"📱 Useful apps", appsCaption:"Tap any app to open its page on the Saudi App Store (a search for its exact name, so you land on the right listing rather than a possibly wrong hardcoded link). A couple of these (Mr D, Takealot) are South Africa–specific — search for them again once there if the Saudi store doesn't carry them.",
+  appIconUpload:"Upload icon", appIconUploading:"Uploading icon…", appIconUploaded:"Icon updated — it'll appear for everyone in about a minute.",
+  appIconFail:"Couldn't upload ({e}). Try again.", appIconNeedConnect:"Connect GitHub in 📷 Photos first — this uploads to the same repo.",
   onboardTitle:"Plan your own trip", onboardBody:"This site is built around a specific Cape Town & Garden Route trip. Give it your own arrival/departure and where you're staying, and it builds you an empty day-by-day plan on those dates and cities — then use \"+ Add\" on any day to fill it in from everything curated here.",
   onboardArrival:"Arrival date", onboardArrivalTime:"Arrival time", onboardDeparture:"Departure date", onboardDepartureTime:"Departure time",
   onboardNeedDates:"Pick both dates to see your trip length.", onboardTotalDaysText:"Trip length: {n} days",
@@ -1225,7 +1231,9 @@ ar:{
   pickerTitle:"إضافة إلى هذا اليوم", pickerSearchPh:"🔍 ابحثا عن مطاعم، أنشطة، تسوّق…",
   fxTitle:"محوّل العملات", fxCaption:"اكتبا مبلغًا بأي عملة — والعملتان الأخريان تتحدّثان تلقائيًا، بنفس السعر الحي المستخدم في متتبع الميزانية.",
   fxLive:"سعر حي", fxApprox:"سعر تقريبي", fxFallback:"سعر تقريبي — لا يوجد اتصال حي حاليًا، فيُستخدم تقدير ثابت: ١ راند جنوب أفريقي ≈ ٠.٢١ ريال سعودي، والريال السعودي مربوط بـ٣.٧٥ لكل دولار.",
-  appsTitle:"📱 تطبيقات مفيدة", appsCaption:"اضغطا على أي تطبيق لفتح صفحته في App Store. الروابط تفتح بحثًا باسم التطبيق بالضبط، فتصلان للنتيجة الصحيحة حسب متجركما — بعضها (Mr D، Takealot) خاص بجنوب أفريقيا وقد لا يظهر إلا في متجرها.",
+  appsTitle:"📱 تطبيقات مفيدة", appsCaption:"اضغطا على أي تطبيق لفتح صفحته في متجر آبل السعودي (بحث باسم التطبيق بالضبط، بدل رابط مباشر قد يكون خاطئًا). بعضها (Mr D، Takealot) خاص بجنوب أفريقيا — ابحثا عنه مجددًا هناك إن لم يكن متوفرًا في المتجر السعودي.",
+  appIconUpload:"رفع أيقونة", appIconUploading:"جارٍ رفع الأيقونة…", appIconUploaded:"تم تحديث الأيقونة — ستظهر للجميع خلال دقيقة تقريبًا.",
+  appIconFail:"تعذّر الرفع ({e}). حاولا مرة أخرى.", appIconNeedConnect:"اربطا GitHub من 📷 الصور أولاً — هذا يرفع إلى المستودع نفسه.",
   onboardTitle:"خططا لرحلتكما الخاصة", onboardBody:"هذا الموقع مبني على رحلة محددة لكيب تاون وطريق الحدائق. أدخلا تاريخي وصولكما ومغادرتكما ومدنكما، وسيُنشئ لكما خطة يومية فارغة بتلك التواريخ والمدن — ثم استخدما \"+ إضافة\" في أي يوم لملئها من كل ما هو منسّق هنا.",
   onboardArrival:"تاريخ الوصول", onboardArrivalTime:"وقت الوصول", onboardDeparture:"تاريخ المغادرة", onboardDepartureTime:"وقت المغادرة",
   onboardNeedDates:"اختارا التاريخين لمعرفة طول رحلتكما.", onboardTotalDaysText:"طول الرحلة: {n} يومًا",
@@ -3590,7 +3598,7 @@ const CAR_RENTALS = [
    ships there today — see tools/make-app-icons.js). Drop the real app icon in at that exact
    path (square, 128px+) any time and it replaces the placeholder automatically, no code change —
    same GitHub upload flow as adding photos. Falls back to the emoji only if even that 404s. */
-const appStoreSearch = q => 'https://apps.apple.com/za/search?term=' + encodeURIComponent(q);
+const appStoreSearch = q => 'https://apps.apple.com/sa/search?term=' + encodeURIComponent(q);
 const USEFUL_APPS = [
   {slug:'uber', icon:'🚕', name:'Uber', search:'Uber', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
   {slug:'bolt', icon:'⚡', name:'Bolt', search:'Bolt Taxi', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
@@ -3610,13 +3618,95 @@ const USEFUL_APPS = [
   {slug:'airbnb', icon:'🏠', name:'Airbnb', search:'Airbnb', desc:"Book an apartment to stay in", desc_ar:"حجز شقق للإقامة"},
   {slug:'takealot', icon:'🛍️', name:'Takealot', search:'Takealot', desc:"South Africa's online retail store", desc_ar:"متجر جنوب أفريقيا الإلكتروني"},
 ];
+/* Icon upload (GitHub-connected devices only) — lets you replace a placeholder with the real
+   app icon right from the page, instead of having to touch files in the repo yourself. Center-
+   crops to a square and re-encodes at a fixed size, so every icon — however it was sourced —
+   ends up the same size and quality as the rest. */
+function processAppIcon(file){
+  return new Promise((resolve, reject)=>{
+    const src = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = ()=>{
+      const SIZE = 256;
+      const side = Math.min(img.naturalWidth, img.naturalHeight);
+      const sx = (img.naturalWidth - side) / 2, sy = (img.naturalHeight - side) / 2;
+      const c = document.createElement('canvas'); c.width = SIZE; c.height = SIZE;
+      c.getContext('2d').drawImage(img, sx, sy, side, side, 0, 0, SIZE, SIZE);
+      URL.revokeObjectURL(src);
+      c.toBlob(b=> b ? resolve(b) : reject(new Error('encode failed')), 'image/png');
+    };
+    img.onerror = ()=>{ URL.revokeObjectURL(src); reject(new Error('decode failed')); };
+    img.src = src;
+  });
+}
+async function uploadAppIcon(slug, blob){
+  const cfg = ghConfig();
+  if(!cfg) throw new Error('not connected');
+  const branch = (await ghJson(cfg, '')).default_branch || 'main';
+  const path = `icons/apps/${slug}.png`;
+  let sha;
+  const r = await ghFetch(cfg, `/contents/${path}?ref=${encodeURIComponent(branch)}`, {headers:{'Accept':'application/vnd.github+json'}});
+  if(r.ok){ sha = (await r.json()).sha; }
+  else if(r.status !== 404){ throw Object.assign(new Error('GitHub ' + r.status), {status: r.status}); }
+  const content = await blobToB64(blob);
+  await ghJson(cfg, `/contents/${path}`, {method:'PUT', body:{message:'Update app icon: ' + slug, content, sha, branch}});
+}
+function wireAppIconError(el){
+  el.querySelectorAll('.app-icon img').forEach(img=>{
+    img.addEventListener('error', ()=>{
+      const slug = img.closest('.app-tile').dataset.slug;
+      const app = USEFUL_APPS.find(a=>a.slug===slug);
+      img.parentElement.innerHTML = `<span class="app-icon-fallback">${app ? app.icon : '📱'}</span>`;
+    }, {once:true});
+  });
+}
+function wireAppIconUploads(el){
+  el.querySelectorAll('.app-icon-upload').forEach(btn=>{
+    btn.style.display = canEdit() ? 'flex' : 'none';
+    btn.addEventListener('click', (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      el.querySelector(`.app-icon-file[data-slug="${btn.dataset.slug}"]`).click();
+    });
+  });
+  el.querySelectorAll('.app-icon-file').forEach(input=>{
+    input.addEventListener('change', async ()=>{
+      const file = input.files[0];
+      input.value = '';
+      if(!file) return;
+      if(!ghConfig()){ toast(tr('appIconNeedConnect')); return; }
+      const slug = input.dataset.slug;
+      try{
+        toast(tr('appIconUploading'));
+        const blob = await processAppIcon(file);
+        await uploadAppIcon(slug, blob);
+        input.closest('.app-tile').querySelector('.app-icon').innerHTML = `<img src="icons/apps/${slug}.png?v=${Date.now()}" alt="" width="40" height="40">`;
+        toast(tr('appIconUploaded'));
+      }catch(e){
+        toast(tr('appIconFail').replace('{e}', (e && (e.detail || e.message)) || '?'));
+      }
+    });
+  });
+}
+let appIconGhListenerAdded = false;
 function renderApps(){
   const el = document.getElementById('appsGrid');
   if(!el) return;
-  el.innerHTML = USEFUL_APPS.map(a=>`<a class="app-tile" href="${appStoreSearch(a.search)}" target="_blank" rel="noopener">
-    <span class="app-icon"><img src="icons/apps/${a.slug}.png" alt="" width="40" height="40" loading="lazy" onerror="this.outerHTML='<span class=&quot;app-icon-fallback&quot;>${a.icon}</span>'"></span>
-    <span><span class="app-name">${a.name}</span><span class="app-desc">${LANG==='ar'?a.desc_ar:a.desc}</span></span>
-  </a>`).join('');
+  el.innerHTML = USEFUL_APPS.map(a=>`<div class="app-tile" data-slug="${a.slug}">
+    <a class="app-link" href="${appStoreSearch(a.search)}" target="_blank" rel="noopener">
+      <span class="app-icon"><img src="icons/apps/${a.slug}.png" alt="" width="40" height="40" loading="lazy"></span>
+      <span class="app-info"><span class="app-name">${a.name}</span><span class="app-desc">${LANG==='ar'?a.desc_ar:a.desc}</span></span>
+    </a>
+    <button type="button" class="app-icon-upload" data-slug="${a.slug}" aria-label="${tr('appIconUpload')}" title="${tr('appIconUpload')}">📤</button>
+    <input type="file" class="app-icon-file" data-slug="${a.slug}" accept="image/*" hidden>
+  </div>`).join('');
+  wireAppIconError(el);
+  wireAppIconUploads(el);
+  if(!appIconGhListenerAdded){
+    appIconGhListenerAdded = true;
+    window.addEventListener('ctgr-gh-changed', ()=>{
+      document.querySelectorAll('.app-icon-upload').forEach(btn=>{ btn.style.display = canEdit() ? 'flex' : 'none'; });
+    });
+  }
 }
 function renderTransport(){
   const el = document.getElementById('transportSection');
