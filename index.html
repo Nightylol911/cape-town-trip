@@ -261,10 +261,12 @@ body.ar .pp-actions button{font-family:'Tajawal',sans-serif;}
 .pp-sync h4{margin:0 0 6px;font-size:15px;}
 .pp-status{font-weight:600;color:var(--ocean-deep);font-size:13px;}
 .pp-sync label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
-.pp-sync label input,.pp-sync label select,.pp-sync label textarea,#apForm label input,#apForm label select,#apForm label textarea{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:14px 'Inter',sans-serif;background:var(--white);color:var(--ink);box-sizing:border-box;}
-.pp-sync label input:focus,.pp-sync label select:focus,.pp-sync label textarea:focus,#apForm label input:focus,#apForm label select:focus,#apForm label textarea:focus{outline:none;border-color:var(--ocean);}
+.pp-sync label input,.pp-sync label select,.pp-sync label textarea,#apForm label input,#apForm label select,#apForm label textarea,.onboard-field input{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:14px 'Inter',sans-serif;background:var(--white);color:var(--ink);box-sizing:border-box;}
+.pp-sync label input:focus,.pp-sync label select:focus,.pp-sync label textarea:focus,#apForm label input:focus,#apForm label select:focus,#apForm label textarea:focus,.onboard-field input:focus{outline:none;border-color:var(--ocean);}
 #apForm label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
 #apForm textarea{resize:vertical;font-family:inherit;}
+.onboard-field{display:block;margin-bottom:14px;font-size:12.5px;font-weight:600;color:#6b6157;}
+#onboardSkip{background:none;border:none;color:#8a7f70;text-decoration:underline;text-underline-offset:2px;}
 .ap-detected{background:var(--paper-2);border-radius:10px;padding:8px 12px;font-size:12.5px;margin:-2px 0 10px;}
 .ap-detected.ap-empty{color:#8a7f70;}
 .pp-sync > button,#ghForm > button,#apForm > button{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--white);font:600 14px 'Inter',sans-serif;color:var(--ink);cursor:pointer;}
@@ -752,12 +754,10 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
   <div class="tn-links">
     <a href="https://tools.sars.gov.za/sarsonlinequery/traveller" target="_blank" class="tn-link">📋 <span data-t="tnCustoms"></span></a>
     <a href="https://x.com/KSAembassyza/status/2074419704664395899?s=20" target="_blank" class="tn-link">🕌 <span data-t="tnEmbassy"></span></a>
-    <a href="tel:8008500286" class="tn-link">✈️ <span data-t="tnFlightTitle"></span>: <b data-t="tnFlightPhone"></b></a>
     <a href="tel:8008440886" class="tn-link">✈️ <span data-t="tnQatarTitle"></span>: <b data-t="tnQatarPhone"></b></a>
     <a href="https://www.qatarairways.com/en/help/feedback.html" target="_blank" class="tn-link">✉️ <span data-t="tnQatarContactForm"></span></a>
   </div>
   <p class="tn-cap" data-t="tnCaption"></p>
-  <p class="tn-cap" data-t="tnFlightNote"></p>
   <p class="tn-cap" data-t="tnQatarNote"></p>
 </div>
 
@@ -900,6 +900,19 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     <div class="pp-actions" style="margin-top:14px"><button type="button" id="pickerClose" data-t="ppClose"></button></div>
   </div>
 </div>
+
+<div class="pp-back" id="onboardBack" hidden>
+  <div class="pp" role="dialog" aria-modal="true" aria-labelledby="onboardTitle">
+    <h3 id="onboardTitle" data-t="onboardTitle"></h3>
+    <p data-t="onboardBody"></p>
+    <label class="onboard-field"><span data-t="onboardDateLabel"></span><input type="date" id="onboardDate"></label>
+    <p class="pp-status" id="onboardStatus"></p>
+    <div class="pp-actions">
+      <button type="button" class="pp-primary" id="onboardSave" data-t="onboardSave"></button>
+      <button type="button" id="onboardSkip" data-t="onboardSkip"></button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <div class="scroll-fabs" id="scrollFabs">
@@ -1022,7 +1035,7 @@ en:{
   tnTitle:"Before you travel — official links", tnCustoms:"SARS Traveller Customs Declaration (complete before entry)", tnEmbassy:"Saudi Embassy in South Africa — advisory (X/Twitter)",
   tnCaption:"The customs declaration is required on arrival/departure — fill it in via the SARS tool above. The embassy post is linked directly since it couldn't be read automatically here — please open it yourselves to check the current content. Prices shown as SAR are converted at roughly 1 ZAR ≈ 0.21 SAR (July 2026) — actual bookings are charged in South African Rand, so the ZAR amount is kept alongside for reference and will be the real charge.",
   tabPlan:"14-Day Plan", tabCT:"Cape Town", tabGR:"Garden Route", tabSafari:"Safari Lodges",
-  planTitle:"Your 14-day, 13-night trip, day by day", planTag:"28 Oct – 10 Nov 2026 · 14 days / 13 nights", planSub:"Arrival 28 Oct at 2:10pm to departure 10 Nov at 1:50pm — that’s 14 calendar days and 13 hotel nights across 5 stays. Transport details first, full itinerary below.",
+  planTitle:"Your 14-day, 13-night trip, day by day", planTag:"28 Oct – 10 Nov 2026 · 14 days / 13 nights", planSub:"Arrival 28 Oct at 10:30am to departure 10 Nov at 12:35pm — that’s 14 calendar days and 13 hotel nights across 5 stays. Transport details first, full itinerary below.",
   planDayTitle:"Day-by-day itinerary",
   ttTitle:"Getting around", ttCarTitle:"Renting a car (recommended for the Garden Route)", ttCarBody:"A self-drive is the easiest way to do the Garden Route — public transport barely exists between towns. Woodford Car Hire is the recommended pick below — South Africa's largest independent rental company, with the best Google rating of the four and a branch at Cape Town International. Bring three documents to the rental counter: your passport, an International Driving Permit (IDP), and your original Saudi driving licence. Rental companies in South Africa generally require all three together — the IDP alone isn't valid without the original licence it's translating.",
   ttDocsTitle:"Documents to bring", ttDocs:["Passport (valid, with your South African visa/entry stamp)","International Driving Permit (IDP) — arrange this in Saudi Arabia before you fly","Your original Saudi Arabia driving licence — the IDP must be presented together with it, not instead of it"],
@@ -1031,9 +1044,8 @@ en:{
   ttFlightTitle:"Domestic flight: Cape Town ↔ George", ttFlightBody:"There's a short domestic flight (about 1 hour) between Cape Town International (CPT) and George Airport (GRJ), run by South African carriers. Useful on the way back if you'd rather not drive the full return leg — fly from George into Cape Town and skip 1–2 days of driving. If you fly back, you can also drop a rental car at George Airport instead of driving it all the way back to Cape Town (most companies allow one-way drop-off for a fee).",
   ttCarRentalTitle:"Car rental companies in Cape Town (compare)",
   searchPlaceholder:"🔍 Search everything — activities, restaurants, coffee, safari lodges…",
-  tnFlightTitle:"Ethiopian Airlines contact", tnFlightPhone:"800 8500286 (Saudi Arabia toll-free)", tnFlightNote:"Keep this handy for booking changes, baggage questions, or flight delays — Ethiopian Airlines operates the Cape Town route via Addis Ababa. Also save your booking reference (PNR) and check in online 24 hours before each flight.",
   tnQatarTitle:"Qatar Airways contact", tnQatarPhone:"8008 4408 86 (STC) / 8008 5001 17 (other providers)", tnQatarContactForm:"Qatar Airways contact form (no direct email published)",
-  tnQatarNote:"Qatar Airways' Saudi Arabia contact centre runs 24/7 on the toll-free numbers above (STC and other providers) — double-check them closer to your trip, as airline contact numbers do change. They don't publish a direct customer-service email; the contact form above is the official channel instead.",
+  tnQatarNote:"Qatar Airways' Saudi Arabia contact centre runs 24/7 on the toll-free numbers above (STC and other providers) — double-check them closer to your trip, as airline contact numbers do change. They don't publish a direct customer-service email; the contact form above is the official channel instead. Keep this handy for booking changes, baggage questions, or delays — both flights route through Doha. Save your booking reference (PNR) and check in online 24 hours before each flight.",
   freeLabel:"Free", weakSignal:"Weak signal", weakSignalTip:"Patchy or no cell coverage here — download offline maps before you go.",
   budgetTotal:"Estimated total so far:", budgetApprox:"(rough estimate, per person)",
   ttOfflineTitle:"Offline maps — do this before you leave Cape Town", ttOfflineBody:"Cell coverage gets patchy or drops out completely in several spots on this trip — Cape Point, Chapman's Peak, Tsitsikamma National Park, Cango Caves, forest activities around Wilderness/Knysna, and most safari reserves. Before you leave Cape Town (while you still have strong signal and Wi-Fi), download offline areas in Google Maps for the whole Garden Route corridor — open Google Maps → your profile icon → Offline maps → Select your own map, and drag the box to cover Cape Town to Tsitsikamma. Cards with a 📶 badge below are the spots most likely to have poor coverage.",
@@ -1073,6 +1085,8 @@ en:{
   pickerTitle:"Add to this day", pickerSearchPh:"🔍 Search restaurants, activities, shopping…",
   fxTitle:"Currency converter", fxCaption:"Type an amount in any currency — the other two update automatically, using the same live rate as the budget tracker.",
   fxLive:"Live rate", fxApprox:"Approximate rate", fxFallback:"Approximate rate — no live connection right now, so this uses a fixed estimate: 1 ZAR ≈ 0.21 SAR, and SAR is pegged at 3.75 per USD.",
+  onboardTitle:"When's your trip?", onboardBody:"This itinerary is built around a specific Cape Town & Garden Route trip. Enter your own arrival date in Cape Town and the calendar, weather forecast and everything else re-dates itself to match — same 14-day plan, your dates.",
+  onboardDateLabel:"Arrival date in Cape Town", onboardSave:"Use my dates", onboardSkip:"Just show me the example dates", onboardNeedDate:"Pick a date first.",
   apOpenBtn:"➕ Add a place", apTitle:"Add a new place", apBody:"Paste a Google Maps link or coordinates and this figures out which neighbourhood (or Garden Route town) it belongs in on its own. Saved to GitHub, so it shows up for both of you, on every device.",
   apName:"Name", apNameAr:"Name (Arabic) — optional", apCategory:"Category", apLocation:"Google Maps link or coordinates",
   apDetectedEmpty:"Paste a location above to detect the section.", apDetectedFound:"📍 {area} — {dist} km away",
@@ -1109,7 +1123,7 @@ ar:{
   tnTitle:"قبل السفر — روابط رسمية", tnCustoms:"إقرار الجمارك للمسافرين (SARS) — أكملاه قبل الدخول", tnEmbassy:"السفارة السعودية في جنوب أفريقيا — تنويه (X/تويتر)",
   tnCaption:"إقرار الجمارك مطلوب عند الدخول/الخروج — أكملاه عبر أداة SARS أعلاه. رابط منشور السفارة مضاف مباشرة لأنه تعذّر قراءته آليًا هنا — فضلاً افتحاه بأنفسكما للاطلاع على محتواه الحالي. الأسعار الموضحة بالريال السعودي محوّلة بسعر تقريبي ١ راند جنوب أفريقي ≈ ٠.٢١ ريال سعودي (يوليو ٢٠٢٦) — الحجوزات الفعلية تُدفع بالراند الجنوب أفريقي، لذا أُبقي المبلغ بالراند بجانبها كمرجع وهو المبلغ الفعلي الذي سيُخصم.",
   tabPlan:"خطة ١٤ يومًا", tabCT:"كيب تاون", tabGR:"طريق الحدائق", tabSafari:"نُزل السفاري",
-  planTitle:"رحلتكما لـ١٤ يومًا و١٣ ليلة، يومًا بيوم", planTag:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦ · ١٤ يومًا / ١٣ ليلة", planSub:"الوصول ٢٨ أكتوبر الساعة ٢:١٠ظ حتى المغادرة ١٠ نوفمبر الساعة ١:٥٠ظ — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية عبر ٥ إقامات. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.",
+  planTitle:"رحلتكما لـ١٤ يومًا و١٣ ليلة، يومًا بيوم", planTag:"٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦ · ١٤ يومًا / ١٣ ليلة", planSub:"الوصول ٢٨ أكتوبر الساعة ١٠:٣٠ص حتى المغادرة ١٠ نوفمبر الساعة ١٢:٣٥ظ — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية عبر ٥ إقامات. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.",
   planDayTitle:"الخطة يومًا بيوم",
   ttTitle:"التنقل", ttCarTitle:"استئجار سيارة (يُنصح به لطريق الحدائق)", ttCarBody:"القيادة الذاتية هي أسهل طريقة لطريق الحدائق — لا يكاد يوجد نقل عام بين البلدات. Woodford Car Hire هي الخيار الموصى به أدناه — أكبر شركة تأجير سيارات مستقلة في جنوب أفريقيا، وبأفضل تقييم جوجل بين الأربعة، ولها فرع في مطار كيب تاون الدولي. أحضرا ثلاثة مستندات لمكتب التأجير: جواز السفر، رخصة القيادة الدولية (IDP)، والرخصة السعودية الأصلية. شركات التأجير في جنوب أفريقيا تطلب عادة الثلاثة معًا — رخصة القيادة الدولية وحدها غير صالحة دون الرخصة الأصلية التي تترجمها.",
   ttDocsTitle:"المستندات المطلوبة", ttDocs:["جواز السفر (ساري المفعول، مع ختم التأشيرة/الدخول لجنوب أفريقيا)","رخصة القيادة الدولية (IDP) — رتّباها من السعودية قبل السفر","رخصة القيادة السعودية الأصلية — يجب تقديم الرخصة الدولية معها وليس بدلاً منها"],
@@ -1118,9 +1132,8 @@ ar:{
   ttFlightTitle:"رحلة داخلية: كيب تاون ↔ جورج", ttFlightBody:"توجد رحلة داخلية قصيرة (حوالي ساعة) بين مطار كيب تاون الدولي (CPT) ومطار جورج (GRJ)، تشغّلها شركات طيران جنوب أفريقية. مفيدة في طريق العودة إن فضّلتما عدم قيادة كامل المسافة — طيرا من جورج إلى كيب تاون وتجنبا ١-٢ يوم من القيادة. إن عدتما بالطائرة، يمكنكما أيضًا تسليم سيارة الإيجار في مطار جورج بدل قيادتها كاملة إلى كيب تاون (معظم الشركات تسمح بالتسليم في مكان مختلف مقابل رسم).",
   ttCarRentalTitle:"شركات تأجير السيارات في كيب تاون (مقارنة)",
   searchPlaceholder:"🔍 ابحثا عن أي شيء — أنشطة، مطاعم، قهوة، نُزل سفاري…",
-  tnFlightTitle:"التواصل مع الخطوط الإثيوبية", tnFlightPhone:"٨٠٠ ٨٥٠٠٢٨٦ (مجاني داخل السعودية)", tnFlightNote:"احتفظا بهذا الرقم لتعديل الحجز أو استفسارات الأمتعة أو تأخير الرحلات — الخطوط الإثيوبية تشغّل رحلة كيب تاون عبر أديس أبابا. احتفظا أيضًا برقم الحجز (PNR) وسجّلا الدخول إلكترونيًا قبل كل رحلة بـ٢٤ ساعة.",
   tnQatarTitle:"التواصل مع القطرية", tnQatarPhone:"٨٠٠٨ ٤٤٠٨ ٨٦ (STC) / ٨٠٠٨ ٥٠٠١ ١٧ (مزوّدون آخرون)", tnQatarContactForm:"نموذج تواصل القطرية (لا يوجد بريد إلكتروني مباشر منشور)",
-  tnQatarNote:"مركز اتصال القطرية بالسعودية يعمل ٢٤/٧ على الأرقام المجانية أعلاه (STC ومزوّدون آخرون) — تأكدا منها قرب موعد رحلتكما لأن أرقام التواصل قد تتغير. لا تنشر الشركة بريدًا إلكترونيًا مباشرًا لخدمة العملاء؛ نموذج التواصل أعلاه هو القناة الرسمية بدلاً منه.",
+  tnQatarNote:"مركز اتصال القطرية بالسعودية يعمل ٢٤/٧ على الأرقام المجانية أعلاه (STC ومزوّدون آخرون) — تأكدا منها قرب موعد رحلتكما لأن أرقام التواصل قد تتغير. لا تنشر الشركة بريدًا إلكترونيًا مباشرًا لخدمة العملاء؛ نموذج التواصل أعلاه هو القناة الرسمية بدلاً منه. احتفظا بهذا الرقم لتعديل الحجز أو استفسارات الأمتعة أو التأخير — كلا الرحلتين عبر الدوحة. احتفظا برقم الحجز (PNR) وسجّلا الدخول إلكترونيًا قبل كل رحلة بـ٢٤ ساعة.",
   freeLabel:"مجاني", weakSignal:"إشارة ضعيفة", weakSignalTip:"تغطية جوال ضعيفة أو منعدمة هنا — حمّلا خرائط بدون إنترنت قبل الذهاب.",
   budgetTotal:"الإجمالي التقريبي حتى الآن:", budgetApprox:"(تقدير تقريبي، للشخص الواحد)",
   ttOfflineTitle:"خرائط بدون إنترنت — افعلا هذا قبل مغادرة كيب تاون", ttOfflineBody:"تغطية الجوال تضعف أو تنقطع تمامًا في عدة أماكن في هذه الرحلة — كيب بوينت، رأس تشابمان، محمية تسيتسيكاما الوطنية، كهوف كانجو، أنشطة الغابات حول ويلدرنس/كنيسنا، ومعظم محميات السفاري. قبل مغادرة كيب تاون (وأنتما لا تزالان بإشارة قوية وواي فاي)، حمّلا مناطق بدون إنترنت في خرائط جوجل لكامل ممر طريق الحدائق — افتحا خرائط جوجل ← أيقونة الملف الشخصي ← الخرائط بدون إنترنت ← تحديد خريطتك الخاصة، واسحبا المربع ليغطي من كيب تاون إلى تسيتسيكاما. البطاقات التي عليها شارة 📶 أدناه هي الأماكن الأكثر عرضة لضعف التغطية.",
@@ -1160,6 +1173,8 @@ ar:{
   pickerTitle:"إضافة إلى هذا اليوم", pickerSearchPh:"🔍 ابحثا عن مطاعم، أنشطة، تسوّق…",
   fxTitle:"محوّل العملات", fxCaption:"اكتبا مبلغًا بأي عملة — والعملتان الأخريان تتحدّثان تلقائيًا، بنفس السعر الحي المستخدم في متتبع الميزانية.",
   fxLive:"سعر حي", fxApprox:"سعر تقريبي", fxFallback:"سعر تقريبي — لا يوجد اتصال حي حاليًا، فيُستخدم تقدير ثابت: ١ راند جنوب أفريقي ≈ ٠.٢١ ريال سعودي، والريال السعودي مربوط بـ٣.٧٥ لكل دولار.",
+  onboardTitle:"متى رحلتكما؟", onboardBody:"خطة الرحلة هذه مبنية على رحلة محددة لكيب تاون وطريق الحدائق. أدخلا تاريخ وصولكما إلى كيب تاون وستتغيّر التواريخ والطقس وكل شيء آخر ليطابق تاريخكما — نفس خطة الـ١٤ يومًا، بتواريخكما أنتما.",
+  onboardDateLabel:"تاريخ الوصول إلى كيب تاون", onboardSave:"استخدما تواريخي", onboardSkip:"أرياني التواريخ المثال فقط", onboardNeedDate:"اختارا تاريخًا أولاً.",
   apOpenBtn:"➕ أضف مكانًا", apTitle:"إضافة مكان جديد", apBody:"الصقا رابط خرائط جوجل أو الإحداثيات وسيُحدَّد الحي (أو بلدة طريق الحدائق) تلقائيًا. يُحفظ في GitHub فيظهر لكما على أي جهاز.",
   apName:"الاسم", apNameAr:"الاسم بالعربي — اختياري", apCategory:"التصنيف", apLocation:"رابط خرائط جوجل أو الإحداثيات",
   apDetectedEmpty:"الصقا موقعًا أعلاه لتحديد القسم.", apDetectedFound:"📍 {area} — على بعد {dist} كم",
@@ -2990,6 +3005,7 @@ function setLang(lang){
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
   renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather();
   updateCountdown();
+  updateDateDisplays();
   fxWidgetRefresh();
 }
 function updateHeroTitle(){
@@ -3578,10 +3594,10 @@ const PICK = {
 
 const ITINERARY14 = [
 {title:"Arrival & check-in — Waterfront", title_ar:"الوصول وتسجيل الدخول — الواجهة البحرية", date:"Wed 28 Oct", region:"cape-town",
- tip:"Land 2:10pm, check in 3pm. You've got a car and Uber both from day one, so don't feel tied to the hotel's doorstep — just keep tonight easy.", tip_ar:"الهبوط ٢:١٠ظ، تسجيل الدخول ٣ظ. لديكما سيارة وأوبر من اليوم الأول، فلا داعي للالتزام بمحيط الفندق فقط — أبقيا هذه الليلة خفيفة.",
+ tip:"Qatar Airways: depart Riyadh 27 Oct 10:30pm → Doha 11:55pm (1h25m transit) → depart Doha 1:40am → land Cape Town 10:30am. Check-in is 3pm, so the morning's free — ask about early check-in, or grab breakfast and a walk near the Waterfront first. You've got a car and Uber both from day one, so don't feel tied to the hotel's doorstep.", tip_ar:"طيران قطر: المغادرة من الرياض ٢٧ أكتوبر ١٠:٣٠م ← الدوحة ١١:٥٥م (ترانزيت ساعة و٢٥ دقيقة) ← المغادرة من الدوحة ١:٤٠ص ← الهبوط في كيب تاون ١٠:٣٠ص. تسجيل الدخول الساعة ٣ظ، فالصباح حرّ — اسألا عن تسجيل دخول مبكر، أو تناولا الفطور وتمشيا قرب الواجهة البحرية أولاً. لديكما سيارة وأوبر من اليوم الأول، فلا داعي للالتزام بمحيط الفندق فقط.",
  hotel: HOTELS.radisson,
  blocks:[
-  {slot:"2:10 PM — Land", slot_ar:"٢:١٠ظ — الهبوط", items:[]},
+  {slot:"10:30 AM — Land", slot_ar:"١٠:٣٠ص — الهبوط", items:[]},
   {slot:"3:00 PM — Check in", slot_ar:"٣:٠٠ظ — تسجيل الدخول", items:[]},
   {slot:"Afternoon", slot_ar:"بعد الظهر", items:["V&A Waterfront"]},
   {slot:"Dinner — pick one", slot_ar:"العشاء — اختارا واحدًا", items:["tashas Waterfront","COOKED, The Watershed"]},
@@ -3699,11 +3715,11 @@ const ITINERARY14 = [
   {slot:"Farewell dinner", slot_ar:"عشاء الوداع", items:[PICK.nobu]},
  ]},
 {title:"Departure day", title_ar:"يوم المغادرة", date:"Tue 10 Nov", region:"cape-town",
- tip:"Leave for the airport by 9:30am — flight is 1:50pm. Keep the morning to breakfast and checkout, nothing more.", tip_ar:"غادرا للمطار بحلول ٩:٣٠ص — موعد الطيران ١:٥٠ظ. أبقيا الصباح لتناول الفطور وتسجيل الخروج فقط.",
+ tip:"Qatar Airways: depart Cape Town 12:35pm → Doha 11:10pm (2h55m transit) → depart Doha 2:05am → land Riyadh 3:35am. Leave for the airport by ~9:30am for the 12:35pm departure — keep the morning to breakfast and checkout, nothing more.", tip_ar:"طيران قطر: المغادرة من كيب تاون ١٢:٣٥ظ ← الدوحة ١١:١٠م (ترانزيت ساعتان و٥٥ دقيقة) ← المغادرة من الدوحة ٢:٠٥ص ← الهبوط في الرياض ٣:٣٥ص. غادرا للمطار بحلول ٩:٣٠ص تقريبًا لموعد الإقلاع ١٢:٣٥ظ — أبقيا الصباح لتناول الفطور وتسجيل الخروج فقط.",
  blocks:[
   {slot:"Breakfast — pick one", slot_ar:"الفطور — اختارا واحدًا", items:["The Strangers Club","Origin Coffee Roasting"]},
   {slot:"9:30 AM — Leave for airport", slot_ar:"٩:٣٠ص — التوجه للمطار", items:[]},
-  {slot:"1:50 PM — Flight departs", slot_ar:"١:٥٠ظ — إقلاع الطائرة", items:[]},
+  {slot:"12:35 PM — Flight departs", slot_ar:"١٢:٣٥ظ — إقلاع الطائرة", items:[]},
  ]},
 ];
 
@@ -3853,7 +3869,8 @@ function renderPlanItinerary(){
     const tip = LANG==='ar' ? day.tip_ar : day.tip;
     const dayLabel = LANG==='ar' ? `اليوم ${i+1}` : `Day ${i+1}`;
     const resetBtn = dayHasOverrides(i, day.blocks.length) ? `<button type="button" class="itin-reset-btn" data-resetday="${i}" aria-label="${tr('itinResetDay')}" title="${tr('itinResetDay')}">↺</button>` : '';
-    html += `<div class="day-card"><div class="day-head"><span class="day-num">${dayLabel}</span><h3>${title}</h3><div class="day-head-right">${day.date?`<span class="day-date">${day.date}</span>`:''}${resetBtn}</div></div><p class="day-tip">${tip}</p>`;
+    const dateLabel = dayDateLabel(isoPlusDays(effectiveTripStart(), i));
+    html += `<div class="day-card"><div class="day-head"><span class="day-num">${dayLabel}</span><h3>${title}</h3><div class="day-head-right"><span class="day-date">${dateLabel}</span>${resetBtn}</div></div><p class="day-tip">${tip}</p>`;
     if(day.hotel){
       const h = day.hotel;
       const hname = LANG==='ar' ? (h.n_ar||h.n) : h.n;
@@ -4075,7 +4092,7 @@ function buildPrintModel(){
   const days = ITINERARY14.map((d, i)=>{
     if(d.hotel) stay = d.hotel;
     const blocks = d.blocks.map((b,j)=>({label:pt(b,'slot'), items:effectiveSlotItems(i, j, b.items).map(r=>{ const it = resolveRef(r); if(it) used.add(it.id); return it; }).filter(Boolean)}));
-    return {i, title:pt(d,'title'), tip:pt(d,'tip'), date:d.date||'', hotel:d.hotel ? resolveRef(d.hotel) : null, stay:(i === ITINERARY14.length-1) ? null : (stay ? resolveRef(stay) : null), blocks};
+    return {i, title:pt(d,'title'), tip:pt(d,'tip'), date:dayDateLabel(isoPlusDays(effectiveTripStart(), i)), hotel:d.hotel ? resolveRef(d.hotel) : null, stay:(i === ITINERARY14.length-1) ? null : (stay ? resolveRef(stay) : null), blocks};
   });
   const groups = {}, already = [];
   const add = (label, it)=>{ if(!it) return; if(used.has(it.id)){ already.push(it.name); return; } (groups[label] = groups[label] || []).push(it); };
@@ -4193,23 +4210,125 @@ document.getElementById('icsBtnPlan').addEventListener('click', ()=>downloadTrip
    - Dates beyond the 16-day forecast show typical weather (average of the same dates over the last 5 years).
    - Past dates show recorded weather. Falls back to the last saved data when offline. */
 const WX_LOC = {ct:{lat:-33.9249, lon:18.4241}, gr:{lat:-34.0361, lon:23.0487}};   // Cape Town, Knysna (Garden Route)
-const TRIP_START = '2026-10-28', TRIP_DAYS = 14;
+/* REAL_TRIP_START is the owner's actual booked trip. Everyone else who isn't GitHub-connected
+   (see isOwner()) picks their own arrival date on first visit (see the onboarding modal below),
+   kept in VISITOR_START — the same 14-day day-by-day plan just gets re-dated onto whatever date
+   they choose. effectiveTripStart() is what the rest of the page (itinerary dates, weather
+   window, countdown, ICS export) should always read instead of a fixed constant. */
+const REAL_TRIP_START = '2026-10-28', TRIP_DAYS = 14;
+let VISITOR_START = null;
+try{ VISITOR_START = localStorage.getItem('ctgr_visitor_start'); }catch(e){}
+function isOwner(){ return !!ghConfig(); }
+function effectiveTripStart(){ return isOwner() ? REAL_TRIP_START : (VISITOR_START || REAL_TRIP_START); }
 const WX_HIST_YEARS = 5, WX_LS = 'ctgr_wxc_v2';
 let wxTab = 'trip', wxLoc = 'ct', wxPick = '', wxSeq = 0, wxStale = false, wxBusy = false, wxLastFetch = 0;
 const WX = {now:null, hourly:[], today:'', updated:0, status:'loading'};
 
 /* ---------- COUNTDOWN ---------- */
 function isoPlusDays(iso, n){
+  // UTC throughout, deliberately — mixing a local-time parse with toISOString's UTC output
+  // shifts the date by a day on any machine/browser set to a positive UTC offset (which, for
+  // what it's worth, includes Riyadh, Doha and Cape Town themselves).
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + n);
+  return dt.toISOString().slice(0, 10);
+}
+function isoToday(){   // the viewer's own local calendar date — not UTC's, which can be a day off
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+const WEEKDAYS_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const WEEKDAYS_AR = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const MONTHS_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+function dayDateLabel(iso){   // "Wed 28 Oct" / "الأربعاء ٢٨ أكتوبر"
   const d = new Date(iso + 'T00:00:00');
-  d.setDate(d.getDate() + n);
-  return d.toISOString().slice(0, 10);
+  return LANG === 'ar'
+    ? `${WEEKDAYS_AR[d.getDay()]} ${d.getDate()} ${MONTHS_AR[d.getMonth()]}`
+    : `${WEEKDAYS_EN[d.getDay()]} ${d.getDate()} ${MONTHS_EN[d.getMonth()]}`;
+}
+function shortDateLabel(iso){   // "28 Oct" / "٢٨ أكتوبر" — no weekday, no year
+  const d = new Date(iso + 'T00:00:00');
+  return LANG === 'ar' ? `${d.getDate()} ${MONTHS_AR[d.getMonth()]}` : `${d.getDate()} ${MONTHS_EN[d.getMonth()]}`;
+}
+function dateRangeLabel(startIso, days){   // "28 Oct – 10 Nov 2026" / "٢٨ أكتوبر – ١٠ نوفمبر ٢٠٢٦"
+  const endIso = isoPlusDays(startIso, days - 1), e = new Date(endIso + 'T00:00:00');
+  const endYear = LANG === 'ar' ? String(e.getFullYear()).replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[d]) : e.getFullYear();
+  return `${shortDateLabel(startIso)} – ${shortDateLabel(endIso)} ${endYear}`;
+}
+/* Re-derives every on-screen date-range string from effectiveTripStart() — called after
+   language changes and whenever a visitor picks (or the owner's identity determines) the
+   trip's dates. Kept as one function so nothing here can drift out of sync with the others. */
+function updateDateDisplays(){
+  const start = effectiveTripStart();
+  const range = dateRangeLabel(start, TRIP_DAYS);
+  const startShort = shortDateLabel(start), endShort = shortDateLabel(isoPlusDays(start, TRIP_DAYS - 1));
+  const ar = LANG === 'ar';
+
+  const eyebrowEl = document.querySelector('.eyebrow');
+  if(eyebrowEl) eyebrowEl.textContent = `${range} · ${ar ? '١٤ يومًا / ١٣ ليلة · لكما فقط' : '14 Days / 13 Nights · Just the two of you'}`;
+
+  const wxTag = document.querySelector('.weather-tag');
+  if(wxTag) wxTag.textContent = range;
+
+  const planTag = document.querySelector('[data-t="planTag"]');
+  if(planTag) planTag.textContent = `${range} · ${ar ? '١٤ يومًا / ١٣ ليلة' : '14 days / 13 nights'}`;
+
+  const sunriseLbl = document.querySelector('[data-t="wSunrise"]');
+  if(sunriseLbl) sunriseLbl.textContent = ar ? `الشروق (${startShort} ← ${endShort})` : `Sunrise (${startShort} → ${endShort})`;
+  const sunsetLbl = document.querySelector('[data-t="wSunset"]');
+  if(sunsetLbl) sunsetLbl.textContent = ar ? `الغروب (${startShort} ← ${endShort})` : `Sunset (${startShort} → ${endShort})`;
+
+  const planSub = document.querySelector('[data-t="planSub"]');
+  if(planSub){
+    planSub.textContent = isOwner()
+      ? (ar ? `الوصول ${startShort} الساعة ١٠:٣٠ص حتى المغادرة ${endShort} الساعة ١٢:٣٥ظ — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية عبر ٥ إقامات. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
+             : `Arrival ${startShort} at 10:30am to departure ${endShort} at 12:35pm — that's 14 calendar days and 13 hotel nights across 5 stays. Transport details first, full itinerary below.`)
+      : (ar ? `الوصول ${startShort} حتى المغادرة ${endShort} — أي ١٤ يومًا تقويميًا و١٣ ليلة فندقية، بنفس خطة الرحلة الأصلية يومًا بيوم. تفاصيل التنقل أولاً، ثم الخطة الكاملة أدناه.`
+             : `Arrival ${startShort} to departure ${endShort} — 14 calendar days and 13 hotel nights, using the same day-by-day plan as the original trip. Transport details first, full itinerary below.`);
+  }
+}
+
+/* ---------- ONBOARDING (visitors who aren't the owner) ----------
+   isOwner() (a saved GitHub token — see ghConfig()) is treated as "signed in" per how the rest
+   of the site already uses that connection. Anyone else picks their own arrival date once; it's
+   remembered from then on (ctgr_visitor_start), and everything date-related re-derives from it
+   via effectiveTripStart() instead of the owner's real, fixed trip dates. */
+function onDateChanged(){
+  updateDateDisplays();
+  renderPlanItinerary();
+  updateCountdown();
+  loadWeather(true);
+}
+function initOnboarding(){
+  const back = document.getElementById('onboardBack');
+  if(!back) return;
+  const dateInput = document.getElementById('onboardDate'), status = document.getElementById('onboardStatus'),
+    saveBtn = document.getElementById('onboardSave'), skipBtn = document.getElementById('onboardSkip');
+  function maybeShow(){ back.hidden = isOwner() || !!VISITOR_START; }
+  maybeShow();
+  saveBtn.addEventListener('click', ()=>{
+    const val = dateInput.value;
+    if(!val){ status.textContent = tr('onboardNeedDate'); return; }
+    VISITOR_START = val;
+    try{ localStorage.setItem('ctgr_visitor_start', val); }catch(e){}
+    back.hidden = true;
+    onDateChanged();
+  });
+  skipBtn.addEventListener('click', ()=>{
+    VISITOR_START = REAL_TRIP_START;
+    try{ localStorage.setItem('ctgr_visitor_start', VISITOR_START); }catch(e){}
+    back.hidden = true;
+    onDateChanged();
+  });
+  window.addEventListener('ctgr-gh-changed', ()=>{ updateDateDisplays(); maybeShow(); });
 }
 function updateCountdown(){
   const b = document.getElementById('statCountdown'), lbl = document.getElementById('countdownLabel');
   if(!b || !lbl) return;
-  const todayIso = new Date().toISOString().slice(0, 10);
-  const start = new Date(TRIP_START + 'T00:00:00'), today = new Date(todayIso + 'T00:00:00');
-  const end = new Date(isoPlusDays(TRIP_START, TRIP_DAYS - 1) + 'T00:00:00');
+  const todayIso = isoToday();
+  const start = new Date(effectiveTripStart() + 'T00:00:00'), today = new Date(todayIso + 'T00:00:00');
+  const end = new Date(isoPlusDays(effectiveTripStart(), TRIP_DAYS - 1) + 'T00:00:00');
   const daysTo = Math.round((start - today) / 864e5);
   if(daysTo > 0){
     b.textContent = daysTo.toLocaleString(LANG==='ar' ? 'ar' : 'en-US');
@@ -4271,7 +4390,7 @@ function icsEventForDay(i){
     }).join(', ');
     return `${slot}: ${names}`;
   }).join('\n');
-  return {date: isoPlusDays(TRIP_START, i), title: `Day ${i+1} — ${title}`, description: [tip, items].filter(Boolean).join('\n\n')};
+  return {date: isoPlusDays(effectiveTripStart(), i), title: `Day ${i+1} — ${title}`, description: [tip, items].filter(Boolean).join('\n\n')};
 }
 function downloadTripICS(dayIndex){
   if(typeof dayIndex === 'number'){
@@ -4543,7 +4662,7 @@ function wxRenderDetail(){
 /* tiles under the strip: typical Cape Town numbers for the trip dates */
 async function wxTiles(){
   try{
-    const typ = (await wxTypicalWindow('ct', TRIP_START, TRIP_DAYS)).filter(Boolean);
+    const typ = (await wxTypicalWindow('ct', effectiveTripStart(), TRIP_DAYS)).filter(Boolean);
     if(!typ.length) return;
     const rng = f=>{ const v = typ.map(f); return [Math.round(Math.min(...v)), Math.round(Math.max(...v))]; };
     const r = a=>a[0] === a[1] ? String(a[0]) : a[0] + '–' + a[1];
@@ -4561,7 +4680,7 @@ async function wxShow(){
   let days = [];
   try{
     if(wxTab === 'trip'){
-      const [ct, gr] = await Promise.all([wxDaysFor('ct', TRIP_START, TRIP_DAYS), wxDaysFor('gr', TRIP_START, TRIP_DAYS)]);
+      const [ct, gr] = await Promise.all([wxDaysFor('ct', effectiveTripStart(), TRIP_DAYS), wxDaysFor('gr', effectiveTripStart(), TRIP_DAYS)]);
       days = ct.map((d, i)=>(ITINERARY14[i] && ITINERARY14[i].region === 'garden-route') ? gr[i] : d);
     }else if(wxTab === 'live'){
       days = await wxDaysFor(wxLoc, WX.today || wxIsoToday(), 16);
@@ -4852,6 +4971,7 @@ loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
 initAddPlace();
 initItinPicker();
 initFxWidget();
+initOnboarding();
 loadCustomPlaces();
 setInterval(updateCountdown, 60 * 60 * 1000);
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); });
