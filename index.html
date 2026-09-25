@@ -714,6 +714,7 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
   <div class="langbtns">
     <button class="langbtn" id="btnTheme" type="button" aria-label="Toggle dark mode" data-t-aria="themeToggle" aria-pressed="false"><svg class="theme-icon" id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
     <button class="langbtn" id="btnAddPlace" data-t="apOpenBtn" style="display:none"></button>
+    <button class="langbtn" id="btnResetTrip" data-t="resetTripBtn" style="display:none"></button>
     <button class="langbtn" id="btnPhotos" data-t="myPhotos"></button>
     <button class="langbtn active" id="btnEn">English</button>
     <button class="langbtn" id="btnAr">العربية</button>
@@ -794,8 +795,6 @@ body.ar .wx-detail-grid span{text-transform:none;letter-spacing:0;}
     <a href="https://www.emirates.com/sa/english/help/" target="_blank" class="tn-link">✉️ <span data-t="tnEmiratesContactForm"></span></a>
   </div>
   <p class="tn-cap" data-t="tnCaption"></p>
-  <p class="tn-cap" data-t="tnQatarNote"></p>
-  <p class="tn-cap" data-t="tnOtherAirlinesNote"></p>
 </div>
 
 <div class="fx-card">
@@ -1102,10 +1101,8 @@ en:{
   ttCarRentalTitle:"Car rental companies in Cape Town (compare)",
   searchPlaceholder:"🔍 Search everything — activities, restaurants, coffee, safari lodges…",
   tnQatarTitle:"Qatar Airways contact", tnQatarPhone:"8008 4408 86 (STC) / 8008 5001 17 (other providers)", tnQatarContactForm:"Qatar Airways contact form (no direct email published)",
-  tnQatarNote:"Qatar Airways' Saudi Arabia contact centre runs 24/7 on the toll-free numbers above (STC and other providers) — double-check them closer to your trip, as airline contact numbers do change. They don't publish a direct customer-service email; the contact form above is the official channel instead. Keep this handy for booking changes, baggage questions, or delays — both flights route through Doha. Save your booking reference (PNR) and check in online 24 hours before each flight.",
   tnEthiopianTitle:"Ethiopian Airlines contact", tnEthiopianPhone:"800 850 0286 (Saudi Arabia toll-free)", tnEthiopianContactForm:"Ethiopian Airlines support & feedback form",
   tnEmiratesTitle:"Emirates contact", tnEmiratesPhone:"800 850 0022 (KSA) / 800 844 2000 (roaming)", tnEmiratesContactForm:"Emirates help & contact (Saudi Arabia)",
-  tnOtherAirlinesNote:"The Riyadh–Doha–Cape Town flights above are on Qatar Airways — Ethiopian and Emirates are included too since a visitor building their own itinerary here may be flying either of those instead.",
   freeLabel:"Free", weakSignal:"Weak signal", weakSignalTip:"Patchy or no cell coverage here — download offline maps before you go.",
   budgetTotal:"Estimated total so far:", budgetApprox:"(rough estimate, per person)",
   ttOfflineTitle:"Offline maps — do this before you leave Cape Town", ttOfflineBody:"Cell coverage gets patchy or drops out completely in several spots on this trip — Cape Point, Chapman's Peak, Tsitsikamma National Park, Cango Caves, forest activities around Wilderness/Knysna, and most safari reserves. Before you leave Cape Town (while you still have strong signal and Wi-Fi), download offline areas in Google Maps for the whole Garden Route corridor — open Google Maps → your profile icon → Offline maps → Select your own map, and drag the box to cover Cape Town to Tsitsikamma. Cards with a 📶 badge below are the spots most likely to have poor coverage.",
@@ -1145,7 +1142,7 @@ en:{
   pickerTitle:"Add to this day", pickerSearchPh:"🔍 Search restaurants, activities, shopping…",
   fxTitle:"Currency converter", fxCaption:"Type an amount in any currency — the other two update automatically, using the same live rate as the budget tracker.",
   fxLive:"Live rate", fxApprox:"Approximate rate", fxFallback:"Approximate rate — no live connection right now, so this uses a fixed estimate: 1 ZAR ≈ 0.21 SAR, and SAR is pegged at 3.75 per USD.",
-  appsTitle:"📱 Useful apps", appsCaption:"Tap any app to open its page on the Saudi App Store (a search for its exact name, so you land on the right listing rather than a possibly wrong hardcoded link). A couple of these (Mr D, Takealot) are South Africa–specific — search for them again once there if the Saudi store doesn't carry them.",
+  appsTitle:"📱 Useful apps", appsCaption:"Tap any app to open its page on the Saudi App Store. A couple of these (Mr D, Takealot) are South Africa–specific — search for them again once there if the Saudi store doesn't carry them.",
   appIconUpload:"Upload icon", appIconUploading:"Uploading icon…", appIconUploaded:"Icon updated — it'll appear for everyone in about a minute.",
   appIconFail:"Couldn't upload ({e}). Try again.", appIconNeedConnect:"Connect GitHub in 📷 Photos first — this uploads to the same repo.",
   onboardTitle:"Plan your own trip", onboardBody:"This site is built around a specific Cape Town & Garden Route trip. Give it your own arrival/departure and where you're staying, and it builds you an empty day-by-day plan on those dates and cities — then use \"+ Add\" on any day to fill it in from everything curated here.",
@@ -1157,6 +1154,7 @@ en:{
   onboardHotelTBD:"Hotel not decided yet", onboardNeedName:"Give every city at least 1 day.",
   onboardSave:"Build my itinerary", onboardSkip:"Just show me the example trip", onboardNeedDate:"Pick a date first.",
   apOpenBtn:"➕ Add a place", apTitle:"Add a new place", apBody:"Paste a Google Maps link or coordinates and this figures out which neighbourhood (or Garden Route town) it belongs in on its own. Saved to GitHub, so it shows up for both of you, on every device.",
+  resetTripBtn:"↺ Reset my trip", resetTripConfirm:"Reset your trip? This clears your entered dates, cities, hotels, shortlist, and any notes you've added, and starts you over from the beginning. This can't be undone.",
   apName:"Name", apNameAr:"Name (Arabic) — optional", apCategory:"Category", apLocation:"Google Maps link or coordinates",
   apDetectedEmpty:"Paste a location above to detect the section.", apDetectedFound:"📍 {area} — {dist} km away",
   apSectionOverride:"Section (auto-detected — change if it's wrong)", apPrice:"Price in SAR (optional)", apAbout:"Short description (optional)",
@@ -1201,10 +1199,8 @@ ar:{
   ttCarRentalTitle:"شركات تأجير السيارات في كيب تاون (مقارنة)",
   searchPlaceholder:"🔍 ابحثا عن أي شيء — أنشطة، مطاعم، قهوة، نُزل سفاري…",
   tnQatarTitle:"التواصل مع القطرية", tnQatarPhone:"٨٠٠٨ ٤٤٠٨ ٨٦ (STC) / ٨٠٠٨ ٥٠٠١ ١٧ (مزوّدون آخرون)", tnQatarContactForm:"نموذج تواصل القطرية (لا يوجد بريد إلكتروني مباشر منشور)",
-  tnQatarNote:"مركز اتصال القطرية بالسعودية يعمل ٢٤/٧ على الأرقام المجانية أعلاه (STC ومزوّدون آخرون) — تأكدا منها قرب موعد رحلتكما لأن أرقام التواصل قد تتغير. لا تنشر الشركة بريدًا إلكترونيًا مباشرًا لخدمة العملاء؛ نموذج التواصل أعلاه هو القناة الرسمية بدلاً منه. احتفظا بهذا الرقم لتعديل الحجز أو استفسارات الأمتعة أو التأخير — كلا الرحلتين عبر الدوحة. احتفظا برقم الحجز (PNR) وسجّلا الدخول إلكترونيًا قبل كل رحلة بـ٢٤ ساعة.",
   tnEthiopianTitle:"التواصل مع الإثيوبية", tnEthiopianPhone:"٨٠٠ ٨٥٠ ٠٢٨٦ (مجاني داخل السعودية)", tnEthiopianContactForm:"نموذج الدعم والتواصل للخطوط الإثيوبية",
   tnEmiratesTitle:"التواصل مع طيران الإمارات", tnEmiratesPhone:"٨٠٠ ٨٥٠ ٠٠٢٢ (داخل السعودية) / ٨٠٠ ٨٤٤ ٢٠٠٠ (تجوال)", tnEmiratesContactForm:"صفحة المساعدة والتواصل لطيران الإمارات (السعودية)",
-  tnOtherAirlinesNote:"رحلات الرياض–الدوحة–كيب تاون أعلاه على متن القطرية — أُضيفت الإثيوبية والإمارات أيضًا لأن أي زائر يبني خطته الخاصة هنا قد يسافر على متن إحداهما بدلاً من ذلك.",
   freeLabel:"مجاني", weakSignal:"إشارة ضعيفة", weakSignalTip:"تغطية جوال ضعيفة أو منعدمة هنا — حمّلا خرائط بدون إنترنت قبل الذهاب.",
   budgetTotal:"الإجمالي التقريبي حتى الآن:", budgetApprox:"(تقدير تقريبي، للشخص الواحد)",
   ttOfflineTitle:"خرائط بدون إنترنت — افعلا هذا قبل مغادرة كيب تاون", ttOfflineBody:"تغطية الجوال تضعف أو تنقطع تمامًا في عدة أماكن في هذه الرحلة — كيب بوينت، رأس تشابمان، محمية تسيتسيكاما الوطنية، كهوف كانجو، أنشطة الغابات حول ويلدرنس/كنيسنا، ومعظم محميات السفاري. قبل مغادرة كيب تاون (وأنتما لا تزالان بإشارة قوية وواي فاي)، حمّلا مناطق بدون إنترنت في خرائط جوجل لكامل ممر طريق الحدائق — افتحا خرائط جوجل ← أيقونة الملف الشخصي ← الخرائط بدون إنترنت ← تحديد خريطتك الخاصة، واسحبا المربع ليغطي من كيب تاون إلى تسيتسيكاما. البطاقات التي عليها شارة 📶 أدناه هي الأماكن الأكثر عرضة لضعف التغطية.",
@@ -1244,7 +1240,7 @@ ar:{
   pickerTitle:"إضافة إلى هذا اليوم", pickerSearchPh:"🔍 ابحثا عن مطاعم، أنشطة، تسوّق…",
   fxTitle:"محوّل العملات", fxCaption:"اكتبا مبلغًا بأي عملة — والعملتان الأخريان تتحدّثان تلقائيًا، بنفس السعر الحي المستخدم في متتبع الميزانية.",
   fxLive:"سعر حي", fxApprox:"سعر تقريبي", fxFallback:"سعر تقريبي — لا يوجد اتصال حي حاليًا، فيُستخدم تقدير ثابت: ١ راند جنوب أفريقي ≈ ٠.٢١ ريال سعودي، والريال السعودي مربوط بـ٣.٧٥ لكل دولار.",
-  appsTitle:"📱 تطبيقات مفيدة", appsCaption:"اضغطا على أي تطبيق لفتح صفحته في متجر آبل السعودي (بحث باسم التطبيق بالضبط، بدل رابط مباشر قد يكون خاطئًا). بعضها (Mr D، Takealot) خاص بجنوب أفريقيا — ابحثا عنه مجددًا هناك إن لم يكن متوفرًا في المتجر السعودي.",
+  appsTitle:"📱 تطبيقات مفيدة", appsCaption:"اضغطا على أي تطبيق لفتح صفحته في متجر آبل السعودي. بعضها (Mr D، Takealot) خاص بجنوب أفريقيا — ابحثا عنه مجددًا هناك إن لم يكن متوفرًا في المتجر السعودي.",
   appIconUpload:"رفع أيقونة", appIconUploading:"جارٍ رفع الأيقونة…", appIconUploaded:"تم تحديث الأيقونة — ستظهر للجميع خلال دقيقة تقريبًا.",
   appIconFail:"تعذّر الرفع ({e}). حاولا مرة أخرى.", appIconNeedConnect:"اربطا GitHub من 📷 الصور أولاً — هذا يرفع إلى المستودع نفسه.",
   onboardTitle:"خططا لرحلتكما الخاصة", onboardBody:"هذا الموقع مبني على رحلة محددة لكيب تاون وطريق الحدائق. أدخلا تاريخي وصولكما ومغادرتكما ومدنكما، وسيُنشئ لكما خطة يومية فارغة بتلك التواريخ والمدن — ثم استخدما \"+ إضافة\" في أي يوم لملئها من كل ما هو منسّق هنا.",
@@ -1256,6 +1252,7 @@ ar:{
   onboardHotelTBD:"لم يتقرر الفندق بعد", onboardNeedName:"أعطيا كل مدينة يومًا واحدًا على الأقل.",
   onboardSave:"أنشئا خطة رحلتنا", onboardSkip:"أرياني الرحلة المثال فقط", onboardNeedDate:"اختارا تاريخًا أولاً.",
   apOpenBtn:"➕ أضف مكانًا", apTitle:"إضافة مكان جديد", apBody:"الصقا رابط خرائط جوجل أو الإحداثيات وسيُحدَّد الحي (أو بلدة طريق الحدائق) تلقائيًا. يُحفظ في GitHub فيظهر لكما على أي جهاز.",
+  resetTripBtn:"↺ إعادة ضبط رحلتي", resetTripConfirm:"هل تريدان إعادة ضبط رحلتكما؟ سيُحذف كل ما أدخلتماه — التواريخ والمدن والفنادق والمفضلة وأي ملاحظات أضفتماها — وستبدآن من جديد. لا يمكن التراجع عن هذا.",
   apName:"الاسم", apNameAr:"الاسم بالعربي — اختياري", apCategory:"التصنيف", apLocation:"رابط خرائط جوجل أو الإحداثيات",
   apDetectedEmpty:"الصقا موقعًا أعلاه لتحديد القسم.", apDetectedFound:"📍 {area} — على بعد {dist} كم",
   apSectionOverride:"القسم (تم تحديده تلقائيًا — غيّراه إن كان خطأ)", apPrice:"السعر بالريال السعودي (اختياري)", apAbout:"وصف مختصر (اختياري)",
@@ -4371,6 +4368,59 @@ function pdItem(it){
   </div>`;
 }
 
+// The drawer's own "view itinerary" print button (as opposed to the full-plan "Download PDF"
+// button on the Plan tab) should print exactly what's in that drawer — the visitor's own
+// selected/favourite places — not the entire day-by-day plan with the shortlist tacked on after.
+function buildShortlistPrintModel(){
+  const groups = {};
+  const add = (label, it)=>{ if(!it) return; (groups[label] = groups[label] || []).push(it); };
+  [...picked].sort((a,b)=>a-b).forEach(i=>{ const p = PLACES[i]; if(p) add(AREAS_META[p.a] ? AREAS_META[p.a][LANG] : '', resolveRef(p.n)); });
+  const grFlat = GARDEN_ROUTE.flatMap(t=>t.items.map(it=>({it, t})));
+  [...grPicked].sort((a,b)=>a-b).forEach(i=>{ const x = grFlat[i]; if(x) add(pt(x.t,'town') + (LANG==='ar' ? ' (طريق الحدائق)' : ' (Garden Route)'), resolveRef(x.it.n)); });
+  return {groups, budget:computeBudget()};
+}
+function renderShortlistPrintDoc(m){
+  const ar = LANG === 'ar';
+  const title = ar ? 'كيب تاون وطريق الحدائق' : 'Cape Town & Garden Route';
+  const today = new Date().toLocaleDateString(ar ? 'ar-SA-u-nu-latn' : 'en-GB', {day:'numeric', month:'short', year:'numeric'});
+  const groupNames = Object.keys(m.groups);
+  let html = `<section class="pd-cover">
+    <div class="pd-kicker">${escHtml(tr('viewItinerary'))}</div>
+    <h1>${title}</h1>
+    <p class="pd-foot">${escHtml(tr('pdfFoot'))} · ${today}</p>
+  </section>`;
+  html += `<section class="pd-day pd-short"><header class="pd-dayhead"><h2>${escHtml(tr('pdfShortlist'))}</h2></header>`;
+  if(!groupNames.length) html += `<p class="pd-tip">${escHtml(tr('nothingPicked'))}</p>`;
+  groupNames.forEach(g=>{ html += `<h3 class="pd-h3">${escHtml(g)}</h3>${m.groups[g].map(pdItem).join('')}`; });
+  if(m.budget.count) html += `<div class="pd-total">${escHtml(tr('budgetTotal'))} <b>≈ ${escHtml(budgetDisplay(m.budget.total))}</b> <span>${escHtml(tr('budgetApprox'))}</span></div>`;
+  html += `</section>`;
+  return html;
+}
+async function printShortlist(){
+  if(pdfBusy) return; pdfBusy = true;
+  try{
+    const model = buildShortlistPrintModel();
+    const bases = new Set();
+    Object.values(model.groups).forEach(arr=>arr.forEach(it=>{ if(it && it.base) bases.add(it.base); }));
+    const smallOf = new Map();
+    [...bases].forEach(b=>photosFor(b).slice(0,3).forEach(p=>{ if(!thumbData.has(p.url)) smallOf.set(p.url, p.thumb); }));
+    const urls = [...smallOf.keys()];
+    let done = 0;
+    if(urls.length){
+      toast(tr('pdfPreparing').replace('{a}', 0).replace('{b}', urls.length));
+      await runPool(urls, 4, async u=>{ await makeThumb(u, smallOf.get(u)); done++; toast(tr('pdfPreparing').replace('{a}', done).replace('{b}', urls.length)); });
+    }
+    const doc = document.getElementById('printDoc');
+    doc.innerHTML = renderShortlistPrintDoc(model);
+    await Promise.all([...doc.querySelectorAll('img')].map(i=>i.decode ? i.decode().catch(()=>{}) : null));
+    document.body.classList.add('printing');
+    const cleanup = ()=>{ document.body.classList.remove('printing'); window.removeEventListener('afterprint', cleanup); };
+    window.addEventListener('afterprint', cleanup);
+    setTimeout(cleanup, 180000);
+    window.print();
+  }catch(err){ console.error(err); toast(tr('pdfFail')); }
+  finally{ pdfBusy = false; }
+}
 function renderPrintDoc(m){
   const ar = LANG === 'ar';
   const dayWord = i => ar ? `اليوم ${i+1}` : `Day ${i+1}`;
@@ -4433,7 +4483,7 @@ async function printItinerary(){
   }catch(err){ console.error(err); toast(tr('pdfFail')); }
   finally{ pdfBusy = false; }
 }
-document.getElementById('printBtn').addEventListener('click', printItinerary);
+document.getElementById('printBtn').addEventListener('click', printShortlist);
 document.getElementById('pdfBtnPlan').addEventListener('click', printItinerary);
 document.getElementById('icsBtnPlan').addEventListener('click', ()=>downloadTripICS());
 
@@ -4732,7 +4782,23 @@ function initOnboarding(){
     back.hidden = true;
     onDateChanged();
   });
-  window.addEventListener('ctgr-gh-changed', ()=>{ updateHeroTitle(); updateDateDisplays(); maybeShow(); });
+
+  // "Reset my trip" — owner-only pages don't need this (there's nothing per-visitor to undo), but
+  // any non-owner who mistyped dates/cities/hotels, or just wants to start over, gets a clean slate:
+  // every bit of their own local state (onboarding answers, custom itinerary, shortlist, local
+  // notes) is wiped and the page reloads straight back to the onboarding landing screen.
+  const resetBtn = document.getElementById('btnResetTrip');
+  function refreshResetTripBtn(){ if(resetBtn) resetBtn.style.display = isOwner() ? 'none' : ''; }
+  refreshResetTripBtn();
+  if(resetBtn) resetBtn.addEventListener('click', ()=>{
+    if(!confirm(tr('resetTripConfirm'))) return;
+    ['ctgr_visitor_start','ctgr_custom_itin','ctgr_itin_overrides','ctgr_usernotes','ctgr_notes_dirty','ctgr_picks'].forEach(k=>{
+      try{ localStorage.removeItem(k); }catch(e){}
+    });
+    location.reload();
+  });
+
+  window.addEventListener('ctgr-gh-changed', ()=>{ updateHeroTitle(); updateDateDisplays(); maybeShow(); refreshResetTripBtn(); });
 }
 function updateCountdown(){
   const b = document.getElementById('statCountdown'), lbl = document.getElementById('countdownLabel');
