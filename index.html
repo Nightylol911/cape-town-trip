@@ -438,8 +438,15 @@ body.ar .app-name,body.ar .app-desc{font-family:'Tajawal',sans-serif;}
 .gr-card-actions{display:flex;gap:8px;margin-top:auto;padding-top:6px;flex-wrap:wrap;}
 
 /* SAFARI */
-.saf-compare-wrap{overflow-x:auto;margin:20px 0 36px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);}
-table.saf-compare{width:100%;border-collapse:collapse;font-size:13px;min-width:760px;}
+.saf-compare-wrap{overflow-x:auto;margin:20px 0 36px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);max-width:100%;}
+/* No min-width below — this table sits inside a .tabpanel{display:none} until the Safari tab is
+   opened, so its width never gets measured until that first reveal. A flat min-width wider than
+   the viewport at that exact moment is what pushed the whole page's layout width out and made
+   mobile browsers auto-zoom-to-fit on tab switch (the table itself would still have scrolled fine
+   inside .saf-compare-wrap's own overflow-x — this was about the page's overall zoom, not the
+   table). Only apply it once there's actually room for it. */
+table.saf-compare{width:100%;border-collapse:collapse;font-size:13px;}
+@media(min-width:800px){table.saf-compare{min-width:760px;}}
 table.saf-compare th,table.saf-compare td{padding:10px 14px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top;}
 table.saf-compare th{background:var(--ink);color:var(--paper);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0;}
 table.saf-compare tr:last-child td{border-bottom:none;}
@@ -1126,6 +1133,7 @@ en:{
   safTitle:"Safari — which lodge to book", safTag:"5 compared", safSub:"All five you shortlisted, compared side by side, with official booking sites and what to expect. None of these are on the Garden Route route itself except Garden Route Game Lodge, Gondwana and Botlierskop — Aquila is near Cape Town, best done as a separate day trip or on the way out.",
   mapTitle:"Overview map", mapSub:"Pins grouped by neighbourhood so you plan efficient days. Click a pin for the name, use \"Directions\" on any card for exact navigation.",
   drawerTitle:"Our itinerary", printBtn:"Download itinerary as PDF", pdfBtn:"Download itinerary as PDF", pdfPreparing:"Preparing PDF… photos {a}/{b}", pdfFail:"Couldn't prepare the PDF. Try again.", pdfGlance:"Trip at a glance", pdfColDay:"Day", pdfColDate:"Date", pdfColPlan:"Plan", pdfColStay:"Where you stay", pdfStayingAt:"Staying at", pdfEmergency:"Emergency & key numbers", pdfHospitals:"Nearest hospital by area", pdfPractical:"Practical information", pdfMap:"Google Maps", pdfHowBook:"How to book", pdfShortlist:"Your shortlist", pdfAlready:"Already in the day-by-day plan", pdfFoot:"Prices are rough per-person estimates in SAR. Hours, prices and weather closures change, so check the official page before you go.",
+  pdfArrival:"Arrival", pdfDeparture:"Departure", pdfStays:"Where you're staying",
   footerText:"Built for your Cape Town trip · Coordinates are approximate per neighbourhood for map orientation — use \"Directions\" on each card for the exact pin. Prices, hours, menus, booking links and weather are all subject to change, so double-check close to your trip.",
   signature:"Designed by Yazeed Alturki",
   directions:"Directions", menuBtn:"Menu", bookBadge:"Pre-booking recommended", howToBook:"How to book",
@@ -1224,6 +1232,7 @@ ar:{
   safTitle:"السفاري — أي نُزل تحجزان", safTag:"مقارنة بين ٥", safSub:"الخمسة التي اخترتماها، مقارنة جنبًا إلى جنب، مع مواقع الحجز الرسمية وما يمكن توقعه. لا شيء منها على طريق الحدائق نفسه سوى Garden Route Game Lodge وGondwana وBotlierskop — أما Aquila فقريبة من كيب تاون، والأفضل زيارتها كرحلة يوم منفصلة أو في الطريق.",
   mapTitle:"خريطة عامة", mapSub:"الدبابيس مجمّعة حسب الحي لتخطيط أيام فعالة. اضغطي على أي دبوس لرؤية الاسم، واستخدمي \"الاتجاهات\" في أي بطاقة للملاحة الدقيقة.",
   drawerTitle:"خطة رحلتنا", printBtn:"تنزيل خطة الرحلة PDF", pdfBtn:"تنزيل خطة الرحلة PDF", pdfPreparing:"جارٍ تجهيز الملف… الصور {a}/{b}", pdfFail:"تعذّر تجهيز الملف. حاولا مرة أخرى.", pdfGlance:"الرحلة في لمحة", pdfColDay:"اليوم", pdfColDate:"التاريخ", pdfColPlan:"الخطة", pdfColStay:"مكان الإقامة", pdfStayingAt:"الإقامة في", pdfEmergency:"أرقام الطوارئ والأرقام المهمة", pdfHospitals:"أقرب مستشفى حسب المنطقة", pdfPractical:"معلومات عملية", pdfMap:"خرائط جوجل", pdfHowBook:"طريقة الحجز", pdfShortlist:"قائمتكما المختارة", pdfAlready:"موجودة أصلًا في الخطة اليومية", pdfFoot:"الأسعار تقديرات تقريبية للشخص بالريال السعودي. الأوقات والأسعار وإغلاقات الطقس تتغير، فتحققا من الصفحة الرسمية قبل الذهاب.",
+  pdfArrival:"الوصول", pdfDeparture:"المغادرة", pdfStays:"أماكن الإقامة",
   footerText:"صُمم لرحلتكما إلى كيب تاون · الإحداثيات تقريبية لكل حي لأغراض توجيه الخريطة — استخدما \"الاتجاهات\" في كل بطاقة للموقع الدقيق. الأسعار وأوقات العمل والقوائم وروابط الحجز والطقس كلها عرضة للتغيير، فتحققا منها قبل رحلتكما.",
   signature:"صمّمه يزيد التركي",
   directions:"الاتجاهات", menuBtn:"القائمة", bookBadge:"يُنصح بالحجز المسبق", howToBook:"كيفية الحجز",
@@ -4371,13 +4380,35 @@ function pdItem(it){
 // The drawer's own "view itinerary" print button (as opposed to the full-plan "Download PDF"
 // button on the Plan tab) should print exactly what's in that drawer — the visitor's own
 // selected/favourite places — not the entire day-by-day plan with the shortlist tacked on after.
+// Where each hotel stay starts/ends, read straight off currentItinerary()'s own d.hotel markers
+// (the same source the full-plan PDF and the day cards use) — works for the real trip and for a
+// visitor's custom one alike, no separate bookkeeping needed.
+function buildStaysList(){
+  const itin = currentItinerary(), start = effectiveTripStart();
+  const starts = [];
+  itin.forEach((d, i)=>{ if(d.hotel) starts.push({i, title:pt(d,'title'), hotel:resolveRef(d.hotel)}); });
+  return starts.map((s, idx)=>{
+    const endIdx = (idx+1 < starts.length) ? starts[idx+1].i - 1 : itin.length - 1;
+    return {
+      title: s.title,
+      hotelName: s.hotel ? s.hotel.name : '',
+      startDate: dayDateLabel(isoPlusDays(start, s.i)),
+      endDate: dayDateLabel(isoPlusDays(start, endIdx)),
+    };
+  });
+}
 function buildShortlistPrintModel(){
   const groups = {};
   const add = (label, it)=>{ if(!it) return; (groups[label] = groups[label] || []).push(it); };
   [...picked].sort((a,b)=>a-b).forEach(i=>{ const p = PLACES[i]; if(p) add(AREAS_META[p.a] ? AREAS_META[p.a][LANG] : '', resolveRef(p.n)); });
   const grFlat = GARDEN_ROUTE.flatMap(t=>t.items.map(it=>({it, t})));
   [...grPicked].sort((a,b)=>a-b).forEach(i=>{ const x = grFlat[i]; if(x) add(pt(x.t,'town') + (LANG==='ar' ? ' (طريق الحدائق)' : ' (Garden Route)'), resolveRef(x.it.n)); });
-  return {groups, budget:computeBudget()};
+  const start = effectiveTripStart(), days = effectiveTripDays();
+  return {
+    groups, budget:computeBudget(), stays:buildStaysList(),
+    arrival:{date:dayDateLabel(start), time:tripArrivalTime()},
+    departure:{date:dayDateLabel(isoPlusDays(start, days - 1)), time:tripDepartTime()},
+  };
 }
 function renderShortlistPrintDoc(m){
   const ar = LANG === 'ar';
@@ -4387,8 +4418,17 @@ function renderShortlistPrintDoc(m){
   let html = `<section class="pd-cover">
     <div class="pd-kicker">${escHtml(tr('viewItinerary'))}</div>
     <h1>${title}</h1>
+    <table class="pd-glance"><tbody>
+      <tr><td><b>${escHtml(tr('pdfArrival'))}</b></td><td>${escHtml(m.arrival.date)}${m.arrival.time ? ` · ${escHtml(m.arrival.time)}` : ''}</td></tr>
+      <tr><td><b>${escHtml(tr('pdfDeparture'))}</b></td><td>${escHtml(m.departure.date)}${m.departure.time ? ` · ${escHtml(m.departure.time)}` : ''}</td></tr>
+    </tbody></table>
     <p class="pd-foot">${escHtml(tr('pdfFoot'))} · ${today}</p>
   </section>`;
+  if(m.stays.length){
+    html += `<section class="pd-day pd-short"><header class="pd-dayhead"><h2>${escHtml(tr('pdfStays'))}</h2></header>`;
+    html += m.stays.map(s=>`<div class="pd-staying">🏨 <b>${escHtml(s.hotelName || tr('onboardHotelTBD'))}</b> — ${escHtml(s.title)} <span class="pd-sub">(${escHtml(s.startDate)}${s.endDate!==s.startDate ? ` – ${escHtml(s.endDate)}` : ''})</span></div>`).join('');
+    html += `</section>`;
+  }
   html += `<section class="pd-day pd-short"><header class="pd-dayhead"><h2>${escHtml(tr('pdfShortlist'))}</h2></header>`;
   if(!groupNames.length) html += `<p class="pd-tip">${escHtml(tr('nothingPicked'))}</p>`;
   groupNames.forEach(g=>{ html += `<h3 class="pd-h3">${escHtml(g)}</h3>${m.groups[g].map(pdItem).join('')}`; });
@@ -4501,11 +4541,16 @@ const WX_LOC = {ct:{lat:-33.9249, lon:18.4241}, gr:{lat:-34.0361, lon:23.0487}};
    "+ Add" picker the real plan uses. currentItinerary()/effectiveTripStart()/effectiveTripDays()
    are what the rest of the page should always read instead of the fixed constants directly. */
 const REAL_TRIP_START = '2026-10-28', TRIP_DAYS = 14;
-let VISITOR_START = null, CUSTOM_ITIN = null;
+const REAL_ARRIVAL_TIME = '10:30am', REAL_DEPART_TIME = '12:35pm';   // Qatar Airways, see Day 1/14 tips
+let VISITOR_START = null, CUSTOM_ITIN = null, VISITOR_ARRIVAL_TIME = '', VISITOR_DEPART_TIME = '';
 try{ VISITOR_START = localStorage.getItem('ctgr_visitor_start'); }catch(e){}
 try{
   const saved = JSON.parse(localStorage.getItem('ctgr_custom_itin') || 'null');
   if(Array.isArray(saved) && saved.length) CUSTOM_ITIN = saved;
+}catch(e){}
+try{
+  const t = JSON.parse(localStorage.getItem('ctgr_visitor_times') || 'null');
+  if(t){ VISITOR_ARRIVAL_TIME = t.arrival || ''; VISITOR_DEPART_TIME = t.depart || ''; }
 }catch(e){}
 function isOwner(){ return !!ghConfig(); }
 function effectiveTripStart(){ return isOwner() ? REAL_TRIP_START : (VISITOR_START || REAL_TRIP_START); }
@@ -4521,6 +4566,8 @@ function visitorPending(){ return !isOwner() && !VISITOR_START; }
 // — the only two cases where showing the real couple's-trip framing ("Just the two of you") is
 // accurate. A visitor with their own custom itinerary gets neutral wording instead.
 function usingRealTrip(){ return isOwner() || (!!VISITOR_START && !CUSTOM_ITIN); }
+function tripArrivalTime(){ return usingRealTrip() ? REAL_ARRIVAL_TIME : VISITOR_ARRIVAL_TIME; }
+function tripDepartTime(){ return usingRealTrip() ? REAL_DEPART_TIME : VISITOR_DEPART_TIME; }
 const WX_HIST_YEARS = 5, WX_LS = 'ctgr_wxc_v2';
 let wxTab = 'trip', wxLoc = 'ct', wxPick = '', wxSeq = 0, wxStale = false, wxBusy = false, wxLastFetch = 0;
 const WX = {now:null, hourly:[], today:'', updated:0, status:'loading'};
@@ -4694,6 +4741,13 @@ function updateOnboardDaysCheck(){
   if(sum === total){ checkEl.textContent = tr('onboardDaysMatch'); checkEl.style.color = 'var(--sage)'; saveBtn.disabled = false; }
   else{ checkEl.textContent = tr('onboardDaysMismatch').replace('{sum}', LANG==='ar'?arDigits(sum):sum).replace('{total}', LANG==='ar'?arDigits(total):total); checkEl.style.color = '#b3473b'; saveBtn.disabled = true; }
 }
+function formatTimeInput(hhmm){   // "14:30" (native <input type=time>) -> "2:30pm"
+  if(!hhmm || !/^\d{1,2}:\d{2}$/.test(hhmm)) return '';
+  let [h, m] = hhmm.split(':').map(Number);
+  const suffix = h >= 12 ? 'pm' : 'am';
+  h = h % 12 || 12;
+  return `${h}:${String(m).padStart(2,'0')}${suffix}`;
+}
 function onboardArrivalTip(cityLabel, time){
   return LANG==='ar'
     ? `تصلان اليوم${time?` الساعة ${time}`:''}. خصصا اليوم الأول للاستقرار — تسجيل الدخول، استراحة، وجولة هادئة أولى في ${cityLabel}.`
@@ -4749,8 +4803,8 @@ function initOnboarding(){
   wireOnboardCityRow(document.querySelector('.onboard-city-row'));
 
   saveBtn.addEventListener('click', ()=>{
-    const arrivalDate = document.getElementById('onboardArrivalDate').value, arrivalTime = document.getElementById('onboardArrivalTime').value;
-    const departDate = document.getElementById('onboardDepartDate').value, departTime = document.getElementById('onboardDepartTime').value;
+    const arrivalDate = document.getElementById('onboardArrivalDate').value, arrivalTime = formatTimeInput(document.getElementById('onboardArrivalTime').value);
+    const departDate = document.getElementById('onboardDepartDate').value, departTime = formatTimeInput(document.getElementById('onboardDepartTime').value);
     const total = computeOnboardTotalDays();
     if(!arrivalDate || !departDate || !total){ status.textContent = tr('onboardNeedDates'); return; }
     const rows = [...document.querySelectorAll('.onboard-city-row')];
@@ -4765,10 +4819,12 @@ function initOnboarding(){
     if(sum !== total){ status.textContent = tr('onboardDaysMismatch').replace('{sum}', sum).replace('{total}', total); return; }
 
     VISITOR_START = arrivalDate;
+    VISITOR_ARRIVAL_TIME = arrivalTime; VISITOR_DEPART_TIME = departTime;
     CUSTOM_ITIN = buildCustomSkeleton({arrivalTime, departTime, cities});
     try{
       localStorage.setItem('ctgr_visitor_start', arrivalDate);
       localStorage.setItem('ctgr_custom_itin', JSON.stringify(CUSTOM_ITIN));
+      localStorage.setItem('ctgr_visitor_times', JSON.stringify({arrival:arrivalTime, depart:departTime}));
       localStorage.removeItem('ctgr_itin_overrides');   // a fresh plan shouldn't inherit stray add/remove deltas from anything earlier
     }catch(e){}
     ITIN_OVERRIDES = {};
@@ -4778,7 +4834,8 @@ function initOnboarding(){
   skipBtn.addEventListener('click', ()=>{
     VISITOR_START = REAL_TRIP_START;
     CUSTOM_ITIN = null;
-    try{ localStorage.setItem('ctgr_visitor_start', VISITOR_START); localStorage.removeItem('ctgr_custom_itin'); }catch(e){}
+    VISITOR_ARRIVAL_TIME = ''; VISITOR_DEPART_TIME = '';
+    try{ localStorage.setItem('ctgr_visitor_start', VISITOR_START); localStorage.removeItem('ctgr_custom_itin'); localStorage.removeItem('ctgr_visitor_times'); }catch(e){}
     back.hidden = true;
     onDateChanged();
   });
@@ -4792,7 +4849,7 @@ function initOnboarding(){
   refreshResetTripBtn();
   if(resetBtn) resetBtn.addEventListener('click', ()=>{
     if(!confirm(tr('resetTripConfirm'))) return;
-    ['ctgr_visitor_start','ctgr_custom_itin','ctgr_itin_overrides','ctgr_usernotes','ctgr_notes_dirty','ctgr_picks'].forEach(k=>{
+    ['ctgr_visitor_start','ctgr_custom_itin','ctgr_visitor_times','ctgr_itin_overrides','ctgr_usernotes','ctgr_notes_dirty','ctgr_picks'].forEach(k=>{
       try{ localStorage.removeItem(k); }catch(e){}
     });
     location.reload();
