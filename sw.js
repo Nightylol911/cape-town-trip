@@ -8,8 +8,11 @@
 
    Bump CACHE_NAME (e.g. v1 -> v2) whenever you want to force everyone's cached copy dropped —
    otherwise this file only needs to be touched if the caching *strategy* changes. */
-const CACHE_NAME = 'ctgr-cache-v2';   // bumped: icons/apps/*.png used to be cached stale-while-revalidate, so a newly-uploaded icon could sit hidden behind an old cached copy until a hard reload
-const APP_SHELL = ['./', 'index.html', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png'];
+const CACHE_NAME = 'ctgr-cache-v3';   // bumped: index.html was split into css/styles.css + 16 js/*.js files (was one file) — a new cache version makes sure everyone's app shell list below actually gets pre-cached instead of silently keeping the old single-file entry
+const APP_SHELL = ['./', 'index.html', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png', 'css/styles.css',
+  'js/photo-storage.js', 'js/i18n.js', 'js/data-places.js', 'js/notes-and-places.js', 'js/photos.js',
+  'js/render-map.js', 'js/data-garden-route.js', 'js/data-safari.js', 'js/data-apps.js', 'js/data-itinerary.js',
+  'js/itinerary-customize.js', 'js/print-export.js', 'js/trip-onboarding.js', 'js/weather.js', 'js/drawer-currency.js', 'js/app-boot.js'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

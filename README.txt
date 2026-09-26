@@ -1,6 +1,28 @@
 CAPE TOWN TRIP SITE
 ===================
-index.html        the website
+index.html        the page skeleton — head, body markup, then <link>/<script src> tags pulling
+                   in everything below. No CSS or app logic lives in here anymore.
+css/styles.css     all of the site's CSS (used to be a <style> block inside index.html).
+js/                the app's code, split into one file per topic — load order matters (that's
+                   the order they're listed in index.html) since none of this uses a bundler or
+                   ES modules, just plain classic scripts sharing one global scope, same as
+                   before the split. To edit something, this is roughly where it lives:
+  photo-storage.js       the IndexedDB wrapper photos are saved into
+  i18n.js                every English/Arabic UI string (the UI = {en:{...}, ar:{...}} object)
+  data-places.js         Cape Town places (the big one — ~700 lines) + categories/neighbourhoods
+  notes-and-places.js    your own notes per place, and the "add a custom place" flow
+  photos.js              photo upload/lightbox/zip export/GitHub photo sync
+  render-map.js          the map, filters, legend, and page-language switching
+  data-garden-route.js   Garden Route towns/places data
+  data-safari.js         safari lodge comparison data + Garden Route itinerary + hospitals/car rentals
+  data-apps.js           the "Useful apps" tile data + App Store link lookup
+  data-itinerary.js      hotels + the real 14-day itinerary (ITINERARY14)
+  itinerary-customize.js add/remove/move places within the day-by-day plan, the "+ Add" picker
+  print-export.js        PDF export, backup download/restore, "Add to Home Screen" prompt
+  trip-onboarding.js      visitor onboarding (their own dates/cities/hotels), countdown, .ics export
+  weather.js             the whole Open-Meteo weather widget
+  drawer-currency.js     the shortlist drawer, actual-spending tracker, currency/budget maths
+  app-boot.js            dark mode, tabs, search, and the final boot sequence that starts everything
 sw.js              service worker — makes the site work with no signal once it's hosted for real
 manifest.json      lets phones "Add to Home Screen" / install it like an app
 icons/             app icons (generated — see "npm run icons" below)
