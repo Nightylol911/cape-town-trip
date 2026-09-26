@@ -1,3 +1,40 @@
+/* ---------- COLLAPSIBLE MAJOR SECTIONS ----------
+   Weather, Universal Travel Checklist, Before-you-travel, Currency, Useful Apps, Renting a car
+   and Emergency info all get a toggle appended to their header, collapsing everything else in
+   that card. Runs once at boot (it restructures the DOM by moving children into a wrapper) —
+   later re-renders (language switch etc.) only touch what's already inside .section-body, they
+   don't rebuild the card's own header/body split. Every section starts expanded. */
+function makeSectionCollapsible(cardEl, headEl){
+  if(!cardEl || !headEl || cardEl.dataset.collapsible) return;
+  cardEl.dataset.collapsible = '1';
+  headEl.classList.add('section-head-flex');
+  const body = document.createElement('div');
+  body.className = 'section-body';
+  [...cardEl.children].forEach(ch=>{ if(ch !== headEl) body.appendChild(ch); });
+  cardEl.appendChild(body);
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'section-toggle';
+  toggle.setAttribute('aria-label', tr('sectionToggle'));
+  toggle.setAttribute('aria-expanded', 'true');
+  toggle.textContent = '▾';
+  headEl.appendChild(toggle);
+  toggle.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const collapsed = cardEl.classList.toggle('section-collapsed');
+    toggle.setAttribute('aria-expanded', String(!collapsed));
+  });
+}
+function initCollapsibleSections(){
+  makeSectionCollapsible(document.querySelector('.weather'), document.querySelector('.weather-head'));
+  makeSectionCollapsible(document.querySelector('.checklist-card'), document.querySelector('.checklist-card-head'));
+  makeSectionCollapsible(document.querySelector('.travel-notice'), document.querySelector('.tn-head'));
+  makeSectionCollapsible(document.querySelector('.fx-card'), document.querySelector('.fx-head'));
+  makeSectionCollapsible(document.querySelector('.apps-card'), document.querySelector('.apps-card h2'));
+  makeSectionCollapsible(document.querySelector('.car-rental-card'), document.querySelector('.car-rental-head'));
+  makeSectionCollapsible(document.querySelector('.emergency-card'), document.querySelector('.emergency-head'));
+}
+
 /* ---------- THEME (dark mode) ---------- */
 const ICON_SUN = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
 const ICON_MOON = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>';
@@ -47,6 +84,7 @@ window.addEventListener('hashchange', ()=>{ const tb = tabFromHash(); if(tb && t
 })();
 let savedLang = 'en'; try{ savedLang = localStorage.getItem('ctgr_lang') === 'ar' ? 'ar' : 'en'; }catch(e){}
 setLang(savedLang);
+initCollapsibleSections();
 activateTab(tabFromHash() || 'plan', {noHash:true});
 loadPhotos();
 loadWeather();
@@ -54,6 +92,7 @@ renderGardenRoute();
 renderSafari();
 fxLoad();
 loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
+loadTravelChecklist();
 initAddPlace();
 initItinPicker();
 initFxWidget();
@@ -61,8 +100,8 @@ initOnboarding();
 initInstallPrompt();
 loadCustomPlaces();
 setInterval(updateCountdown, 60 * 60 * 1000);
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); });
-window.addEventListener('online', ()=>{ if(notesDirty.size) scheduleNotesSync(300); });
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); if(!document.hidden && checklistDirty.size) scheduleChecklistSync(300); });
+window.addEventListener('online', ()=>{ if(notesDirty.size) scheduleNotesSync(300); if(checklistDirty.size) scheduleChecklistSync(300); });
 
 /* ---------- GLOBAL SEARCH ---------- */
 function buildSearchIndex(){

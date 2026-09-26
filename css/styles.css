@@ -38,9 +38,8 @@ body.ar .site-brand-text{font-family:'Tajawal',sans-serif;font-style:normal;}
 body.ar .wstat .wv{font-family:'Tajawal',sans-serif;}
 .wstat .wl{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:#8a7f70;margin-top:2px;}
 .pack-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 20px;margin-top:10px;}
-.pack-item{display:flex;gap:8px;font-size:13.5px;align-items:flex-start;cursor:pointer;}
-.pack-item input{flex-shrink:0;width:16px;height:16px;margin-top:1px;accent-color:var(--sage);cursor:pointer;}
-.pack-item.checked span{color:#8a7f70;text-decoration:line-through;}
+.pack-item{display:flex;gap:8px;font-size:13.5px;align-items:flex-start;}
+.pack-item .ic{flex-shrink:0;}
 
 .hero{position:relative;background:linear-gradient(160deg,var(--ocean-deep) 0%,var(--ocean) 55%,#2c7a72 100%);color:var(--paper);padding:48px 24px 90px;overflow:hidden;}
 .hero::after{content:"";position:absolute;inset:auto 0 0 0;height:70px;background:var(--paper);
@@ -121,7 +120,7 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
 
 .card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;position:relative;transition:.15s;display:flex;flex-direction:column;}
-.card.picked{border-color:var(--coral);box-shadow:0 0 0 3px var(--coral-soft);}
+.card.picked,.gr-card.picked{border-color:var(--coral);box-shadow:0 0 0 3px var(--coral-soft);}
 
 
 .slideshow{position:relative;height:180px;background:var(--paper-2);overflow:hidden;touch-action:pan-y;}
@@ -181,7 +180,10 @@ body.lb-open{overflow:hidden;}
 /* PHOTOS PANEL + TOAST */
 .pp-back{position:fixed;inset:0;z-index:1100;background:rgba(18,40,44,.5);display:flex;align-items:center;justify-content:center;padding:18px;}
 .pp-back[hidden]{display:none;}
-.pp{background:var(--paper);border-radius:16px;padding:22px 24px;max-width:480px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+/* Scroll-lock while any full-screen modal (onboarding, photos, etc.) is open — otherwise a swipe
+   on the dark backdrop area still scrolls the real page underneath it on iOS Safari. */
+html.modal-open,html.modal-open body{overflow:hidden;height:100%;}
+.pp{background:var(--paper);border-radius:16px;padding:22px 24px;max-width:480px;width:100%;max-height:92vh;overflow-y:auto;overflow-x:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35);}
 .pp.pp-wide{max-width:640px;}
 .picker-results{max-height:min(50vh,420px);overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-top:10px;}
 .picker-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;text-align:start;font:600 13.5px 'Inter',sans-serif;color:var(--ink);width:100%;}
@@ -203,18 +205,20 @@ body.ar .pp-actions button{font-family:'Tajawal',sans-serif;}
 .pp-sync h4{margin:0 0 6px;font-size:15px;}
 .pp-status{font-weight:600;color:var(--ocean-deep);font-size:13px;}
 .pp-sync label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
-.pp-sync label input,.pp-sync label select,.pp-sync label textarea,#apForm label input,#apForm label select,#apForm label textarea,.onboard-field input{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:14px 'Inter',sans-serif;background:var(--white);color:var(--ink);box-sizing:border-box;}
+.pp-sync label input,.pp-sync label select,.pp-sync label textarea,#apForm label input,#apForm label select,#apForm label textarea,.onboard-field input{display:block;width:100%;max-width:100%;min-width:0;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:14px 'Inter',sans-serif;background:var(--white);color:var(--ink);box-sizing:border-box;}
 .pp-sync label input:focus,.pp-sync label select:focus,.pp-sync label textarea:focus,#apForm label input:focus,#apForm label select:focus,#apForm label textarea:focus,.onboard-field input:focus{outline:none;border-color:var(--ocean);}
 #apForm label{display:block;margin-bottom:10px;font-size:12.5px;font-weight:600;color:#6b6157;}
+#apForm label[hidden]{display:none;}   /* #apSectionWrap — same unconditional-display-beats-[hidden] bug */
 #apForm textarea{resize:vertical;font-family:inherit;}
-.onboard-field{display:block;margin-bottom:14px;font-size:12.5px;font-weight:600;color:#6b6157;}
+.onboard-field{display:block;margin-bottom:14px;font-size:12.5px;font-weight:600;color:#6b6157;min-width:0;}
 .onboard-grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}
+.onboard-grid2 > .onboard-field{min-width:0;}
 @media(max-width:480px){.onboard-grid2{grid-template-columns:1fr;}}
 .onboard-subhead{margin:18px 0 10px;font-size:14.5px;}
 .onboard-city-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--paper-2);border-radius:10px;padding:10px;margin-bottom:8px;}
-.onboard-city-row select{flex:1 1 150px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
+.onboard-city-row select{flex:1 1 150px;min-width:0;max-width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
 .onboard-city-row .onboard-city-days{width:84px;flex:0 0 84px;padding:8px 6px 8px 10px;border:1.5px solid var(--line);border-radius:8px;font:600 13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
-.onboard-city-row .onboard-city-hotel{flex:1 1 160px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
+.onboard-city-row .onboard-city-hotel{flex:1 1 160px;min-width:0;max-width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font:13px 'Inter',sans-serif;background:var(--white);color:var(--ink);}
 .onboard-city-row .onboard-city-hotel:disabled{background:var(--line);color:#8a7f70;}
 .onboard-city-check{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#6b6157;white-space:nowrap;}
 .onboard-city-check input{accent-color:var(--ocean-deep);width:14px;height:14px;}
@@ -232,14 +236,24 @@ body.ar .onboard-city-row select,body.ar .onboard-city-row .onboard-city-days,bo
 body.ar .pp-sync label input,body.ar .pp-sync label select,body.ar .pp-sync label textarea,body.ar .pp-sync > button,body.ar #ghForm > button,body.ar #apForm label input,body.ar #apForm label select,body.ar #apForm label textarea,body.ar #apForm > button{font-family:'Tajawal',sans-serif;}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:99px;font-size:13.5px;font-weight:600;z-index:1300;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:90vw;text-align:center;}
 .toast.show{opacity:1;transform:translateX(-50%);}
-.install-banner{position:fixed;left:0;right:0;bottom:0;z-index:1250;background:var(--ink);color:var(--paper);padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;box-shadow:0 -6px 20px rgba(0,0,0,.25);}
-.install-banner-ic{font-size:22px;flex-shrink:0;}
-.install-banner-text{flex:1;font-size:13px;line-height:1.4;}
-.install-banner-btn{flex-shrink:0;background:var(--coral);color:#fff;border:none;padding:9px 16px;border-radius:99px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;}
-.install-banner-close{flex-shrink:0;background:none;border:none;color:var(--paper);opacity:.7;font-size:20px;line-height:1;cursor:pointer;padding:4px 6px;}
+/* Fixed to bottom:0 by default; initInstallPrompt() overrides this with an inline `bottom` that
+   tracks window.visualViewport in real time on iOS, since Safari's own dynamic toolbar can sit
+   on top of (or resize away) a plain bottom:0 fixed element — that's what left this banner mostly
+   invisible/untappable before. Kept to ONE row at every width (no flex-wrap) so it can never grow
+   tall enough to get pushed out of view even where visualViewport isn't available. */
+.install-banner{position:fixed;left:0;right:0;bottom:0;z-index:1250;background:var(--ink);color:var(--paper);padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom));display:flex;align-items:center;gap:8px;box-shadow:0 -6px 20px rgba(0,0,0,.25);}
+/* THE actual close-button bug, finally found: an unconditional display:flex above always beat
+   the browser's own [hidden]{display:none} (same origin/priority tier, so author CSS wins
+   regardless of specificity) — so this banner was never really hidden at all. Clicking × was
+   correctly setting the hidden property every time; it just never had any visual effect. */
+.install-banner[hidden]{display:none;}
+.install-banner-ic{font-size:18px;flex-shrink:0;}
+.install-banner-text{flex:1;min-width:0;font-size:12px;line-height:1.35;}
+.install-banner-btn{flex-shrink:0;background:var(--coral);color:#fff;border:none;padding:8px 14px;border-radius:99px;font-weight:700;font-size:12.5px;cursor:pointer;white-space:nowrap;}
+.install-banner-close{flex-shrink:0;background:none;border:none;color:var(--paper);opacity:.8;font-size:20px;line-height:1;cursor:pointer;padding:10px;margin:-10px;min-width:44px;min-height:44px;}
 .install-banner-close:hover{opacity:1;}
 body.ar .install-banner-btn{font-family:'Tajawal',sans-serif;}
-@media(max-width:520px){.install-banner{flex-wrap:wrap;} .install-banner-text{flex-basis:100%;order:1;}}
+@media(max-width:400px){.install-banner-ic{display:none;} .install-banner-text{font-size:11.5px;}}
 @media(prefers-reduced-motion:reduce){.lb-stage.loading::after{animation-duration:2.4s;} .toast{transition:none;}}
 
 /* SCROLL FABS */
@@ -278,6 +292,7 @@ body.ar .unote-box{font-family:'Tajawal',sans-serif;}
 .meta-row b{color:var(--ink);font-weight:700;}
 .card-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;}
 .mini-link{font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:8px;border:1px solid var(--line);text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:5px;background:var(--white);cursor:pointer;}
+.mini-link[hidden]{display:none;}   /* #jumpTodayBtn — same unconditional-display-beats-[hidden] bug as the install banner */
 .mini-link:hover{background:var(--paper-2);}
 .mini-link.primary{background:var(--ocean-deep);color:#fff;border-color:var(--ocean-deep);}
 .mini-link.primary:hover{background:var(--ocean);}
@@ -306,6 +321,7 @@ body.ar .unote-box{font-family:'Tajawal',sans-serif;}
 body.ar .ds-field select{font-family:'Tajawal',sans-serif;}
 .ds-split input{accent-color:var(--ocean-deep);width:15px;height:15px;cursor:pointer;}
 .ds-travelers{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);}
+.ds-travelers[hidden]{display:none;}   /* same unconditional-display-beats-[hidden] bug */
 .ds-travelers button{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;}
 .ds-travelers button:hover{background:var(--paper-2);border-color:var(--ocean-deep);}
 .ds-travelers-label{font-weight:500;color:#6b6157;}
@@ -352,14 +368,39 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 @media(min-width:560px){.fx-label{display:block;}}
 .fx-note{font-size:12px;color:#8a7f70;margin:12px 0 0;}
 
+/* UNIVERSAL TRAVEL CHECKLIST */
+.checklist-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
+.checklist-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.checklist-card-head h2{margin:0;font-size:20px;}
+.checklist-sync-note{font-size:11.5px;font-weight:700;color:var(--ocean-deep);background:var(--paper-2);padding:3px 10px;border-radius:99px;white-space:nowrap;}
+.checklist-cap{font-size:13px;color:#6b6157;margin:4px 0 16px;}
+.checklist-section{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;background:var(--paper-2);}
+.checklist-head{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;background:none;border:none;cursor:pointer;text-align:start;font:inherit;color:var(--ink);}
+.checklist-ic{font-size:18px;flex-shrink:0;}
+.checklist-title{flex:1;min-width:0;font-weight:700;font-size:14.5px;}
+.checklist-count{flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ocean-deep);background:var(--white);padding:2px 8px;border-radius:99px;}
+.checklist-caret{flex-shrink:0;transition:transform .15s;color:#8a7f70;}
+.checklist-head.open .checklist-caret{transform:rotate(180deg);}
+.checklist-body{padding:4px 14px 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 16px;background:var(--white);}
+/* An unconditional display:grid above beats the browser's own [hidden]{display:none} — same
+   origin/priority tier, so author CSS wins regardless of specificity — which meant this never
+   actually hid at all: the expand/collapse toggle changed the `hidden` attribute correctly, but
+   the section always rendered anyway. This re-asserts it within the same stylesheet instead of
+   relying on the browser default to win. */
+.checklist-body[hidden]{display:none;}
+.checklist-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;padding:4px 0;cursor:pointer;}
+.checklist-item input{flex-shrink:0;width:16px;height:16px;margin-top:1px;accent-color:var(--sage);cursor:pointer;}
+.checklist-item.checked span{color:#8a7f70;text-decoration:line-through;}
+body.ar .checklist-title,body.ar .checklist-item,body.ar .checklist-sync-note{font-family:'Tajawal',sans-serif;}
+
 /* USEFUL APPS */
 .apps-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
 .apps-card h2{margin:0;font-size:20px;}
 .apps-cap{font-size:13px;color:#6b6157;margin:4px 0 16px;}
 .apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
-.app-tile{position:relative;background:var(--paper-2);border-radius:12px;border:1px solid transparent;}
-.app-link{display:flex;width:100%;gap:12px;align-items:center;padding:12px 14px;text-decoration:none;color:var(--ink);border:none;background:none;font:inherit;text-align:start;cursor:pointer;}
+.app-tile{position:relative;background:var(--paper-2);border-radius:12px;border:1px solid transparent;padding-bottom:8px;}
 .app-tile:hover{border-color:var(--ocean);background:var(--white);}
+.app-main{display:flex;width:100%;gap:12px;align-items:center;padding:12px 14px 8px;}
 .app-icon{flex-shrink:0;width:56px;height:56px;}
 .app-icon img{width:56px;height:56px;border-radius:13px;object-fit:cover;display:block;}
 .app-icon-fallback{width:56px;height:56px;border-radius:13px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;}
@@ -367,8 +408,29 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .app-name{font-weight:700;font-size:14.5px;}
 .app-desc{font-size:12.5px;color:#6b6157;line-height:1.4;}
 body.ar .app-name,body.ar .app-desc{font-family:'Tajawal',sans-serif;}
+.app-stores{display:flex;gap:8px;padding:0 14px;}
+.store-btn{display:flex;align-items:center;gap:5px;flex:1;justify-content:center;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--white);color:var(--ink);font:600 11.5px 'Inter',sans-serif;cursor:pointer;}
+.store-btn:hover{border-color:var(--ocean);color:var(--ocean-deep);background:var(--paper-2);}
+.store-ios svg{color:#555;}
+.store-android svg{color:#3ddc84;}
+body.ar .store-btn{font-family:'Tajawal',sans-serif;}
 .app-icon-upload{position:absolute;top:6px;inset-inline-end:6px;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:#6b6157;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;}
 .app-icon-upload:hover{background:var(--paper-2);color:var(--ocean-deep);}
+
+/* RENTING A CAR / EMERGENCY INFO — promoted from two halves of one shared block to their own
+   major sections, same card treatment as Useful Apps/Currency/Checklist/Weather. */
+.car-rental-card,.emergency-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
+.car-rental-head h2,.emergency-head h2{margin:0;font-size:20px;}
+
+/* COLLAPSIBLE MAJOR SECTIONS — applied at boot (initCollapsibleSections() in app-boot.js) to
+   Weather, Universal Travel Checklist, Before-you-travel, Currency, Useful Apps, Renting a car
+   and Emergency info: every direct child except the header row gets moved into .section-body,
+   and a toggle button appended to the header. All start expanded. */
+.section-head-flex{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.section-toggle{margin-inline-start:auto;flex-shrink:0;width:28px;height:28px;border:none;background:none;color:#8a7f70;font-size:15px;line-height:1;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s,color .15s;}
+.section-toggle:hover{background:var(--paper-2);color:var(--ocean-deep);}
+.section-collapsed > .section-body{display:none;}
+.section-collapsed .section-toggle{transform:rotate(-90deg);}
 
 /* MAIN TABS */
 .maintabs{max-width:1120px;margin:18px auto 0;padding:0 24px;display:flex;gap:8px;}
@@ -425,10 +487,9 @@ table.saf-compare tr:nth-child(even) td{background:var(--paper-2);}
 .saf-mynote{margin:10px 0;}
 
 /* TRANSPORT */
-.tt-block{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:var(--shadow);}
-.tt-block h3{margin:0 0 8px;font-size:16.5px;display:flex;align-items:center;gap:8px;}
-.tt-block p{margin:0;font-size:13.5px;color:#4d453c;line-height:1.6;}
-.tt-block ul{margin:8px 0 0;padding-inline-start:20px;font-size:13.5px;color:#4d453c;line-height:1.7;}
+.tt-content h3{margin:0 0 8px;font-size:16.5px;display:flex;align-items:center;gap:8px;}
+.tt-content p{margin:0;font-size:13.5px;color:#4d453c;line-height:1.6;}
+.tt-content ul{margin:8px 0 0;padding-inline-start:20px;font-size:13.5px;color:#4d453c;line-height:1.7;}
 .tt-rental-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px;}
 .tt-rental-card{background:var(--paper-2);border-radius:10px;padding:12px 14px;}
 .tt-rental-card b{font-size:14px;}
@@ -439,15 +500,19 @@ table.saf-compare tr:nth-child(even) td{background:var(--paper-2);}
 .budget-bar{max-width:1120px;margin:14px auto 0;background:var(--ink);color:var(--paper);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;font-weight:700;font-size:14px;box-shadow:var(--shadow);}
 
 /* SEARCH */
-.search-wrap{max-width:1120px;margin:14px auto 0;padding:0 24px;position:relative;z-index:70;}
+/* Same outer box as .budget-bar (max-width:1120px, margin:14px auto 0, no side padding on the
+   wrapper itself) so the two line up edge-to-edge instead of the search bar sitting inset from
+   the wrapper's own padding while the budget bar (padding only on the bar, not its wrapper) spans
+   the full width. */
+.search-wrap{max-width:1120px;margin:14px auto 0;position:relative;z-index:70;}
 @keyframes ctgrAutofillStart { from {opacity:.9999;} to {opacity:1;} }
 @keyframes ctgrAutofillCancel { from {opacity:.9999;} to {opacity:1;} }
 .search-input:-webkit-autofill{ animation-name: ctgrAutofillStart; animation-duration: 1ms; }
 .search-input:not(:-webkit-autofill){ animation-name: ctgrAutofillCancel; animation-duration: 1ms; }
-.search-input{width:100%;padding:13px 18px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;font-family:'Inter',sans-serif;background:var(--white);box-shadow:var(--shadow);;-webkit-appearance:none;appearance:none;}
+.search-input{width:100%;padding:13px 18px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;font-family:'Inter',sans-serif;background:var(--white);box-shadow:var(--shadow);;-webkit-appearance:none;appearance:none;box-sizing:border-box;}
 body.ar .search-input{font-family:'Tajawal',sans-serif;}
 .search-input:focus{outline:none;border-color:var(--ocean);}
-.search-results{position:absolute;top:calc(100% + 6px);left:24px;right:24px;background:var(--white);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(18,56,64,.18);max-height:420px;overflow-y:auto;z-index:60;}
+.search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--white);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(18,56,64,.18);max-height:420px;overflow-y:auto;z-index:60;}
 .sr-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--paper-2);cursor:pointer;text-decoration:none;color:var(--ink);}
 .sr-item:last-child{border-bottom:none;}
 .sr-item:hover{background:var(--paper-2);}
@@ -561,6 +626,12 @@ body.ar .pdf-btn{font-family:'Tajawal',sans-serif;}
 /* WEATHER (live) */
 .weather-head .wx-refresh{margin-inline-start:auto;border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:99px;padding:6px 14px;font:600 12.5px 'Inter',sans-serif;cursor:pointer;}
 body.ar .weather-head .wx-refresh{font-family:'Tajawal',sans-serif;}
+/* .section-toggle (the collapse caret appended by initCollapsibleSections()) also carries its own
+   margin-inline-start:auto so it hugs the right edge on every OTHER header — but .weather-head
+   already has wx-refresh doing that job, and two auto-margins on the same row split the free
+   space between them instead of both ending up together at the edge. Cancel the toggle's own
+   auto-margin here specifically so it just sits right after wx-refresh instead of competing with it. */
+.weather-head .section-toggle{margin-inline-start:0;}
 .weather-head .wx-refresh:hover{background:var(--paper-2);}
 .wx-now{display:flex;align-items:center;gap:16px 26px;flex-wrap:wrap;background:linear-gradient(135deg,var(--ocean-deep),var(--ocean));color:#fff;border-radius:14px;padding:16px 20px;margin:0 0 16px;}
 .wx-now.wx-empty{display:block;color:#dfeeec;font-size:14px;}

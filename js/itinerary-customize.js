@@ -45,27 +45,12 @@ function addToSlot(day, slot, name){
   toast(tr('itinAdded'));
 }
 
-/* ---------- PACKING LIST (checkable, per device) ----------
-   UI[lang].pack is a plain, same-order-in-both-languages list of strings, so a checked item is
-   remembered by its index — switching EN/AR keeps the same items ticked. */
-let PACK_CHECKED = {};
-try{ PACK_CHECKED = JSON.parse(localStorage.getItem('ctgr_pack_checked') || '{}') || {}; }catch(e){}
-const savePackChecked = ()=>{ try{ localStorage.setItem('ctgr_pack_checked', JSON.stringify(PACK_CHECKED)); }catch(e){} };
+/* ---------- WEATHER TIP LIST (plain, not interactive — see the separate, much bigger
+   "Universal Travel Checklist" section below for the real checkable packing list) ---------- */
 function renderPackList(){
   const el = document.getElementById('packList');
   if(!el) return;
-  el.innerHTML = UI[LANG].pack.map((t,i)=>{
-    const checked = !!PACK_CHECKED[i];
-    return `<label class="pack-item ${checked?'checked':''}"><input type="checkbox" data-packidx="${i}" ${checked?'checked':''}><span>${t}</span></label>`;
-  }).join('');
-  el.querySelectorAll('[data-packidx]').forEach(cb=>{
-    cb.addEventListener('change', ()=>{
-      const i = +cb.dataset.packidx;
-      if(cb.checked) PACK_CHECKED[i] = true; else delete PACK_CHECKED[i];
-      savePackChecked();
-      cb.closest('.pack-item').classList.toggle('checked', cb.checked);
-    });
-  });
+  el.innerHTML = UI[LANG].pack.map(t=>`<div class="pack-item"><span class="ic">✔</span><span>${t}</span></div>`).join('');
 }
 
 /* the "+ Add" picker: a search + category list over everything in PLACES / GARDEN_ROUTE / SAFARI */

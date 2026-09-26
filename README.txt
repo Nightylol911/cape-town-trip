@@ -22,9 +22,13 @@ js/                the app's code, split into one file per topic — load order 
   trip-onboarding.js      visitor onboarding (their own dates/cities/hotels), countdown, .ics export
   weather.js             the whole Open-Meteo weather widget
   drawer-currency.js     the shortlist drawer, actual-spending tracker, currency/budget maths
+  travel-checklist.js    the "Universal Travel Checklist" section — its data (edit items here)
+                          and its GitHub sync
   app-boot.js            dark mode, tabs, search, and the final boot sequence that starts everything
 sw.js              service worker — makes the site work with no signal once it's hosted for real
 manifest.json      lets phones "Add to Home Screen" / install it like an app
+notes.json         your own per-place notes, synced here once a GitHub token is connected
+checklist.json     the Universal Travel Checklist's checked-off state, synced the same way
 icons/             app icons (generated — see "npm run icons" below)
 icons/apps/        icons for the "Useful apps" section (placeholders — see below)
 tools/             helper scripts for your pictures and icons

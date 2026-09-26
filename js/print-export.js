@@ -294,9 +294,10 @@ document.getElementById('jumpTodayBtn').addEventListener('click', ()=>{
 
 /* ---------- BACKUP: download/restore everything this device remembers about the trip ----------
    Everything below is per-device localStorage — a visitor's own dates/cities/hotels, their day-by-day
-   customizations, shortlist, packing checklist and actual-spending log. None of it is synced anywhere
-   (only the owner's GitHub-connected notes/photos are), so switching phones or clearing site data
-   loses it silently. This is a plain-JSON backup file the person keeps themselves and can reload. */
+   customizations, shortlist, actual-spending log, and travel checklist. None of it is synced
+   anywhere for a visitor without a GitHub token (the owner's notes/photos/checklist already sync
+   there instead), so switching phones or clearing site data loses it silently otherwise. This is
+   a plain-JSON backup file the person keeps themselves and can reload. */
 function exportTripFile(){
   const data = {
     exportedAt: new Date().toISOString(),
@@ -308,8 +309,9 @@ function exportTripFile(){
     picked: [...picked],
     grPicked: [...grPicked],
     expenses: EXPENSES,
-    packChecked: PACK_CHECKED,
-    notes: isOwner() ? undefined : USER_NOTES,   // the owner's notes already sync via GitHub
+    // the owner's notes/checklist already sync via GitHub — only a non-owner's copy needs backing up
+    notes: isOwner() ? undefined : USER_NOTES,
+    checklist: isOwner() ? undefined : TRAVEL_CHECKED,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
@@ -331,8 +333,8 @@ function importTripFile(file){
       if(data.itinOverrides){ localStorage.setItem('ctgr_itin_overrides', JSON.stringify(data.itinOverrides)); }
       if(Array.isArray(data.picked) && Array.isArray(data.grPicked)){ localStorage.setItem('ctgr_picks', JSON.stringify({p:data.picked, g:data.grPicked})); }
       if(Array.isArray(data.expenses)){ localStorage.setItem('ctgr_expenses', JSON.stringify(data.expenses)); }
-      if(data.packChecked){ localStorage.setItem('ctgr_pack_checked', JSON.stringify(data.packChecked)); }
       if(data.notes && !isOwner()){ localStorage.setItem('ctgr_usernotes', JSON.stringify(data.notes)); }
+      if(data.checklist && !isOwner()){ localStorage.setItem('ctgr_travel_checklist', JSON.stringify(data.checklist)); }
     }catch(e){ toast(tr('importTripFail')); return; }
     toast(tr('importTripDone'));
     setTimeout(()=>location.reload(), 600);   // simplest safe way to have every part of the page re-init from the new state
@@ -367,19 +369,49 @@ function initInstallPrompt(){
 
   const textEl = document.getElementById('installBannerText'), btn = document.getElementById('installBannerBtn'),
     closeBtn = document.getElementById('installBannerClose');
-  let deferredPrompt = null, mode = null;   // mode: 'android' (real prompt) | 'ios' (manual instructions)
+  let deferredPrompt = null, mode = null, pendingMode = null;   // mode: 'android' (real prompt) | 'ios' (manual instructions)
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
 
+  function onboardOpen(){
+    const ob = document.getElementById('onboardBack');
+    return !!ob && !ob.hidden;
+  }
+  // iOS Safari's own dynamic toolbar can sit on top of (or shrink away) a plain `bottom:0` fixed
+  // element, which is what left this banner mostly invisible/untappable there before. This only
+  // repositions on iOS specifically — window.visualViewport exists on desktop browsers too, and
+  // applying this there was the actual bug behind the close button seeming unresponsive: it moved
+  // the banner to wherever a scroll/resize event's math landed, out of sync with a browser that
+  // has no dynamic toolbar to compensate for in the first place. Desktop/Android just keep the
+  // plain CSS bottom:0.
+  function positionBanner(){
+    if(!isIOS || !window.visualViewport) return;
+    const vv = window.visualViewport;
+    const offset = window.innerHeight - (vv.height + vv.offsetTop);
+    banner.style.bottom = Math.max(0, offset) + 'px';
+  }
   function refreshText(){
     if(!mode) return;
     textEl.textContent = tr(mode === 'android' ? 'installBannerTextAndroid' : 'installBannerTextIos');
     btn.hidden = mode !== 'android';
     if(mode === 'android') btn.textContent = tr('installNowBtn');
   }
-  function show(m){ mode = m; refreshText(); banner.hidden = false; }
-  function hide(persist){ banner.hidden = true; if(persist){ try{ localStorage.setItem(KEY, '1'); }catch(e){} } }
+  function show(m){
+    // Never show on top of the onboarding modal — wait for it to close first (it tells us via
+    // ctgr-onboard-visibility below) rather than covering it or racing its own backdrop.
+    if(onboardOpen()){ pendingMode = m; return; }
+    mode = m; refreshText(); banner.hidden = false; positionBanner();
+  }
+  function hide(persist){ banner.hidden = true; banner.style.bottom = ''; if(persist){ try{ localStorage.setItem(KEY, '1'); }catch(e){} } }
 
   closeBtn.addEventListener('click', ()=> hide(true));
   window.addEventListener('ctgr-lang-changed', refreshText);
+  window.addEventListener('ctgr-onboard-visibility', (e)=>{
+    if(!e.detail.visible && pendingMode){ const m = pendingMode; pendingMode = null; show(m); }
+  });
+  if(isIOS && window.visualViewport){
+    window.visualViewport.addEventListener('resize', positionBanner);
+    window.visualViewport.addEventListener('scroll', positionBanner);
+  }
 
   window.addEventListener('beforeinstallprompt', (e)=>{
     e.preventDefault();
@@ -395,11 +427,10 @@ function initInstallPrompt(){
   });
   window.addEventListener('appinstalled', ()=> hide(true));
 
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
   if(isIOS){
     // Give beforeinstallprompt (which won't fire on iOS anyway) no chance to race this, and don't
     // interrupt the moment the page loads — a few seconds in feels less like a popup ad.
-    setTimeout(()=>{ if(banner.hidden) show('ios'); }, 3000);
+    setTimeout(()=>{ if(banner.hidden && !pendingMode) show('ios'); }, 3000);
   }
 }
 

@@ -162,6 +162,12 @@ if('serviceWorker' in navigator){
   <div class="pack-list" id="packList"></div>
 </div>
 
+<div class="checklist-card">
+  <div class="checklist-card-head"><h2 data-t="checklistTitle"></h2><span class="checklist-sync-note" id="checklistSyncNote"></span></div>
+  <p class="checklist-cap" data-t="checklistCaption"></p>
+  <div id="travelChecklist"></div>
+</div>
+
 <div class="travel-notice">
   <div class="tn-head" data-t="tnTitle"></div>
   <div class="tn-links">
@@ -194,6 +200,16 @@ if('serviceWorker' in navigator){
   <div class="apps-grid" id="appsGrid"></div>
 </div>
 
+<div class="car-rental-card">
+  <div class="car-rental-head"><h2>🚗 <span data-t="ttCarTitle"></span></h2></div>
+  <div id="carRentalContent" class="tt-content"></div>
+</div>
+
+<div class="emergency-card">
+  <div class="emergency-head"><h2>🚑 <span data-t="emgTitle"></span></h2></div>
+  <div id="emergencyContent" class="tt-content"></div>
+</div>
+
 <div class="wrap">
   <div class="section-title"><h2 data-t="planTitle"></h2><span class="n" data-t="planTag"></span></div>
   <p class="section-sub" data-t="planSub"></p>
@@ -202,7 +218,6 @@ if('serviceWorker' in navigator){
   <button type="button" class="pdf-btn no-ico" id="exportTripBtn" data-t="exportTripBtn"></button>
   <button type="button" class="pdf-btn no-ico" id="importTripBtn" data-t="importTripBtn"></button>
   <input type="file" id="importTripFile" accept="application/json" hidden>
-  <div id="transportSection"></div>
   <div class="section-title" style="margin-top:48px;"><h2 data-t="planDayTitle"></h2><button type="button" id="jumpTodayBtn" class="mini-link" style="margin-inline-start:auto;" hidden><span data-t="jumpToday"></span></button></div>
   <div id="planItinerary"></div>
 </div>
@@ -422,6 +437,7 @@ if('serviceWorker' in navigator){
 <script src="js/trip-onboarding.js"></script>
 <script src="js/weather.js"></script>
 <script src="js/drawer-currency.js"></script>
+<script src="js/travel-checklist.js"></script>
 <script src="js/app-boot.js"></script>
 </body>
 </html>

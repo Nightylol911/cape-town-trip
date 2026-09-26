@@ -6,6 +6,10 @@
    window.open() is called synchronously on click (before the lookup) and only *retargeted* once
    the answer comes back — calling window.open() itself after an await gets blocked as a pop-up
    by most browsers, since by then it's no longer inside the original click.
+   Google Play has no equivalent public search API (and its search RESULTS page isn't a real
+   endpoint either — same mistake as apps.apple.com/search would've been), so each app's `play`
+   field is its real, verified package ID looked up directly, not guessed: confirmed by fetching
+   play.google.com/store/apps/details?id=<id> for every single one and checking it 200s.
    Icons: each app looks for icons/apps/<slug>.png first (a plain colored-monogram placeholder
    ships there today — see tools/make-app-icons.js). Drop the real app icon in at that exact
    path (square, 128px+) any time and it replaces the placeholder automatically, no code change —
@@ -32,23 +36,29 @@ async function openAppStoreLink(search){
   catch(e){ url = 'https://www.google.com/search?q=' + encodeURIComponent(search + ' app store'); }
   if(win) win.location.href = url; else window.open(url, '_blank');
 }
+function openPlayStoreLink(pkg){
+  window.open('https://play.google.com/store/apps/details?id=' + encodeURIComponent(pkg) + '&gl=SA', '_blank');
+}
 const USEFUL_APPS = [
-  {slug:'uber', icon:'🚕', name:'Uber', search:'Uber', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
-  {slug:'bolt', icon:'⚡', name:'Bolt', search:'Bolt Taxi', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
-  {slug:'uber-eats', icon:'🍔', name:'Uber Eats', search:'Uber Eats', desc:"Order food delivery", desc_ar:"طلب توصيل طعام"},
-  {slug:'mr-d', icon:'🛒', name:'Mr D', search:'Mr D Food', desc:"Order groceries & takeaway", desc_ar:"طلب بقالة ووجبات جاهزة"},
-  {slug:'pnp-asap', icon:'🛒', name:'Pick n Pay ASAP!', search:'Pick n Pay asap', desc:"Grocery delivery, plus SmartShopper rewards (one app — Pick n Pay merged them)", desc_ar:"توصيل بقالة، مع مكافآت SmartShopper (تطبيق واحد بعد دمجهما من بيك أند باي)"},
-  {slug:'checkers-sixty60', icon:'🛒', name:'Checkers Sixty60', search:'Checkers Sixty60', desc:"Order grocery delivery in ~60 minutes", desc_ar:"طلب توصيل بقالة خلال ~٦٠ دقيقة"},
-  {slug:'getyourguide', icon:'🎫', name:'GetYourGuide', search:'GetYourGuide', desc:"Plan your trip and book tours & events", desc_ar:"خططا لرحلتكما واحجزا جولات وفعاليات"},
-  {slug:'klook', icon:'🎡', name:'Klook', search:'Klook Travel', desc:"Book travel and activities", desc_ar:"احجزا سفرًا وأنشطة سياحية"},
-  {slug:'airalo', icon:'🌐', name:'Airalo', search:'Airalo eSIM', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
-  {slug:'nomad', icon:'📶', name:'Nomad', search:'Nomad eSIM', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
-  {slug:'rova', icon:'📡', name:'Rova by STC', search:'Rova eSIM STC', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
-  {slug:'flush', icon:'🚻', name:'Flush', search:'Flush Toilet Finder', desc:"Find a public bathroom, with ratings", desc_ar:"إيجاد حمامات عامة مع تقييمات"},
-  {slug:'skyscanner', icon:'✈️', name:'Skyscanner', search:'Skyscanner Flights', desc:"Compare flight prices", desc_ar:"مقارنة أسعار تذاكر الطيران"},
-  {slug:'wego', icon:'🛫', name:'Wego', search:'Wego Flights Hotels', desc:"Compare flight prices", desc_ar:"مقارنة أسعار تذاكر الطيران"},
-  {slug:'airbnb', icon:'🏠', name:'Airbnb', search:'Airbnb', desc:"Book an apartment to stay in", desc_ar:"حجز شقق للإقامة"},
-  {slug:'takealot', icon:'🛍️', name:'Takealot', search:'Takealot', desc:"South Africa's online retail store", desc_ar:"متجر جنوب أفريقيا الإلكتروني"},
+  {slug:'uber', icon:'🚕', name:'Uber', search:'Uber', play:'com.ubercab', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
+  {slug:'bolt', icon:'⚡', name:'Bolt', search:'Bolt Taxi', play:'ee.mtakso.client', desc:"Order a taxi", desc_ar:"طلب سيارة أجرة"},
+  {slug:'uber-eats', icon:'🍔', name:'Uber Eats', search:'Uber Eats', play:'com.ubercab.eats', desc:"Order food delivery", desc_ar:"طلب توصيل طعام"},
+  {slug:'mr-d', icon:'🛒', name:'Mr D', search:'Mr D Food', play:'com.mrd.food', desc:"Order groceries & takeaway", desc_ar:"طلب بقالة ووجبات جاهزة"},
+  // Pick n Pay merged their "asap!" delivery app and "SmartShopper" rewards app into one single
+  // App Store/Play Store listing years ago (confirmed against both live listings and the
+  // description, which names both features) — no separate "Smart Shopper" tile, same app.
+  {slug:'pnp-asap', icon:'🛒', name:'Pick n Pay ASAP!', search:'Pick n Pay asap', play:'za.co.pnp.smartshopper', desc:"Grocery delivery, plus SmartShopper rewards", desc_ar:"توصيل بقالة، مع مكافآت SmartShopper"},
+  {slug:'checkers-sixty60', icon:'🛒', name:'Checkers Sixty60', search:'Checkers Sixty60', play:'za.co.shoprite.sixty60', desc:"Order grocery delivery in ~60 minutes", desc_ar:"طلب توصيل بقالة خلال ~٦٠ دقيقة"},
+  {slug:'getyourguide', icon:'🎫', name:'GetYourGuide', search:'GetYourGuide', play:'com.getyourguide.android', desc:"Plan your trip and book tours & events", desc_ar:"خططا لرحلتكما واحجزا جولات وفعاليات"},
+  {slug:'klook', icon:'🎡', name:'Klook', search:'Klook Travel', play:'com.klook', desc:"Book travel and activities", desc_ar:"احجزا سفرًا وأنشطة سياحية"},
+  {slug:'airalo', icon:'🌐', name:'Airalo', search:'Airalo eSIM', play:'com.mobillium.airalo', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
+  {slug:'nomad', icon:'📶', name:'Nomad', search:'Nomad eSIM', play:'com.lotusflare.nomad.mobile.android', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
+  {slug:'rova', icon:'📡', name:'Rova by STC', search:'Rova eSIM STC', play:'bh.com.stc.roamio', desc:"Buy an eSIM for mobile data", desc_ar:"شراء شريحة eSIM للبيانات"},
+  {slug:'flush', icon:'🚻', name:'Flush', search:'Flush Toilet Finder', play:'toilet.samruston.com.toilet', desc:"Find a public bathroom, with ratings", desc_ar:"إيجاد حمامات عامة مع تقييمات"},
+  {slug:'skyscanner', icon:'✈️', name:'Skyscanner', search:'Skyscanner Flights', play:'net.skyscanner.android.main', desc:"Compare flight prices", desc_ar:"مقارنة أسعار تذاكر الطيران"},
+  {slug:'wego', icon:'🛫', name:'Wego', search:'Wego Flights Hotels', play:'com.wego.android', desc:"Compare flight prices", desc_ar:"مقارنة أسعار تذاكر الطيران"},
+  {slug:'airbnb', icon:'🏠', name:'Airbnb', search:'Airbnb', play:'com.airbnb.android', desc:"Book an apartment to stay in", desc_ar:"حجز شقق للإقامة"},
+  {slug:'takealot', icon:'🛍️', name:'Takealot', search:'Takealot', play:'fi.android.takealot', desc:"South Africa's online retail store", desc_ar:"متجر جنوب أفريقيا الإلكتروني"},
 ];
 /* Icon upload (GitHub-connected devices only) — lets you replace a placeholder with the real
    app icon right from the page, instead of having to touch files in the repo yourself. Center-
@@ -120,19 +130,31 @@ function wireAppIconUploads(el){
   });
 }
 let appIconGhListenerAdded = false;
+// Simple, guaranteed-to-render glyphs rather than a freehand attempt at Apple's/Google's actual
+// trademarked logos (a botched brand icon is worse than none) — a circle for iOS, a triangle for
+// Android, each paired with its own text label so the destination is never ambiguous either way.
+const ICON_IOS = '<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/></svg>';
+const ICON_ANDROID = '<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><polygon points="3,1 15,8 3,15"/></svg>';
 function renderApps(){
   const el = document.getElementById('appsGrid');
   if(!el) return;
   el.innerHTML = USEFUL_APPS.map(a=>`<div class="app-tile" data-slug="${a.slug}">
-    <button type="button" class="app-link" data-search="${escHtml(a.search)}">
+    <div class="app-main">
       <span class="app-icon"><img src="icons/apps/${a.slug}.png" alt="" width="56" height="56" loading="lazy"></span>
       <span class="app-info"><span class="app-name">${a.name}</span><span class="app-desc">${LANG==='ar'?a.desc_ar:a.desc}</span></span>
-    </button>
+    </div>
+    <div class="app-stores">
+      <button type="button" class="store-btn store-ios" data-search="${escHtml(a.search)}" aria-label="${tr('openAppStore')}" title="${tr('openAppStore')}">${ICON_IOS}<span>${tr('appStoreLabel')}</span></button>
+      <button type="button" class="store-btn store-android" data-play="${escHtml(a.play)}" aria-label="${tr('openPlayStore')}" title="${tr('openPlayStore')}">${ICON_ANDROID}<span>${tr('playStoreLabel')}</span></button>
+    </div>
     <button type="button" class="app-icon-upload" data-slug="${a.slug}" aria-label="${tr('appIconUpload')}" title="${tr('appIconUpload')}">📤</button>
     <input type="file" class="app-icon-file" data-slug="${a.slug}" accept="image/*" hidden>
   </div>`).join('');
-  el.querySelectorAll('.app-link').forEach(btn=>{
+  el.querySelectorAll('.store-ios').forEach(btn=>{
     btn.addEventListener('click', ()=> openAppStoreLink(btn.dataset.search));
+  });
+  el.querySelectorAll('.store-android').forEach(btn=>{
+    btn.addEventListener('click', ()=> openPlayStoreLink(btn.dataset.play));
   });
   wireAppIconError(el);
   wireAppIconUploads(el);
@@ -143,42 +165,47 @@ function renderApps(){
     });
   }
 }
-function renderTransport(){
-  const el = document.getElementById('transportSection');
+// Car rental and emergency info used to render as two .tt-block halves inside one shared
+// #transportSection — now each is its own top-level card (.car-rental-card/.emergency-card),
+// matching Useful Apps/Currency/Checklist/Weather, so each gets its own render target and its
+// own <h3> main title is dropped (the outer card's <h2> already says it).
+function renderCarRentalSection(){
+  const el = document.getElementById('carRentalContent');
   if(!el) return;
   const rentalCards = CAR_RENTALS.map(c=>{
     const name = LANG==='ar'?c.n_ar:c.n;
     return `<div class="tt-rental-card">${c.recommended?`<span class="rec-badge">★ ${LANG==='ar'?'موصى به':'Recommended'}</span>`:''}<b>${name}</b><br><span class="rating-pill">★ ${c.rating.toFixed(1)} <i>(${c.ratingCount.toLocaleString()})</i></span><br><div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;"><a class="mini-link verified" href="${c.site}" target="_blank">🌐 ${LANG==='ar'?'الموقع الرسمي':'Official site'}</a><a class="mini-link" href="${c.g}" target="_blank">🔎 ${LANG==='ar'?'بحث':'Search'}</a></div></div>`;
   }).join('');
   el.innerHTML = `
-    <div class="tt-block">
-      <h3>🚗 ${tr('ttCarTitle')}</h3>
-      <p>${tr('ttCarBody')}</p>
-      <h3 style="margin-top:16px;font-size:14px;">📄 ${tr('ttDocsTitle')}</h3>
-      <ul>${UI[LANG].ttDocs.map(d=>`<li>${d}</li>`).join('')}</ul>
-      <h3 style="margin-top:16px;font-size:14px;">${tr('ttCarRentalTitle')}</h3>
-      <div class="tt-rental-grid">${rentalCards}</div>
-    </div>
-    <div class="tt-block">
-      <h3>🚑 ${tr('emgTitle')}</h3>
-      <p>${tr('emgIntro')}</p>
-      <div class="emg-nums">
-        <div class="emg-num">${LANG==='ar'?'طوارئ عامة (أي جوال)':'General emergency (any phone)'}: <b>112</b></div>
-        <div class="emg-num">${LANG==='ar'?'الشرطة':'Police'}: <b>10111</b></div>
-        <div class="emg-num">${LANG==='ar'?'الإسعاف':'Ambulance'}: <b>10177</b></div>
-      </div>
-      <h3 style="margin-top:18px;font-size:14px;">🕌 ${tr('emgEmbassyTitle')}</h3>
-      <div class="emg-nums">
-        <div class="emg-num">${LANG==='ar'?'هاتف السفارة':'Embassy phone'}: <b>+27 12 072 0200</b></div>
-        <div class="emg-num">${LANG==='ar'?'هاتف الطوارئ':'Emergency phone'}: <b>+27 71 000 0017</b></div>
-        <div class="emg-num">${LANG==='ar'?'البريد الإلكتروني':'Email'}: <b>ZAEMB@MOFA.GOV.SA</b></div>
-      </div>
-      <h3 style="margin-top:18px;font-size:14px;">${LANG==='ar'?'أقرب مستشفى حسب المنطقة':'Nearest hospital by area'}</h3>
-      <div class="emg-grid">
-        ${HOSPITALS.map(h=>`<div class="emg-card"><b>${LANG==='ar'?h.area_ar:h.area}</b><div class="emg-line">🏥 <a href="${h.g}" target="_blank" style="color:inherit;">${h.n}</a> — <span class="rating-pill">★ ${h.rating.toFixed(1)} <i>(${h.ratingCount.toLocaleString()})</i></span></div><div class="emg-line" style="margin-top:4px;">💊 ${LANG==='ar'?h.pharmacy_ar:h.pharmacy}</div></div>`).join('')}
-      </div>
-      <p style="margin-top:12px;font-size:12px;color:#8a7f70;">${tr('emgCaption')}</p>
-    </div>
+    <p>${tr('ttCarBody')}</p>
+    <h3 style="margin-top:16px;font-size:14px;">📄 ${tr('ttDocsTitle')}</h3>
+    <ul>${UI[LANG].ttDocs.map(d=>`<li>${d}</li>`).join('')}</ul>
+    <h3 style="margin-top:16px;font-size:14px;">${tr('ttCarRentalTitle')}</h3>
+    <div class="tt-rental-grid">${rentalCards}</div>
   `;
 }
+function renderEmergencySection(){
+  const el = document.getElementById('emergencyContent');
+  if(!el) return;
+  el.innerHTML = `
+    <p>${tr('emgIntro')}</p>
+    <div class="emg-nums">
+      <div class="emg-num">${LANG==='ar'?'طوارئ عامة (أي جوال)':'General emergency (any phone)'}: <b>112</b></div>
+      <div class="emg-num">${LANG==='ar'?'الشرطة':'Police'}: <b>10111</b></div>
+      <div class="emg-num">${LANG==='ar'?'الإسعاف':'Ambulance'}: <b>10177</b></div>
+    </div>
+    <h3 style="margin-top:18px;font-size:14px;">🕌 ${tr('emgEmbassyTitle')}</h3>
+    <div class="emg-nums">
+      <div class="emg-num">${LANG==='ar'?'هاتف السفارة':'Embassy phone'}: <b>+27 12 072 0200</b></div>
+      <div class="emg-num">${LANG==='ar'?'هاتف الطوارئ':'Emergency phone'}: <b>+27 71 000 0017</b></div>
+      <div class="emg-num">${LANG==='ar'?'البريد الإلكتروني':'Email'}: <b>ZAEMB@MOFA.GOV.SA</b></div>
+    </div>
+    <h3 style="margin-top:18px;font-size:14px;">${LANG==='ar'?'أقرب مستشفى حسب المنطقة':'Nearest hospital by area'}</h3>
+    <div class="emg-grid">
+      ${HOSPITALS.map(h=>`<div class="emg-card"><b>${LANG==='ar'?h.area_ar:h.area}</b><div class="emg-line">🏥 <a href="${h.g}" target="_blank" style="color:inherit;">${h.n}</a> — <span class="rating-pill">★ ${h.rating.toFixed(1)} <i>(${h.ratingCount.toLocaleString()})</i></span></div><div class="emg-line" style="margin-top:4px;">💊 ${LANG==='ar'?h.pharmacy_ar:h.pharmacy}</div></div>`).join('')}
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:#8a7f70;">${tr('emgCaption')}</p>
+  `;
+}
+function renderTransport(){ renderCarRentalSection(); renderEmergencySection(); }
 

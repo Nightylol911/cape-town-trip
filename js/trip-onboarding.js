@@ -274,7 +274,16 @@ function initOnboarding(){
   const back = document.getElementById('onboardBack');
   if(!back) return;
   const status = document.getElementById('onboardStatus'), saveBtn = document.getElementById('onboardSave'), skipBtn = document.getElementById('onboardSkip');
-  function maybeShow(){ back.hidden = isOwner() || !!VISITOR_START; }
+  // Centralises everything that has to happen alongside showing/hiding this modal: locking
+  // background scroll (a swipe on the dark backdrop was still scrolling the real page underneath
+  // it on iOS Safari) and telling anything else that cares — right now the install-prompt banner,
+  // which must never show on top of this modal — that visibility just changed.
+  function setOnboardVisible(visible){
+    back.hidden = !visible;
+    document.documentElement.classList.toggle('modal-open', visible);
+    window.dispatchEvent(new CustomEvent('ctgr-onboard-visibility', {detail:{visible}}));
+  }
+  function maybeShow(){ setOnboardVisible(!(isOwner() || !!VISITOR_START)); }
   maybeShow();
   if(!document.querySelector('.onboard-city-row')) addOnboardCityRow();
   document.getElementById('onboardAddCity').addEventListener('click', addOnboardCityRow);
@@ -323,7 +332,7 @@ function initOnboarding(){
       localStorage.removeItem('ctgr_itin_overrides');   // a fresh plan shouldn't inherit stray add/remove deltas from anything earlier
     }catch(e){}
     ITIN_OVERRIDES = {};
-    back.hidden = true;
+    setOnboardVisible(false);
     onDateChanged();
   });
   skipBtn.addEventListener('click', ()=>{
@@ -331,7 +340,7 @@ function initOnboarding(){
     CUSTOM_ITIN = null;
     VISITOR_ARRIVAL_TIME = ''; VISITOR_DEPART_TIME = '';
     try{ localStorage.setItem('ctgr_visitor_start', VISITOR_START); localStorage.removeItem('ctgr_custom_itin'); localStorage.removeItem('ctgr_visitor_times'); }catch(e){}
-    back.hidden = true;
+    setOnboardVisible(false);
     onDateChanged();
   });
 

@@ -25,7 +25,7 @@ function setLang(lang){
   renderPackList();
   const searchEl = document.getElementById('searchInput');
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
-  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather(); renderApps();
+  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather(); renderApps(); renderTravelChecklist();
   updateCountdown();
   updateDateDisplays();
   fxWidgetRefresh();
@@ -33,18 +33,14 @@ function setLang(lang){
   window.dispatchEvent(new Event('ctgr-lang-changed'));
 }
 function planHeroTitle(){
-  const ar = LANG === 'ar';
-  if(visitorPending()) return ar ? 'خططا لرحلتكما إلى<br><em>جنوب أفريقيا</em>' : 'Plan your<br><em>South Africa</em> trip';
-  const days = effectiveTripDays(), nights = days - 1;
-  const nDays = ar ? arDigits(days) : days, nNights = ar ? arDigits(nights) : nights;
-  return ar ? `رحلتكما لـ${nDays} يومًا و${nNights} ليلة<br><em>جنوب أفريقيا</em>` : `Your ${nDays}-Day, ${nNights}-Night<br><em>South Africa</em> trip`;
+  // No day/night count here any more — a visitor's own trip length can differ wildly from
+  // yours, and this title used to hardcode "Your 14-Day, 13-Night" regardless of who's looking.
+  // Kept in the same "<verb> your <em>South Africa</em> ..." tone as the other 3 tabs' titles.
+  return LANG === 'ar' ? 'خططا لرحلتكما إلى<br><em>جنوب أفريقيا</em>' : 'Plan your<br><em>South Africa</em> trip';
 }
 function updateHeroTitle(){
   const el = document.querySelector('[data-html="heroTitle"]');
   if(!el) return;
-  // The "plan" tab's title states the trip's actual length, so it's built fresh every time from
-  // effectiveTripDays() (owner's real 14/13, a visitor's own custom count, or a generic line while
-  // they haven't entered dates yet) rather than read from the static UI.heroTitles.plan string.
   el.innerHTML = activeTab === 'plan' ? planHeroTitle() : ((UI[LANG].heroTitles && UI[LANG].heroTitles[activeTab]) || UI[LANG].heroTitle);
 }
 
