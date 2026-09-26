@@ -25,7 +25,6 @@ const APPS = [
   { slug: 'airbnb', letters: 'AB', color: '#ff385c' },
   { slug: 'takealot', letters: 'T', color: '#1f7a3d' },
   { slug: 'pnp-asap', letters: 'PnP', color: '#c8102e' },
-  { slug: 'pnp-smartshopper', letters: 'SS', color: '#8a4fae' },
   { slug: 'checkers-sixty60', letters: '60', color: '#00a950' },
 ];
 

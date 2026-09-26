@@ -45,7 +45,7 @@ that exact file (square PNG, 128px or bigger) — same names as below — and pu
 (drag the file into icons/apps/ on github.com, or copy it in locally and commit/push). No code
 change needed; the site picks it up automatically and falls back to the placeholder if a file
 is ever missing:
-  uber.png, bolt.png, uber-eats.png, mr-d.png, pnp-asap.png, pnp-smartshopper.png,
+  uber.png, bolt.png, uber-eats.png, mr-d.png, pnp-asap.png,
   checkers-sixty60.png, getyourguide.png, klook.png, airalo.png, nomad.png, rova.png, flush.png,
   skyscanner.png, wego.png, airbnb.png, takealot.png
 
