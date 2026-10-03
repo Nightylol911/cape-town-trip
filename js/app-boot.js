@@ -209,20 +209,60 @@ if(searchInputEl){
 })();
 
 /* ---------- TRACK YOUR FLIGHT ----------
-   A deep link, not an embedded tracker — see the CSS comment on .flight-track-card for why no
-   live API is wired in directly. Remembers the last flight number typed (purely a convenience,
-   same spirit as everything else this site already keeps per-device) so checking the same return
-   flight again later doesn't mean retyping it. */
+   Looked up in-page, not a redirect — adsbdb.com is a free, keyless, CORS-open API (verified
+   directly: `Access-Control-Allow-Origin: *` on every response) that resolves either an IATA
+   ("QR1130") or ICAO ("QTR1130") callsign to its airline and scheduled origin/destination
+   airports. That's genuine flight detail shown right here, no API key sitting exposed in this
+   page's source for anyone to lift. What it does NOT give is live position/gate/delay — every
+   keyless source for that either blocks browser-origin requests outright (OpenSky's REST API
+   sends an Access-Control-Allow-Origin locked to opensky-network.org itself, not us) or now
+   gates access behind an emailed approval (airplanes.live started returning 403 "contact us"
+   for unrecognised origins). Rather than fake live data or silently drop the feature, the route
+   card below links out to FlightRadar24's own live view as a clearly-labelled secondary option,
+   using the ICAO-style callsign adsbdb resolved (more reliable for FR24 to match than whatever
+   format the visitor typed). */
 (function(){
   const form = document.getElementById('flightTrackForm');
   if(!form) return;
   const input = document.getElementById('flightTrackInput');
+  const resultEl = document.getElementById('flightTrackResult');
   try{ const last = localStorage.getItem('ctgr_last_flight'); if(last) input.value = last; }catch(e){}
-  form.addEventListener('submit', (e)=>{
+
+  function renderFlightState(kind, html){
+    resultEl.hidden = false;
+    resultEl.className = 'flight-track-result ft-' + kind;
+    resultEl.innerHTML = html;
+  }
+
+  form.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const raw = input.value.trim().toUpperCase().replace(/\s+/g, '');
     if(!raw){ toast(tr('flightTrackNeedNumber')); input.focus(); return; }
     try{ localStorage.setItem('ctgr_last_flight', raw); }catch(e){}
-    window.open('https://www.flightradar24.com/data/flights/' + encodeURIComponent(raw.toLowerCase()), '_blank');
+    renderFlightState('loading', `<p class="ft-msg">⏳ ${escHtml(tr('flightTrackLoading'))}</p>`);
+    let data;
+    try{
+      const res = await fetch('https://api.adsbdb.com/v0/callsign/' + encodeURIComponent(raw));
+      if(!res.ok){ renderFlightState('empty', `<p class="ft-msg">${escHtml(tr('flightTrackNotFound'))}</p>`); return; }
+      data = await res.json();
+    }catch(err){
+      renderFlightState('empty', `<p class="ft-msg">${escHtml(tr('flightTrackError'))}</p>`);
+      return;
+    }
+    const route = data && data.response && data.response.flightroute;
+    if(!route){ renderFlightState('empty', `<p class="ft-msg">${escHtml(tr('flightTrackNotFound'))}</p>`); return; }
+    const airline = route.airline;
+    const org = route.origin, dst = route.destination;
+    const airportLine = (ap)=> ap ? `<b>${escHtml(ap.iata_code || ap.icao_code || '')}</b> ${escHtml(ap.name || '')}<span>${escHtml(ap.municipality || '')}${ap.municipality && ap.country_name ? ', ' : ''}${escHtml(ap.country_name || '')}</span>` : '';
+    const liveCallsign = route.callsign_icao || route.callsign || raw;
+    renderFlightState('ok', `
+      <div class="ft-airline">${airline ? escHtml(airline.name) + (airline.iata ? ' (' + escHtml(airline.iata) + ')' : '') : escHtml(tr('flightTrackAirline'))}</div>
+      <div class="ft-route">
+        <div class="ft-airport">${airportLine(org)}</div>
+        <div class="ft-arrow">→</div>
+        <div class="ft-airport">${airportLine(dst)}</div>
+      </div>
+      <a class="mini-link" href="https://www.flightradar24.com/data/flights/${encodeURIComponent(liveCallsign.toLowerCase())}" target="_blank">🛰️ ${escHtml(tr('flightTrackLiveLink'))}</a>
+    `);
   });
 })();

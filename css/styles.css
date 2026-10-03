@@ -390,13 +390,12 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .tn-link:hover{background:#dceaf1;}
 .tn-cap{font-size:11.5px;color:#5c6b73;margin:4px 0 0;}
 
-/* TRACK YOUR FLIGHT — a deep link to FlightRadar24's own public tracker, not an embedded live
-   feed. Real-time flight data APIs (FlightRadar24, FlightAware) are commercial/paid with no free
-   keyless tier, and this is a static site with no backend — any API key baked into the page's own
-   JS would just be sitting there in the page source for anyone to take and run up charges on, the
-   same problem that ruled out embedding a paid API anywhere else on this site. Opening their own
-   site with the flight number already filled in gets the same end result (live position, gate,
-   delay) with no key, no cost and no exposure. */
+/* TRACK YOUR FLIGHT — looked up in-page via adsbdb.com (free, keyless, CORS-open: resolves an
+   IATA or ICAO flight number to its airline + scheduled route). See the longer comment in
+   app-boot.js for why this shows route/airline detail here rather than live position/gate/delay:
+   every keyless source for live ADS-B data either blocks browser-origin requests (OpenSky) or now
+   requires an emailed approval (airplanes.live) — so a clearly-labelled FlightRadar24 link is
+   offered as a secondary option for that, not faked locally. */
 .flight-track-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
 .flight-track-head h2{margin:0;font-size:20px;}
 .flight-track-cap{font-size:13px;color:#8a7f70;margin:6px 0 14px;}
@@ -404,6 +403,16 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .flight-track-form input{flex:1;min-width:140px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font:600 15px 'JetBrains Mono',monospace;text-transform:uppercase;background:var(--white);color:var(--ink);box-sizing:border-box;}
 .flight-track-form input:focus{outline:none;border-color:var(--ocean);}
 .flight-track-form .pdf-btn{flex-shrink:0;width:auto;padding:11px 20px;}
+.flight-track-result{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
+.flight-track-result[hidden]{display:none;}
+.flight-track-result .ft-msg{margin:0;font-size:13.5px;color:#8a7f70;}
+.flight-track-result.ft-ok .ft-airline{font-weight:700;font-size:15px;margin-bottom:10px;}
+.flight-track-result .ft-route{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+.flight-track-result .ft-airport{flex:1;min-width:160px;font-size:13.5px;line-height:1.5;}
+.flight-track-result .ft-airport b{display:block;font:700 18px 'JetBrains Mono',monospace;color:var(--ocean);}
+.flight-track-result .ft-airport span{display:block;font-size:12px;color:#8a7f70;}
+.flight-track-result .ft-arrow{font-size:20px;color:#8a7f70;flex-shrink:0;}
+body.ar .flight-track-result .ft-arrow{transform:scaleX(-1);}
 
 /* CURRENCY CONVERTER */
 .fx-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}

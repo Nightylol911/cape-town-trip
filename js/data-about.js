@@ -249,27 +249,21 @@ function renderAboutSA(){
   </div>`;
 
   // 3. Saudi Embassy
-  // Emergency number: no distinct embassy-specific emergency line could be verified to exist (re-
-  // confirmed again this round, same as the earlier correction to this section's phone number) —
-  // Saudi MOFA's domestic "920" numbers only dial from inside Saudi Arabia, so one of those would
-  // actually be useless/misleading here rather than merely redundant. What genuinely works from a
-  // South African phone for any real emergency is the number already used in the Emergency Info
-  // tab: 112, reachable from any South African cellphone, even locked or with no airtime.
   const embAddr = "711 Jan Shoba Street, Hatfield, Pretoria, 0028, South Africa";
   html += `<div class="about-block">
     <h3>🕌 ${ar?'السفارة السعودية في جنوب أفريقيا':'Saudi Embassy in South Africa'}</h3>
     <div class="emg-nums">
       <div class="emg-num">${ar?'المدينة':'City'}: <b>${ar?'بريتوريا':'Pretoria'}</b></div>
       <div class="emg-num">${ar?'هاتف السفارة':'Embassy phone'}: <b>+27 12 362 4230</b></div>
+      <div class="emg-num">${ar?'هاتف إضافي':'Alt. phone'}: <b>+27 12 362 4240</b></div>
       <div class="emg-num">${ar?'البريد الإلكتروني':'Email'}: <b>zaemb@mofa.gov.sa</b></div>
       <div class="emg-num">X/Twitter: <b>@KSAembassyZA</b></div>
-      <div class="emg-num">🚨 ${ar?'طوارئ عامة (أي جوال في جنوب أفريقيا)':'General emergency (any South African phone)'}: <b>112</b></div>
     </div>
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
       <a class="mini-link primary" href="${mapsLink(embAddr)}" target="_blank">📍 ${ar?'فتح في خرائط قوقل':'Open in Google Maps'}</a>
       <a class="mini-link verified" href="https://za.saudiembassy.sa/" target="_blank">🌐 ${ar?'الموقع الرسمي':'Official site'}</a>
     </div>
-    <p style="margin-top:10px;font-size:12px;color:#8a7f70;">${ar?'العنوان: 711 شارع جان شوبا، هاتفيلد، بريتوريا، 2028. تحققا من أرقام التواصل عبر الموقع الرسمي قبل السفر — بيانات الاتصال قد تتغير. لا يوجد خط طوارئ منفصل تابع للسفارة تحديدًا، لذا رقم ١١٢ هو الأسرع في أي حالة طارئة فعلية.':"Address: 711 Jan Shoba Street, Hatfield, Pretoria, 0028. Double-check contact details on the official site before you travel — they can change. There's no separate embassy-specific emergency line, so 112 is the fastest option for any real emergency."}</p>
+    <p style="margin-top:10px;font-size:12px;color:#8a7f70;">${ar?'العنوان: 711 شارع جان شوبا، هاتفيلد، بريتوريا، 2028. تحققا من أرقام التواصل عبر الموقع الرسمي قبل السفر — بيانات الاتصال قد تتغير.':"Address: 711 Jan Shoba Street, Hatfield, Pretoria, 0028. Double-check contact details on the official site before you travel — they can change."}</p>
   </div>`;
 
   // 4. Niqab
