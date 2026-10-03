@@ -459,8 +459,13 @@ body.ar .store-btn{font-family:'Tajawal',sans-serif;}
 .dos-card ul,.donts-card ul{margin:0;padding-inline-start:18px;font-size:12.5px;line-height:1.7;color:#4d453c;}
 /* Power sockets: image on the left, facts/text on the right (wraps to stacked on narrow screens). */
 .socket-row{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;}
-.socket-photo-wrap{position:relative;flex:0 0 260px;max-width:260px;}
-.socket-photo{display:block;width:100%;aspect-ratio:640/420;object-fit:contain;background:var(--paper-2);border-radius:10px;}
+/* No fixed aspect-ratio here on purpose (unlike .photo-card img elsewhere) — this is one
+   standalone photo, not a grid of same-shaped cards, so it's sized to its own natural shape
+   (whatever that is — portrait or landscape) instead of being forced into a fixed box and either
+   cropped or letterboxed to fit it. max-width caps it at a sensible column width; max-height stops
+   a very tall portrait upload from towering over the text next to it. */
+.socket-photo-wrap{position:relative;flex:0 1 260px;max-width:260px;}
+.socket-photo{display:block;width:auto;height:auto;max-width:100%;max-height:340px;border-radius:10px;margin:0 auto;}
 .socket-info{flex:1 1 280px;min-width:0;}
 .socket-info .sa-fact-row{margin:0 0 0;}
 /* .emg-card-ib ("icon + body"): the badgeCard() variant of .emg-card used for telecoms/stays,

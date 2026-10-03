@@ -18,7 +18,7 @@ const placeholder = (label) => `
   <text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="22" fill="#4d453c">${label}</text>
 </svg>`;
 
-const DISTANCES = ['Stellenbosch', 'Hermanus', 'Mossel Bay', 'George', 'Wilderness', 'Knysna'];
+const DISTANCES = ['Stellenbosch', 'Hermanus', 'Mossel Bay', 'George', 'Wilderness', 'Knysna', 'Plettenberg Bay'];
 
 (async () => {
   for (const name of DISTANCES) {

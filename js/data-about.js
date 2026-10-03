@@ -60,12 +60,15 @@ const SA_STAYS = [
 //  - Hermanus: "New Harbour Hermanus (South Africa).jpg" (CC BY-SA 4.0)
 //  - Wilderness: "Wilderness WC.jpg" (CC BY-SA, general Commons licence)
 //  - Knysna: "Knysna Waterfront.jpg" (CC BY-SA, general Commons licence)
+//  - Plettenberg Bay: "Plettenberg Bay's Lookout - South Africa (2417712635).jpg" (CC BY 2.0,
+//    originally posted to Flickr by South African Tourism)
 const SA_TOP_CITIES = [
   {photo:"city-capetown.jpg", name:"Cape Town", desc:"A vibrant city blending nature, beaches and world-famous landmarks.", desc_ar:"مدينة نابضة بالحياة تجمع بين الطبيعة الخلابة والشواطئ الساحرة والمعالم السياحية العالمية."},
   {photo:"city-stellenbosch.jpg", name:"Stellenbosch", desc:"South Africa's wine capital — lush vineyards, historic old farms, refined restaurants.", desc_ar:"عاصمة النبيذ في جنوب أفريقيا، تشتهر بالكروم الخضراء والمزارع القديمة والمطاعم الراقية."},
   {photo:"city-hermanus.jpg", name:"Hermanus", desc:"The place for close-up whale watching, with calm bays and beautiful views.", desc_ar:"وجهة مثالية لمشاهدة الحيتان عن قرب، إلى جانب أجوائها الهادئة وإطلالاتها الجميلة على المحيط."},
   {photo:"city-wilderness.jpg", name:"Wilderness", desc:"A quiet coastal village known for long beaches, untouched nature and outdoor activities.", desc_ar:"قرية ساحلية هادئة تتميز بشواطئها الطويلة وطبيعتها البكر والأنشطة الخارجية الممتعة."},
   {photo:"city-knysna.jpg", name:"Knysna", desc:"A coastal town on the Knysna lagoon, known for wild scenery, forests and waterfront restaurants.", desc_ar:"مدينة ساحلية تقع على بحيرة نايزنا، تشتهر بطبيعتها الخلابة والغابات والمطاعم المطلة على الواجهة البحرية."},
+  {photo:"city-plettenbergbay.jpg", name:"Plettenberg Bay", desc:"A stylish beach town on the Garden Route, known for Robberg Nature Reserve, golden beaches and nearby elephant and monkey sanctuaries.", desc_ar:"بلدة ساحلية أنيقة على طريق الحدائق، تشتهر بمحمية روبرغ الطبيعية والشواطئ الذهبية وملاذات الأفيال والقرود القريبة."},
 ];
 const SA_BEST_AREAS_CT = [
   {name:"Sea Point", desc:"Beautiful sea views, close to restaurants/cafés and the beachfront promenade.", desc_ar:"إطلالة بحرية رائعة، قريبة من المطاعم والمقاهي والشاطئ."},
@@ -85,6 +88,7 @@ const SA_DISTANCES = [
   {slug:"george", photo:"distance-george.jpg", name:"George", name_ar:"جورج", km:435, time:"~4h 45m", time_ar:"~٤ س ٤٥ د"},
   {slug:"wilderness", photo:"distance-wilderness.jpg", name:"Wilderness", name_ar:"وايلدرنس", km:441, time:"~4h 50m", time_ar:"~٤ س ٥٠ د"},
   {slug:"knysna", photo:"distance-knysna.jpg", name:"Knysna", name_ar:"نايزنا", km:488, time:"~5h 30m", time_ar:"~٥ س ٣٠ د"},
+  {slug:"plettenberg-bay", photo:"distance-plettenberg-bay.jpg", name:"Plettenberg Bay", name_ar:"بليتنبرغ باي", km:522, time:"~6h", time_ar:"~٦ س"},
 ];
 
 /* ---------- OWNER IMAGE UPLOADS ----------
@@ -95,8 +99,15 @@ const SA_DISTANCES = [
    to this repo at the given path, same as photos/notes/checklist. Box sizes, so replacement images
    can be designed to fit with zero cropping:
      - "icon" slots (Telecom, Stays) — 256×256, same as Useful Apps icons (shown at 72×72 here).
-     - "wide" slots (Airlines, Power sockets, Distances, Domestic flights) — 640×420. */
-function processImageToBox(file, W, H){
+     - "wide" slots (Airlines, Distances, Domestic flights) — 640×420, letterboxed to that exact
+       box/ratio — fine for a uniform photo grid, where every card needs to be the same shape.
+     - the single Power sockets photo is NOT forced into a fixed ratio (`preserveAspect:true`) —
+       it's one standalone image, not a grid of same-shaped cards, so forcing a landscape 640×420
+       box on it just added pointless letterbox bars down the sides whenever someone's own photo
+       happened to be portrait (as the default South Africa-plug one, and the first owner-uploaded
+       replacement, both were). This mode scales to fit within a generous 640×640 envelope and
+       crops the canvas to the image's own resulting shape instead of padding it out to a fixed box. */
+function processImageToBox(file, W, H, preserveAspect){
   return new Promise((resolve, reject)=>{
     const src = URL.createObjectURL(file);
     const img = new Image();
@@ -105,17 +116,25 @@ function processImageToBox(file, W, H){
       // Math.max (fill the box, crop whatever doesn't fit). An earlier version of this used
       // Math.max, which is exactly the "planes with their nose/tail cut off" bug the static
       // Wikimedia aircraft photos had before being fixed — except here it silently did the same
-      // thing to every image anyone uploads through this page. Pads with the site's own card
-      // background colour instead of leaving transparent corners, so a non-matching aspect ratio
-      // still looks intentional rather than broken.
-      const scale = Math.min(W / img.naturalWidth, H / img.naturalHeight);
-      const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
-      const dx = (W - dw) / 2, dy = (H - dh) / 2;
-      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      // thing to every image anyone uploads through this page.
+      const scale = Math.min(W / img.naturalWidth, H / img.naturalHeight, 1);
+      const dw = Math.round(img.naturalWidth * scale), dh = Math.round(img.naturalHeight * scale);
+      const c = document.createElement('canvas');
       const ctx = c.getContext('2d');
-      ctx.fillStyle = '#f1ead9'; // --paper-2
-      ctx.fillRect(0, 0, W, H);
-      ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, dx, dy, dw, dh);
+      if(preserveAspect){
+        // No padding at all — canvas is exactly the scaled image's own size, so the file itself
+        // carries its natural aspect ratio instead of baking in letterbox bars.
+        c.width = dw; c.height = dh;
+        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, dw, dh);
+      } else {
+        // Pads with the site's own card background colour instead of leaving transparent
+        // corners, so a non-matching aspect ratio still looks intentional rather than broken.
+        const dx = (W - dw) / 2, dy = (H - dh) / 2;
+        c.width = W; c.height = H;
+        ctx.fillStyle = '#f1ead9'; // --paper-2
+        ctx.fillRect(0, 0, W, H);
+        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, dx, dy, dw, dh);
+      }
       URL.revokeObjectURL(src);
       c.toBlob(b=> b ? resolve(b) : reject(new Error('encode failed')), 'image/jpeg', 0.86);
     };
@@ -134,8 +153,9 @@ async function uploadAboutImage(path, blob){
   const content = await blobToB64(blob);
   await ghJson(cfg, `/contents/${path}`, {method:'PUT', body:{message:'Update About SA image: ' + path, content, sha, branch}});
 }
-function uploadSlot(path, w, h){
-  return `<button type="button" class="about-img-upload" data-path="${path}" data-w="${w}" data-h="${h}" aria-label="${tr('imgUpload')}" title="${tr('imgUpload')}">📤</button><input type="file" class="about-img-file" data-path="${path}" data-w="${w}" data-h="${h}" accept="image/*" hidden>`;
+function uploadSlot(path, w, h, preserveAspect){
+  const pa = preserveAspect ? ' data-preserve="1"' : '';
+  return `<button type="button" class="about-img-upload" data-path="${path}" data-w="${w}" data-h="${h}"${pa} aria-label="${tr('imgUpload')}" title="${tr('imgUpload')}">📤</button><input type="file" class="about-img-file" data-path="${path}" data-w="${w}" data-h="${h}"${pa} accept="image/*" hidden>`;
 }
 let aboutImgGhListenerAdded = false;
 function wireAboutImgUploads(el){
@@ -152,11 +172,11 @@ function wireAboutImgUploads(el){
       input.value = '';
       if(!file) return;
       if(!ghConfig()){ toast(tr('appIconNeedConnect')); return; }
-      const path = input.dataset.path, W = +input.dataset.w, H = +input.dataset.h;
+      const path = input.dataset.path, W = +input.dataset.w, H = +input.dataset.h, preserveAspect = input.dataset.preserve === '1';
       const imgEl = input.closest('[data-img-slot]').querySelector('img');
       try{
         toast(tr('imgUploading'));
-        const blob = await processImageToBox(file, W, H);
+        const blob = await processImageToBox(file, W, H, preserveAspect);
         await uploadAboutImage(path, blob);
         if(imgEl) imgEl.src = path + '?v=' + Date.now();
         toast(tr('imgUploaded'));
@@ -254,12 +274,15 @@ function renderAboutSA(){
   // 6. Power sockets — real photo "M plug.jpg" (public domain, Wikimedia Commons; author released it
   // PD worldwide). An earlier attempt here used a file wrongly labelled as a Type M diagram that
   // turned out, once actually rendered, to be an unrelated world map — this one was verified first.
+  // No width/height attributes on the <img> here (unlike every other image on this page) — this
+  // slot's whole point is that it does NOT force a fixed box, so a fixed intrinsic size would
+  // fight the "size to the image's own shape" CSS below it.
   html += `<div class="about-block">
     <h3>🔌 ${ar?'المقابس والجهد الكهربائي':'Power sockets & voltage'}</h3>
     <div class="socket-row">
       <div class="socket-photo-wrap" data-img-slot>
-        <img class="socket-photo" src="images/about/socket-za.jpg" alt="${ar?'قابس ومقبس من نوع M':'Type M plug and socket'}" width="640" height="420" loading="lazy">
-        ${uploadSlot('images/about/socket-za.jpg',640,420)}
+        <img class="socket-photo" src="images/about/socket-za.jpg" alt="${ar?'قابس ومقبس من نوع M':'Type M plug and socket'}" loading="lazy">
+        ${uploadSlot('images/about/socket-za.jpg',640,640,true)}
       </div>
       <div class="socket-info">
         <div class="sa-fact-row">
