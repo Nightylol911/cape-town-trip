@@ -184,6 +184,10 @@ function renderCarRentalSection(){
     <div class="tt-rental-grid">${rentalCards}</div>
   `;
 }
+// The embassy phone below was corrected this round — the number that had been here (and that
+// matched a social-media flyer's figure) didn't match gov.za's foreign-representatives directory
+// or the embassy's own za.saudiembassy.sa site when cross-checked (Oct 2026). See the fuller
+// profile (address, map link, X/Twitter) in the "About South Africa" tab's embassy section.
 function renderEmergencySection(){
   const el = document.getElementById('emergencyContent');
   if(!el) return;
@@ -196,10 +200,11 @@ function renderEmergencySection(){
     </div>
     <h3 style="margin-top:18px;font-size:14px;">🕌 ${tr('emgEmbassyTitle')}</h3>
     <div class="emg-nums">
-      <div class="emg-num">${LANG==='ar'?'هاتف السفارة':'Embassy phone'}: <b>+27 12 072 0200</b></div>
-      <div class="emg-num">${LANG==='ar'?'هاتف الطوارئ':'Emergency phone'}: <b>+27 71 000 0017</b></div>
+      <div class="emg-num">${LANG==='ar'?'هاتف السفارة':'Embassy phone'}: <b>+27 12 362 4230</b></div>
+      <div class="emg-num">${LANG==='ar'?'هاتف بديل':'Alt. phone'}: <b>+27 12 362 4240</b></div>
       <div class="emg-num">${LANG==='ar'?'البريد الإلكتروني':'Email'}: <b>ZAEMB@MOFA.GOV.SA</b></div>
     </div>
+    <p style="margin-top:4px;font-size:12px;color:#8a7f70;">${LANG==='ar'?'الأرقام تم التحقق منها مقابل مصادر رسمية — تحققا منها عبر الموقع الرسمي قبل السفر لأنها قد تتغير.':"Verified against official sources — double-check via the embassy's official site before you travel, as numbers can change."}</p>
     <h3 style="margin-top:18px;font-size:14px;">${LANG==='ar'?'أقرب مستشفى حسب المنطقة':'Nearest hospital by area'}</h3>
     <div class="emg-grid">
       ${HOSPITALS.map(h=>`<div class="emg-card"><b>${LANG==='ar'?h.area_ar:h.area}</b><div class="emg-line">🏥 <a href="${h.g}" target="_blank" style="color:inherit;">${h.n}</a> — <span class="rating-pill">★ ${h.rating.toFixed(1)} <i>(${h.ratingCount.toLocaleString()})</i></span></div><div class="emg-line" style="margin-top:4px;">💊 ${LANG==='ar'?h.pharmacy_ar:h.pharmacy}</div></div>`).join('')}

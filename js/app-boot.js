@@ -60,13 +60,25 @@ function setTheme(theme, persist){
 const btnTheme = document.getElementById('btnTheme');
 if(btnTheme) btnTheme.addEventListener('click', ()=> setTheme(THEME === 'dark' ? 'light' : 'dark', true));
 
-const TAB_IDS = ['plan','capetown','gardenroute','safari'];
+const TAB_IDS = ['about','plan','capetown','gardenroute','safari'];
 const tabFromHash = ()=>{ const m = location.hash.match(/^#\/?([a-z]+)$/); return (m && TAB_IDS.includes(m[1])) ? m[1] : null; };
 function activateTab(tab, opts){
   if(!TAB_IDS.includes(tab)) tab = 'plan';
   document.querySelectorAll('.maintab').forEach(b=>b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('active', p.id === 'tab-' + tab));
   activeTab = tab;
+  // The activity search only covers Cape Town/Garden Route/Safari places — nothing on the About
+  // South Africa tab is searchable, so hide the search box there instead of showing one that
+  // searches content that isn't even on screen. .search-wrap has no unconditional `display:` of
+  // its own, so plain [hidden] works without needing a CSS override.
+  const searchWrap = document.querySelector('.search-wrap');
+  if(searchWrap){
+    searchWrap.hidden = (tab === 'about');
+    if(tab === 'about'){
+      const resultsEl = document.getElementById('searchResults');
+      if(resultsEl) resultsEl.style.display = 'none';
+    }
+  }
   updateHeroTitle();
   if(tab === 'capetown' && typeof map !== 'undefined') setTimeout(()=>{ map.invalidateSize(); }, 50);
   if(!(opts && opts.noHash)){ try{ history.replaceState(history.state, '', '#/' + tab); }catch(e){} }
@@ -88,6 +100,7 @@ initCollapsibleSections();
 activateTab(tabFromHash() || 'plan', {noHash:true});
 loadPhotos();
 loadWeather();
+renderAboutSA();
 renderGardenRoute();
 renderSafari();
 fxLoad();

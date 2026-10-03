@@ -34,22 +34,20 @@ const SAFARI = [
   rating:4.6, ratingCount:1441,
   location:"Albertinia — on the Garden Route, ~4hrs (350km) from Cape Town via the N2", location_ar:"ألبرتينيا — على طريق الحدائق نفسه، ~٤ ساعات (٣٥٠كم) من كيب تاون عبر الطريق N2",
   big5:["Elephant","Lion","Buffalo"], big5no:["Leopard","Rhino"],
-  price:"~SAR 620–970 pp/night (≈ R2,960–4,630 ZAR)", price_ar:"~٦٢٠-٩٧٠ ريال سعودي للشخص/الليلة (≈ ٢,٩٦٠-٤,٦٣٠ راند)",
+  price:"~SAR 673–975 pp/night (≈ R2,960–4,290 ZAR)", price_ar:"~٦٧٣-٩٧٥ ريال سعودي للشخص/الليلة (≈ ٢,٩٦٠-٤,٢٩٠ راند)",
   includes:"Half Board Plus — breakfast, dinner, 2 daily game drives, reptile centre tour", includes_ar:"إقامة نصف مقيم بلس — فطور، عشاء، جولتا سفاري يوميًا، جولة مركز الزواحف",
   about:"The most family-friendly and accessible of the five — right on the N2, easy to combine with the rest of your Garden Route drive. Reviews consistently praise the staff and game viewing, but also note it's closer to the road and more 'managed' than a wilderness reserve — a great intro safari, not the wildest one.", about_ar:"الأسهل وصولاً والأنسب للعائلات من بين الخمسة — على الطريق N2 مباشرة، يسهل دمجه مع بقية رحلة طريق الحدائق. المراجعات تمدح الطاقم ومشاهدة الحيوانات باستمرار، لكنها تذكر أيضًا أنه أقرب للطريق وأكثر 'إدارة' من محمية برية حقيقية — سفاري تمهيدي رائع، وليس الأكثر توحشًا.",
-  mynote:"Wonderful.", mynote_ar:"رائعة.",
-  steps:["Go to grgamelodge.co.za (official site)","Check seasonal rates — prices roughly double Oct–Jan vs May–Sep","Choose room type: Lodge Room, Chalet, or Luxury Suite","Enquire/book online or by phone for a tailor-made quote","Pay deposit to confirm — arrive by check-in (14:00) for the afternoon game drive"],
-  steps_ar:["اذهبا إلى grgamelodge.co.za (الموقع الرسمي)","تحققا من الأسعار الموسمية — تتضاعف تقريبًا أكتوبر-يناير مقارنة بمايو-سبتمبر","اختارا نوع الغرفة: غرفة لودج، شاليه، أو جناح فاخر","استفسرا/احجزا إلكترونيًا أو هاتفيًا لعرض سعر مخصص","ادفعا العربون للتأكيد — صلا بحلول وقت تسجيل الدخول (٢ظ) لجولة سفاري بعد الظهر"],
+  steps:["Go to grgamelodge.co.za (official site)","Check seasonal rates — rates climb through the year, cheapest May–Jun, priciest Oct–Dec","Choose room type: Lodge Room, Chalet, or Luxury Suite","Enquire/book online or by phone for a tailor-made quote","Pay deposit to confirm — arrive by check-in (14:00) for the afternoon game drive"],
+  steps_ar:["اذهبا إلى grgamelodge.co.za (الموقع الرسمي)","تحققا من الأسعار الموسمية — ترتفع تدريجيًا خلال العام، الأرخص مايو-يونيو والأغلى أكتوبر-ديسمبر","اختارا نوع الغرفة: غرفة لودج، شاليه، أو جناح فاخر","استفسرا/احجزا إلكترونيًا أو هاتفيًا لعرض سعر مخصص","ادفعا العربون للتأكيد — صلا بحلول وقت تسجيل الدخول (٢ظ) لجولة سفاري بعد الظهر"],
 },
 {
   n:"Gondwana Game Reserve", n_ar:"غوندوانا جيم ريزيرف", g:"https://maps.app.goo.gl/X7nZuKNU51DKeHsR9", site:"https://gondwanagr.co.za/",
-  rating:4.7, ratingCount:777,
+  rating:4.7, ratingCount:841,
   location:"Herbertsdale, near Mossel Bay — ~4.5hrs (400km) from Cape Town, partly on gravel access roads", location_ar:"هيربرتسديل، قرب موسيل باي — ~٤.٥ ساعة (٤٠٠كم) من كيب تاون، جزء من الطريق ترابي",
   big5:["Elephant","Lion","Leopard","Rhino","Buffalo"], big5no:[],
-  price:"~SAR 1,575–6,300+ pp/night (≈ R7,500–30,000+ ZAR; varies hugely by suite & season)", price_ar:"~١,٥٧٥-٦,٣٠٠+ ريال سعودي للشخص/الليلة (≈ ٧,٥٠٠-٣٠,٠٠٠+ راند؛ يتفاوت كثيرًا حسب الجناح والموسم)",
-  includes:"Full Board Plus — all meals, 2 daily game drives, Junior Ranger programme; conservation fee (~SAR 84–116pp, ≈ R400–550 ZAR) extra", includes_ar:"إقامة كاملة بلس — كل الوجبات، جولتا سفاري يوميًا، برنامج للأطفال؛ رسم حماية طبيعة إضافي (~٨٤-١١٦ ريال سعودي للشخص، ≈ ٤٠٠-٥٥٠ راند)",
+  price:"~SAR 1,705–7,705+ pp/night (≈ R7,500–33,900+ ZAR; varies hugely by suite & season)", price_ar:"~١,٧٠٥-٧,٧٠٥+ ريال سعودي للشخص/الليلة (≈ ٧,٥٠٠-٣٣,٩٠٠+ راند؛ يتفاوت كثيرًا حسب الجناح والموسم)",
+  includes:"Full Board Plus — all meals, 2 daily game drives, Junior Ranger programme; conservation fee (~SAR 114pp adult / SAR 57pp child, per stay, ≈ R500/R250 ZAR) extra", includes_ar:"إقامة كاملة بلس — كل الوجبات، جولتا سفاري يوميًا، برنامج للأطفال؛ رسم حماية طبيعة إضافي (~١١٤ ريال سعودي للبالغ / ٥٧ للطفل لكل إقامة، ≈ ٥٠٠/٢٥٠ راند)",
   about:"The only fynbos (not bushveld) Big Five reserve in the world, with the southernmost free-roaming elephant herd — genuinely wild and spacious (11,000 hectares). The trade-off: it's the most remote of the five, partly on gravel roads, and pricier at the top end.", about_ar:"محمية الفينبوس (وليس السافانا) الوحيدة في العالم بالخمسة الكبار، بأقصى قطيع أفيال حرة الحركة جنوبًا — بريّة وواسعة فعلاً (١١,٠٠٠ هكتار). المقابل: الأبعد من بين الخمسة، جزء من الطريق ترابي، وأغلى في الفئة العليا.",
-  mynote:"The road and the accommodation felt tiring.", mynote_ar:"الطريق والسكن فيها متعب.",
   steps:["Go to gondwanagr.co.za (official site)","Choose a lodge: Kwena Lodge (suites) or a private villa","Select your package on the booking engine — rates exclude the conservation levy","Pay to confirm — 100% deposit required within 3 days or booking is released","Pre-book extra activities (Bokkie Drive, spa, guided walk) by emailing reservations@gondwanagr.co.za"],
   steps_ar:["اذهبا إلى gondwanagr.co.za (الموقع الرسمي)","اختارا نُزلاً: Kwena Lodge (أجنحة) أو فيلا خاصة","حددا الباقة عبر محرك الحجز — الأسعار لا تشمل رسم حماية الطبيعة","ادفعا للتأكيد — يُطلب دفع كامل خلال ٣ أيام وإلا يُلغى الحجز","احجزا الأنشطة الإضافية مسبقًا (Bokkie Drive، سبا، جولة مشي) عبر البريد reservations@gondwanagr.co.za"],
 },
@@ -58,22 +56,20 @@ const SAFARI = [
   rating:4.9, ratingCount:255,
   location:"Mossel Bay — ~4hrs (400km) from Cape Town, 20 min from George Airport (most accessible by air)", location_ar:"موسيل باي — ~٤ ساعات (٤٠٠كم) من كيب تاون، ٢٠ دقيقة من مطار جورج (الأسهل وصولاً جوًا)",
   big5:["Lion"], big5no:["Elephant","Leopard","Rhino","Buffalo"],
-  price:"~SAR 900 pp/night (≈ R4,300 ZAR; B&B only — activities/meals extra)", price_ar:"~٩٠٠ ريال سعودي للشخص/الليلة (≈ ٤,٣٠٠ راند؛ فطور فقط — الأنشطة والوجبات إضافية)",
-  about:"A small, family-run boutique camp — plains game (zebra, wildebeest, giraffe, eland) plus lions, but not a full Big Five reserve. Praised for personal, warm service and a genuine 'family' feel rather than a big commercial operation. Halal, vegan and gluten-free menu options available. Good value if you want a lighter, cheaper safari taste rather than a full Big Five splurge.", about_ar:"مخيم بوتيك صغير تديره عائلة — حيوانات سهول (حمار وحشي، وايلدبيست، زرافة، إيلاند) بالإضافة للأسود، لكنه ليس محمية خماسية كاملة. يُشاد بخدمته الشخصية الدافئة وأجوائه العائلية الحقيقية بدل عملية تجارية كبيرة. خيارات قائمة حلال ونباتية وخالية من الغلوتين متوفرة. قيمة جيدة إن أردتما تجربة سفاري أخف وأرخص بدل ترف الخمسة الكبار الكامل.",
+  price:"~SAR 1,020–1,125 pp/night, 2 sharing (≈ R4,490–4,950 ZAR; B&B only — activities/meals extra)", price_ar:"~١,٠٢٠-١,١٢٥ ريال سعودي للشخص/الليلة، لشخصين (≈ ٤,٤٩٠-٤,٩٥٠ راند؛ فطور فقط — الأنشطة والوجبات إضافية)",
+  about:"A small, family-run boutique camp — plains game (zebra, wildebeest, giraffe, eland) plus lions, but not a full Big Five reserve. Praised for personal, warm service and a genuine 'family' feel rather than a big commercial operation. Halal, vegan and gluten-free menu options available. A good pick if you want a lighter, more personal safari experience rather than a full Big Five splurge — though rates have risen enough that it's no longer the budget option of the five.", about_ar:"مخيم بوتيك صغير تديره عائلة — حيوانات سهول (حمار وحشي، وايلدبيست، زرافة، إيلاند) بالإضافة للأسود، لكنه ليس محمية خماسية كاملة. يُشاد بخدمته الشخصية الدافئة وأجوائه العائلية الحقيقية بدل عملية تجارية كبيرة. خيارات قائمة حلال ونباتية وخالية من الغلوتين متوفرة. خيار جيد إن أردتما تجربة سفاري أخف وأكثر شخصية بدل ترف الخمسة الكبار الكامل — مع أن الأسعار ارتفعت بحيث لم تعد الخيار الأقل تكلفة من بين الخمسة.",
   includes:"Accommodation + breakfast; game drives and other meals booked/paid separately", includes_ar:"إقامة + فطور؛ جولات السفاري والوجبات الأخرى تُحجز وتُدفع بشكل منفصل",
   steps:["Go to gardenroutesafaricamp.com (official site)","Enquire directly — small camp, so book well ahead in peak season","Confirm which game drives/meal plan you want added, as base rate is B&B only","Pay deposit to secure your dates","WhatsApp them directly for fast responses (contact on site)"],
   steps_ar:["اذهبا إلى gardenroutesafaricamp.com (الموقع الرسمي)","استفسرا مباشرة — مخيم صغير، فاحجزا مبكرًا في موسم الذروة","أكدا أي جولات سفاري/خطة وجبات تريدان إضافتها، فالسعر الأساسي فطور فقط","ادفعا العربون لتثبيت التواريخ","تواصلا معهم عبر واتساب للرد السريع (متوفر بالموقع)"],
-  mynote:null, mynote_ar:null,
 },
 {
   n:"Botlierskop Private Game Reserve", n_ar:"بوتليرسكوب برايفت جيم ريزيرف", g:"https://maps.app.goo.gl/r66ynrJEgP9eveJA6", site:"https://www.botlierskop.co.za/",
   rating:4.7, ratingCount:2431,
   location:"Between Mossel Bay and George — ~4hrs (400km) from Cape Town", location_ar:"بين موسيل باي وجورج — ~٤ ساعات (٤٠٠كم) من كيب تاون",
   big5:["Elephant","Lion","Rhino","Buffalo"], big5no:["Leopard"],
-  price:"~SAR 885–1,550 pp/night (≈ R4,215–7,390 ZAR)", price_ar:"~٨٨٥-١,٥٥٠ ريال سعودي للشخص/الليلة (≈ ٤,٢١٥-٧,٣٩٠ راند)",
-  includes:"Full Board Plus — all meals, 2 daily game drives; conservation fee ~SAR 126–139/room/stay extra (≈ R600–660 ZAR)", includes_ar:"إقامة كاملة بلس — كل الوجبات، جولتا سفاري يوميًا؛ رسم حماية طبيعة إضافي ~١٢٦-١٣٩ ريال سعودي لكل غرفة (≈ ٦٠٠-٦٦٠ راند)",
+  price:"~SAR 1,073–1,680 pp/night (≈ R4,720–7,390 ZAR)", price_ar:"~١,٠٧٣-١,٦٨٠ ريال سعودي للشخص/الليلة (≈ ٤,٧٢٠-٧,٣٩٠ راند)",
+  includes:"Full Board Plus — all meals, 2 daily game drives; conservation fee ~SAR 150/room/stay extra (≈ R660 ZAR)", includes_ar:"إقامة كاملة بلس — كل الوجبات، جولتا سفاري يوميًا؛ رسم حماية طبيعة إضافي ~١٥٠ ريال سعودي لكل غرفة لكل إقامة (≈ ٦٦٠ راند)",
   about:"Consistently described as the most luxurious of the five — a proper tented safari lodge feel (canvas suites with real furnishings), a dedicated spa (Fijnebos Spa), and horseback safaris as a standout extra. 6,000 hectares, 4 of the Big Five (no leopard).", about_ar:"يوصف باستمرار بأنه الأفخم بين الخمسة — أجواء نُزل سفاري بخيام حقيقية (أجنحة قماشية بأثاث فعلي)، سبا مخصص (Fijnebos Spa)، وسفاري بالخيول كإضافة مميزة. ٦,٠٠٠ هكتار، ٤ من الخمسة الكبار (بدون النمر).",
-  mynote:"Luxury.", mynote_ar:"فخامة.",
   steps:["Go to botlierskop.co.za (official site)","Choose Tented Lodge or Village Lodge accommodation","Check the specials page — packages with sunset/sunrise drives bundled are common","Book online or call Cape Town reservations +27 21 794 9050","Pay deposit — conservation fee settled separately"],
   steps_ar:["اذهبا إلى botlierskop.co.za (الموقع الرسمي)","اختارا إقامة Tented Lodge أو Village Lodge","تحققا من صفحة العروض — باقات بجولات غروب/شروق مجمّعة شائعة","احجزا إلكترونيًا أو اتصلا بحجوزات كيب تاون +27 21 794 9050","ادفعا العربون — رسم حماية الطبيعة يُسدد بشكل منفصل"],
 },
@@ -82,10 +78,9 @@ const SAFARI = [
   rating:4.2, ratingCount:5990,
   location:"Touws River — only ~2hrs (165km) from Cape Town, but NOT on the Garden Route drive itself (it's the opposite direction/a detour)", location_ar:"تاوس ريفر — على بعد ساعتين فقط (١٦٥كم) من كيب تاون، لكنها ليست على طريق الحدائق نفسه (اتجاه معاكس/انحراف عن الطريق)",
   big5:["Elephant","Lion","Leopard","Rhino","Buffalo"], big5no:[],
-  price:"Day trip SAR 209–815 pp; overnight from ~SAR 630+ pp/night (≈ R995–3,880 / R3,000+ ZAR)", price_ar:"رحلة يوم ٢٠٩-٨١٥ ريال سعودي للشخص؛ مبيت من ~٦٣٠+ ريال سعودي للشخص/الليلة (≈ ٩٩٥-٣,٨٨٠ / ٣,٠٠٠+ راند)",
-  includes:"Day trip: 1 game drive + meal per package tier. Overnight: all meals, 2 game drives, stargazing", includes_ar:"رحلة اليوم: جولة سفاري واحدة + وجبة حسب الفئة. المبيت: كل الوجبات، جولتا سفاري، ومشاهدة النجوم",
+  price:"Day trip SAR 248–1,043 pp; overnight from ~SAR 889+ pp/night (≈ R1,090–4,590 / R3,910+ ZAR)", price_ar:"رحلة يوم ٢٤٨-١,٠٤٣ ريال سعودي للشخص؛ مبيت من ~٨٨٩+ ريال سعودي للشخص/الليلة (≈ ١,٠٩٠-٤,٥٩٠ / ٣,٩١٠+ راند)",
+  includes:"Day trip: 1 game drive + meal per package tier. Overnight: all meals, 2 game drives, stargazing (transport & drinks not included)", includes_ar:"رحلة اليوم: جولة سفاري واحدة + وجبة حسب الفئة. المبيت: كل الوجبات، جولتا سفاري، ومشاهدة النجوم (النقل والمشروبات غير مشمولة)",
   about:"The most flexible option — bookable as a half/full-day trip straight from Cape Town, no overnight stay or long drive required, and technically full Big Five. That said, it's the smallest and closest reserve to the city, and some travellers and reviews feel the animals are more visibly managed/less 'wild' than the reserves further along the Garden Route — worth weighing if authenticity matters more than convenience to you.", about_ar:"الخيار الأكثر مرونة — يمكن حجزه كرحلة نصف/يوم كامل مباشرة من كيب تاون، دون الحاجة لمبيت أو قيادة طويلة، وتقنيًا كامل الخمسة الكبار. مع ذلك، فهي أصغر وأقرب محمية للمدينة، ويشعر بعض المسافرين والمراجعات أن الحيوانات مُدارة بشكل أكثر وضوحًا/أقل 'توحشًا' من المحميات الأبعد على طريق الحدائق — يستحق الموازنة إن كانت الأصالة أهم من الراحة بالنسبة لكما.",
-  mynote:"People say it's not worth it.", mynote_ar:"يقولون ماتستاهل.",
   steps:["Go to aquilasafari.com (official site)","Day trip: choose Early Morning, Afternoon or Full Day safari, self-drive or with transport from Cape Town","Overnight: choose Safari Lodge or Safari Cottage room type","Book and pay online — arrive at the stated time (self-drive) or pickup point (transport)","Bring swimwear, sunscreen and a hat — pool and outdoor time included either way"],
   steps_ar:["اذهبا إلى aquilasafari.com (الموقع الرسمي)","رحلة اليوم: اختارا سفاري الصباح الباكر أو بعد الظهر أو اليوم الكامل، بقيادة ذاتية أو نقل من كيب تاون","المبيت: اختارا نوع الغرفة Safari Lodge أو Safari Cottage","احجزا وادفعا إلكترونيًا — صلا بالوقت المحدد (قيادة ذاتية) أو نقطة الالتقاء (نقل)","أحضرا ملابس سباحة وواقي شمس وقبعة — وقت المسبح والخارج مشمول في الحالتين"],
 },
@@ -120,7 +115,6 @@ function renderSafari(){
     const about = LANG==='ar'?s.about_ar:s.about;
     const includes = LANG==='ar'?s.includes_ar:s.includes;
     const price = LANG==='ar'?s.price_ar:s.price;
-    const mynote = LANG==='ar'?s.mynote_ar:s.mynote;
     const steps = LANG==='ar'?s.steps_ar:s.steps;
     cards += `<div class="saf-card">
       <div class="saf-card-head"><h3>${name}</h3><span class="saf-price-tag">${price}</span></div>
@@ -130,7 +124,6 @@ function renderSafari(){
       </div>
       <p class="about">${about}</p>
       <p class="about"><b>${LANG==='ar'?'يشمل':'Includes'}:</b> ${includes}</p>
-      ${mynote ? `<div class="mynote saf-mynote">📝 ${mynote}</div>` : ``}
       <div class="card-actions">
         <a class="mini-link primary" href="${s.g}" target="_blank">📍 ${tr('directions')}</a>
         <a class="mini-link verified" href="${s.site}" target="_blank">🌐 ${LANG==='ar'?'الموقع الرسمي':'Official site'}</a>

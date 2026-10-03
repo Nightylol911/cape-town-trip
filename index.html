@@ -116,10 +116,11 @@ if('serviceWorker' in navigator){
 </div>
 
 <div class="maintabs">
-  <button class="maintab active" data-tab="plan"><span class="mt-num">1</span><span data-t="tabPlan"></span></button>
-  <button class="maintab" data-tab="capetown"><span class="mt-num">2</span><span data-t="tabCT"></span></button>
-  <button class="maintab" data-tab="gardenroute"><span class="mt-num">3</span><span data-t="tabGR"></span></button>
-  <button class="maintab" data-tab="safari"><span class="mt-num">4</span><span data-t="tabSafari"></span></button>
+  <button class="maintab" data-tab="about"><span class="mt-num">1</span><span data-t="tabAbout"></span></button>
+  <button class="maintab active" data-tab="plan"><span class="mt-num">2</span><span data-t="tabPlan"></span></button>
+  <button class="maintab" data-tab="capetown"><span class="mt-num">3</span><span data-t="tabCT"></span></button>
+  <button class="maintab" data-tab="gardenroute"><span class="mt-num">4</span><span data-t="tabGR"></span></button>
+  <button class="maintab" data-tab="safari"><span class="mt-num">5</span><span data-t="tabSafari"></span></button>
 </div>
 
 <div class="budget-bar" id="budgetBar" style="display:none;"></div>
@@ -128,6 +129,14 @@ if('serviceWorker' in navigator){
   <input type="search" id="searchInput" class="search-input" placeholder="" name="ctgr-trip-search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="search" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
   <div class="search-results" id="searchResults" style="display:none;"></div>
 </div>
+
+<div id="tab-about" class="tabpanel">
+<div class="about-card">
+  <h2 data-t="aboutCardTitle"></h2>
+  <p class="about-intro" data-t="aboutCardIntro"></p>
+  <div id="aboutSaContent"></div>
+</div>
+</div><!-- /tab-about -->
 
 
 <div id="tab-plan" class="tabpanel active">
@@ -438,6 +447,7 @@ if('serviceWorker' in navigator){
 <script src="js/weather.js"></script>
 <script src="js/drawer-currency.js"></script>
 <script src="js/travel-checklist.js"></script>
+<script src="js/data-about.js"></script>
 <script src="js/app-boot.js"></script>
 </body>
 </html>

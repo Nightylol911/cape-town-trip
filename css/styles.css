@@ -178,12 +178,21 @@ body.lb-open{overflow:hidden;}
 .lb-thumb.add:hover{background:rgba(255,255,255,.2);}
 
 /* PHOTOS PANEL + TOAST */
-.pp-back{position:fixed;inset:0;z-index:1100;background:rgba(18,40,44,.5);display:flex;align-items:center;justify-content:center;padding:18px;}
+.pp-back{position:fixed;inset:0;z-index:1100;background:rgba(18,40,44,.5);display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto;}
 .pp-back[hidden]{display:none;}
+/* `vh` on iOS Safari is measured against the viewport with its collapsible address/tab bar
+   already hidden, which is taller than what's actually visible when that chrome is showing —
+   so a popup sized at 92vh can be genuinely taller than the screen the person is looking at,
+   and since .pp-back centers it with align-items, the overflow gets split evenly above and
+   below the visible area with no way to scroll to either end. `dvh` tracks the real, currently-
+   visible viewport instead, and `safe center` (where supported) falls back to top-alignment —
+   plus .pp-back's own overflow-y above — once content is taller than the box, so the top of the
+   dialog stays reachable instead of sliding off-screen. */
+@supports (align-items: safe center){ .pp-back{align-items:safe center;} }
 /* Scroll-lock while any full-screen modal (onboarding, photos, etc.) is open — otherwise a swipe
    on the dark backdrop area still scrolls the real page underneath it on iOS Safari. */
 html.modal-open,html.modal-open body{overflow:hidden;height:100%;}
-.pp{background:var(--paper);border-radius:16px;padding:22px 24px;max-width:480px;width:100%;max-height:92vh;overflow-y:auto;overflow-x:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.pp{background:var(--paper);border-radius:16px;padding:22px 24px;max-width:480px;width:100%;max-height:92vh;max-height:92dvh;overflow-y:auto;overflow-x:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35);margin:auto 0;}
 .pp.pp-wide{max-width:640px;}
 .picker-results{max-height:min(50vh,420px);overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-top:10px;}
 .picker-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;text-align:start;font:600 13.5px 'Inter',sans-serif;color:var(--ink);width:100%;}
@@ -422,6 +431,59 @@ body.ar .store-btn{font-family:'Tajawal',sans-serif;}
 .car-rental-card,.emergency-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
 .car-rental-head h2,.emergency-head h2{margin:0;font-size:20px;}
 
+/* ABOUT SOUTH AFRICA (tab #1) — one page-level card holding 15 stacked .about-block sections.
+   Reuses .emg-grid/.emg-card (generic "grid of info cards") and .tt-rental-grid-style patterns
+   already defined above instead of inventing a parallel set of grid components. */
+.about-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
+.about-card h2{margin:0 0 4px;font-size:20px;}
+.about-card>.about-intro{margin:0 0 4px;font-size:13px;color:#8a7f70;}
+.about-block{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);}
+.about-block:first-of-type{margin-top:16px;padding-top:18px;}
+.about-block h3{margin:0 0 10px;font-size:15.5px;display:flex;align-items:center;gap:8px;}
+.sa-flag-img{width:32px;height:21px;border-radius:3px;box-shadow:0 0 0 1px var(--line);object-fit:cover;flex-shrink:0;}
+.sa-fact-row{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 10px;}
+.sa-fact{background:var(--paper-2);border-radius:10px;padding:8px 14px;font-size:12.5px;color:#4d453c;}
+.sa-fact b{display:block;font-family:'JetBrains Mono',monospace;color:var(--ocean-deep);font-size:15px;margin-bottom:2px;}
+.passport-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+.passport-card{border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;}
+.passport-card.ok{background:#eef3e9;}
+.passport-card.no{background:#f5e9e5;}
+.passport-card .passport-img{width:44px;height:auto;border-radius:4px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.passport-card b{display:block;font-size:13.5px;margin-bottom:3px;}
+.passport-card span{font-size:12.5px;color:#4d453c;line-height:1.5;}
+.dos-donts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.dos-card,.donts-card{border-radius:10px;padding:14px;}
+.dos-card{background:#eef3e9;}
+.donts-card{background:#f5e9e5;}
+.dos-card h4,.donts-card h4{margin:0 0 8px;font-size:13.5px;}
+.dos-card ul,.donts-card ul{margin:0;padding-inline-start:18px;font-size:12.5px;line-height:1.7;color:#4d453c;}
+/* Power sockets: image on the left, facts/text on the right (wraps to stacked on narrow screens). */
+.socket-row{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;}
+.socket-photo-wrap{position:relative;flex:0 0 260px;max-width:260px;}
+.socket-photo{display:block;width:100%;aspect-ratio:640/420;object-fit:contain;background:var(--paper-2);border-radius:10px;}
+.socket-info{flex:1 1 280px;min-width:0;}
+.socket-info .sa-fact-row{margin:0 0 0;}
+/* .emg-card-ib ("icon + body"): the badgeCard() variant of .emg-card used for telecoms/stays,
+   with a brand badge (a real logo where one could legitimately be sourced — see SA_TELECOMS'
+   comment — otherwise a generated monogram) next to the text instead of just the text. */
+.emg-card-ib{position:relative;display:flex;align-items:center;gap:12px;}
+.emg-card-ib .emg-badge{width:40px;height:40px;border-radius:9px;flex-shrink:0;object-fit:cover;}
+/* .photo-card: the photoCard() variant — a landscape photo on top, text below — used for top
+   cities, airlines and distances (real CC-licensed Commons photos where found, a generated tile
+   or placeholder otherwise; see each data array's own sourcing comment in data-about.js), instead
+   of the .emg-grid text-only cards used for everything else on this page. */
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.photo-card{position:relative;background:var(--paper-2);border-radius:12px;overflow:hidden;}
+.photo-card img{display:block;width:100%;aspect-ratio:640/420;object-fit:cover;background:var(--line);}
+.photo-card-body{padding:10px 14px 14px;}
+.photo-card-body b{display:block;font-size:13.5px;margin-bottom:4px;}
+/* Owner-only image replacement (generalizes .app-icon-upload across the About South Africa tab —
+   see wireAboutImgUploads() in data-about.js). Hidden by default; JS shows it only on devices
+   connected with a GitHub token (canEdit()). */
+.about-img-upload{position:absolute;top:6px;inset-inline-end:6px;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:#6b6157;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.about-img-upload:hover{background:var(--paper-2);color:var(--ocean-deep);}
+.photo-card-body .emg-line{font-size:12.5px;color:#4d453c;line-height:1.6;}
+
 /* COLLAPSIBLE MAJOR SECTIONS — applied at boot (initCollapsibleSections() in app-boot.js) to
    Weather, Universal Travel Checklist, Before-you-travel, Currency, Useful Apps, Renting a car
    and Emergency info: every direct child except the header row gets moved into .section-body,
@@ -477,14 +539,19 @@ table.saf-compare th,table.saf-compare td{padding:10px 14px;text-align:start;bor
 table.saf-compare th{background:var(--ink);color:var(--paper);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0;}
 table.saf-compare tr:last-child td{border-bottom:none;}
 table.saf-compare tr:nth-child(even) td{background:var(--paper-2);}
-.saf-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:20px;box-shadow:var(--shadow);}
+.saf-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:20px;box-shadow:var(--shadow);overflow:hidden;}
 .saf-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px;}
-.saf-card-head h3{margin:0;font-size:19px;}
-.saf-price-tag{font-family:'JetBrains Mono',monospace;background:var(--paper-2);color:var(--ocean-deep);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap;}
+.saf-card-head h3{margin:0;font-size:19px;min-width:0;}
+/* No white-space:nowrap here (unlike the other pill/tag classes above) — these per-lodge prices
+   are long, dynamic strings (a SAR range plus a parenthetical Rand conversion) that can easily run
+   wider than a phone screen in Arabic. nowrap on a flex item forces the item's minimum width to
+   its full unwrapped text width, which was stretching .saf-card-head — and with it .saf-card and
+   the whole page — past the viewport, making mobile Safari auto-zoom everything out to fit. Letting
+   it wrap keeps it inside the card. */
+.saf-price-tag{font-family:'JetBrains Mono',monospace;background:var(--paper-2);color:var(--ocean-deep);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;white-space:normal;max-width:100%;}
 .saf-big5{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap;}
 .saf-big5 span{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef3e9;color:#4a6b3a;}
 .saf-big5 span.no{background:#f5e9e5;color:#8a4a3a;text-decoration:line-through;opacity:.6;}
-.saf-mynote{margin:10px 0;}
 
 /* TRANSPORT */
 .tt-content h3{margin:0 0 8px;font-size:16.5px;display:flex;align-items:center;gap:8px;}

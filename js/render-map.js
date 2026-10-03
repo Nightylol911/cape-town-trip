@@ -25,7 +25,7 @@ function setLang(lang){
   renderPackList();
   const searchEl = document.getElementById('searchInput');
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
-  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather(); renderApps(); renderTravelChecklist();
+  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather(); renderApps(); renderTravelChecklist(); renderAboutSA();
   updateCountdown();
   updateDateDisplays();
   fxWidgetRefresh();
