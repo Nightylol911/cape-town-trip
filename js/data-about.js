@@ -101,11 +101,21 @@ function processImageToBox(file, W, H){
     const src = URL.createObjectURL(file);
     const img = new Image();
     img.onload = ()=>{
-      const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
-      const sw = W / scale, sh = H / scale;
-      const sx = (img.naturalWidth - sw) / 2, sy = (img.naturalHeight - sh) / 2;
+      // Math.min (fit the whole image inside the box, letterbox any leftover space) — not
+      // Math.max (fill the box, crop whatever doesn't fit). An earlier version of this used
+      // Math.max, which is exactly the "planes with their nose/tail cut off" bug the static
+      // Wikimedia aircraft photos had before being fixed — except here it silently did the same
+      // thing to every image anyone uploads through this page. Pads with the site's own card
+      // background colour instead of leaving transparent corners, so a non-matching aspect ratio
+      // still looks intentional rather than broken.
+      const scale = Math.min(W / img.naturalWidth, H / img.naturalHeight);
+      const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
+      const dx = (W - dw) / 2, dy = (H - dh) / 2;
       const c = document.createElement('canvas'); c.width = W; c.height = H;
-      c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#f1ead9'; // --paper-2
+      ctx.fillRect(0, 0, W, H);
+      ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, dx, dy, dw, dh);
       URL.revokeObjectURL(src);
       c.toBlob(b=> b ? resolve(b) : reject(new Error('encode failed')), 'image/jpeg', 0.86);
     };
