@@ -288,7 +288,18 @@ function renderTodayStrip(){
   const wxHtml = wx && wx.hi != null
     ? `${wxIcon(wx.kind, 26)}<span class="today-strip-temp">${Math.round(wx.hi)}°C</span>${wx.rain!=null?`<span class="today-strip-rain">${Math.round(wx.rain)}% ${LANG==='ar'?'مطر':'rain'}</span>`:''}`
     : `<span class="today-strip-wx-loading">${LANG==='ar'?'...الطقس':'weather…'}</span>`;
-  el.innerHTML = `<span class="today-strip-day">${LANG==='ar'?'اليوم':'TODAY'} · ${dayLabel}</span><span class="today-strip-title">${title}</span><span class="today-strip-wx">${wxHtml}</span><span class="today-strip-arrow">→</span>`;
+  const pct = Math.round(((dayIdx + 1) / days) * 100);
+  const progressLabel = LANG==='ar' ? `اليوم ${dayIdx+1} من ${days}` : `Day ${dayIdx+1} of ${days}`;
+  el.innerHTML = `
+    <div class="today-strip-top">
+      <span class="today-strip-day">${LANG==='ar'?'اليوم':'TODAY'} · ${dayLabel}</span>
+      <span class="today-strip-title">${title}</span>
+      <span class="today-strip-wx">${wxHtml}</span>
+      <span class="today-strip-arrow">→</span>
+    </div>
+    <div class="today-strip-progress" role="progressbar" aria-valuenow="${dayIdx+1}" aria-valuemin="1" aria-valuemax="${days}" aria-label="${progressLabel}">
+      <div class="today-strip-progress-fill" style="width:${pct}%"></div>
+    </div>`;
   el.hidden = false;
 }
 function applyPlanRainBadges(){

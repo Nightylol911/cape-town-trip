@@ -212,26 +212,125 @@ if(searchInputEl){
    Looked up in-page, not a redirect — adsbdb.com is a free, keyless, CORS-open API (verified
    directly: `Access-Control-Allow-Origin: *` on every response) that resolves either an IATA
    ("QR1130") or ICAO ("QTR1130") callsign to its airline and scheduled origin/destination
-   airports. That's genuine flight detail shown right here, no API key sitting exposed in this
-   page's source for anyone to lift. What it does NOT give is live position/gate/delay — every
-   keyless source for that either blocks browser-origin requests outright (OpenSky's REST API
-   sends an Access-Control-Allow-Origin locked to opensky-network.org itself, not us) or now
-   gates access behind an emailed approval (airplanes.live started returning 403 "contact us"
-   for unrecognised origins). Rather than fake live data or silently drop the feature, the route
-   card below links out to FlightRadar24's own live view as a clearly-labelled secondary option,
-   using the ICAO-style callsign adsbdb resolved (more reliable for FR24 to match than whatever
-   format the visitor typed). */
+   airports. That's genuine flight detail shown right here, no API key needed for it.
+   Scheduled/estimated/actual times and delay status are a separate, second lookup against
+   AeroDataBox (via RapidAPI) — unlike route lookups, no free *keyless* source for live flight
+   status exists (OpenSky only gives raw ADS-B position, not gate/delay data, and even that blocks
+   browser-origin requests; airplanes.live now requires an emailed approval). AeroDataBox needs an
+   API key, which — per an explicit choice made when adding this — is embedded directly below
+   rather than hidden behind a serverless proxy: this is a static personal trip site with no
+   backend, the free tier is 600 lookups/month, and the realistic risk of a scraper finding and
+   draining an obscure personal GitHub Pages site's key is low enough to accept for the convenience.
+   Get a free key at https://rapidapi.com/aedbx-aedbx/api/aerodatabox (subscribe to the free/Basic
+   plan) and paste it below — until then this constant stays empty and the feature just skips
+   straight to "fetchStatus()'s block never runs", leaving the free adsbdb route lookup working on
+   its own with no error shown. */
+const FLIGHT_STATUS_KEY = "f6556755cbmsh3e6d873fad16b74p1415fcjsne7b4a4291003";
 (function(){
   const form = document.getElementById('flightTrackForm');
   if(!form) return;
   const input = document.getElementById('flightTrackInput');
+  const dateInput = document.getElementById('flightTrackDate');
   const resultEl = document.getElementById('flightTrackResult');
   try{ const last = localStorage.getItem('ctgr_last_flight'); if(last) input.value = last; }catch(e){}
+  if(dateInput && !dateInput.value) dateInput.value = new Date().toISOString().slice(0, 10);
 
   function renderFlightState(kind, html){
     resultEl.hidden = false;
     resultEl.className = 'flight-track-result ft-' + kind;
     resultEl.innerHTML = html;
+  }
+
+  function formatMovementTime(mv){
+    // Parsed straight out of the string, not via `new Date(...).toLocaleTimeString()` — AeroDataBox's
+    // `.local` field is already the correct wall-clock time AT THAT AIRPORT (with its own UTC offset
+    // baked in, e.g. "23:25+03:00"), and running it through Date/toLocaleTimeString would silently
+    // convert it to whichever timezone the *viewer's device* happens to be in instead, which is wrong
+    // for a departure/arrival time that's supposed to mean "what the airport clock will say".
+    if(!mv || !mv.local) return null;
+    const m = mv.local.match(/(\d{2}):(\d{2})/);
+    if(!m) return null;
+    let h = parseInt(m[1], 10);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if(h === 0) h = 12;
+    return h + ':' + m[2] + ' ' + ampm;
+  }
+
+  function delayMinutes(mv){
+    // Computed ourselves from the timestamps rather than trusting a single API-provided field —
+    // AeroDataBox's `status` is a flight PHASE (Expected/EnRoute/Arrived/Canceled/…), not a
+    // delayed/on-time flag, so "is it delayed" has to come from comparing scheduledTime against
+    // whichever of runwayTime (actual)/revisedTime/predictedTime (estimate) is the best information
+    // available right now — same priority order already used for the "Estimated"/"Actual" rows.
+    if(!mv || !mv.scheduledTime || !mv.scheduledTime.utc) return null;
+    const best = mv.runwayTime || mv.revisedTime || mv.predictedTime;
+    if(!best || !best.utc) return null;
+    const schedMs = Date.parse(mv.scheduledTime.utc.replace(' ', 'T'));
+    const bestMs = Date.parse(best.utc.replace(' ', 'T'));
+    if(isNaN(schedMs) || isNaN(bestMs)) return null;
+    return Math.round((bestMs - schedMs) / 60000);
+  }
+
+  function delayPillHtml(mv){
+    const d = delayMinutes(mv);
+    if(d === null) return '';
+    if(d <= 10) return `<span class="price-pill">${escHtml(tr('flightTrackOnTime'))}</span>`;
+    return `<span class="weak-pill">+${d} ${escHtml(tr('flightTrackMinLate'))}</span>`;
+  }
+
+  function legHtml(label, mv){
+    if(!mv) return '';
+    // "Estimated" can come back as either field depending on how close to departure the lookup
+    // happens — confirmed against live responses: a flight still days out only carries
+    // `predictedTime` (a modelled best-guess), while one on the day itself gets `revisedTime` (the
+    // airline's own updated schedule) instead. Preferring revisedTime when both are present since
+    // it's the more authoritative of the two.
+    const rows = [
+      [tr('flightTrackScheduled'), formatMovementTime(mv.scheduledTime)],
+      [tr('flightTrackEstimated'), formatMovementTime(mv.revisedTime || mv.predictedTime)],
+      [tr('flightTrackActual'), formatMovementTime(mv.runwayTime)],
+    ].filter(([,t])=>t).map(([l,t])=>`<div class="ft-time-row"><span>${escHtml(l)}</span><b>${escHtml(t)}</b></div>`).join('');
+    if(!rows) return '';
+    const metaParts = [];
+    if(mv.terminal) metaParts.push(tr('flightTrackTerminal') + ' ' + mv.terminal);
+    if(mv.gate) metaParts.push(tr('flightTrackGate') + ' ' + mv.gate);
+    if(mv.baggageBelt) metaParts.push(tr('flightTrackBaggage') + ' ' + mv.baggageBelt);
+    const meta = metaParts.length ? `<div class="ft-leg-meta">${escHtml(metaParts.join(' · '))}</div>` : '';
+    return `<div><div class="ft-leg-label">${escHtml(label)} ${delayPillHtml(mv)}</div>${rows}${meta}</div>`;
+  }
+
+  async function appendLiveStatus(flightNumber, dateStr){
+    if(!FLIGHT_STATUS_KEY) return;
+    try{
+      const res = await fetch('https://aerodatabox.p.rapidapi.com/flights/number/' + encodeURIComponent(flightNumber) + '/' + encodeURIComponent(dateStr) + '?withAircraftImage=true', {
+        headers:{ 'X-RapidAPI-Key': FLIGHT_STATUS_KEY, 'X-RapidAPI-Host':'aerodatabox.p.rapidapi.com' }
+      });
+      const list = res.ok ? await res.json() : null;
+      const flight = Array.isArray(list) ? list[0] : null;
+      const depHtml = flight ? legHtml(tr('flightTrackDeparture'), flight.departure) : '';
+      const arrHtml = flight ? legHtml(tr('flightTrackArrival'), flight.arrival) : '';
+      if(depHtml || arrHtml){
+        // Status PHASE badge colour: red for the two genuinely bad outcomes (cancelled/diverted —
+        // the ones worth catching at a glance), neutral for every normal phase in between
+        // (Expected/EnRoute/Boarding/Arrived/…) since those aren't bad news on their own — lateness
+        // is already called out separately by the per-leg delay pill above.
+        const statusText = flight.status || '';
+        const isBad = /cancel|divert/i.test(statusText);
+        const badge = statusText ? `<span class="ft-status-badge${isBad ? ' bad' : ''}">${escHtml(statusText)}</span>` : '';
+        const ac = flight.aircraft;
+        const acBits = [];
+        if(ac && ac.model) acBits.push(ac.model);
+        if(ac && ac.reg) acBits.push(ac.reg);
+        const acLine = acBits.length ? `<div class="ft-aircraft">${ac && ac.image && ac.image.url ? `<img src="${escHtml(ac.image.url)}" alt="" loading="lazy">` : ''}<span>${escHtml(acBits.join(' · '))}</span></div>` : '';
+        resultEl.insertAdjacentHTML('beforeend', `<div class="ft-status-row">${badge}</div><div class="ft-legs">${depHtml}${arrHtml}</div>${acLine}`);
+      }else{
+        resultEl.insertAdjacentHTML('beforeend', `<p class="ft-msg" style="margin-top:12px;">${escHtml(tr('flightTrackStatusUnavailable'))}</p>`);
+      }
+    }catch(err){
+      // A configured key that can't be reached right now (network hiccup, quota, bad key) stays
+      // silent rather than erroring — the free route lookup above already succeeded on its own,
+      // which is the part that matters most if this optional enhancement has a bad moment.
+    }
   }
 
   form.addEventListener('submit', async (e)=>{
@@ -264,5 +363,6 @@ if(searchInputEl){
       </div>
       <a class="mini-link" href="https://www.flightradar24.com/data/flights/${encodeURIComponent(liveCallsign.toLowerCase())}" target="_blank">🛰️ ${escHtml(tr('flightTrackLiveLink'))}</a>
     `);
+    appendLiveStatus(raw, dateInput && dateInput.value ? dateInput.value : new Date().toISOString().slice(0, 10));
   });
 })();
