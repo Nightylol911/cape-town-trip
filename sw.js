@@ -8,11 +8,12 @@
 
    Bump CACHE_NAME (e.g. v1 -> v2) whenever you want to force everyone's cached copy dropped —
    otherwise this file only needs to be touched if the caching *strategy* changes. */
-const CACHE_NAME = 'ctgr-cache-v4';   // bumped: images/about/ and icons/about/ (About South Africa tab) are re-uploaded to the same filename, same stale-cache problem icons/apps/ already had below — this version bump also clears out any already-stale cached copies from before that carve-out existed
+const CACHE_NAME = 'ctgr-cache-v5';   // bumped: same-origin fetches are now ALL network-first (see below) instead of only a few hand-picked paths — a real behaviour change, so everyone's old cache gets dropped rather than left half-matching the new strategy
 const APP_SHELL = ['./', 'index.html', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png', 'css/styles.css',
   'js/photo-storage.js', 'js/i18n.js', 'js/data-places.js', 'js/notes-and-places.js', 'js/photos.js',
   'js/render-map.js', 'js/data-garden-route.js', 'js/data-safari.js', 'js/data-apps.js', 'js/data-itinerary.js',
-  'js/itinerary-customize.js', 'js/print-export.js', 'js/trip-onboarding.js', 'js/weather.js', 'js/drawer-currency.js', 'js/app-boot.js'];
+  'js/itinerary-customize.js', 'js/print-export.js', 'js/trip-onboarding.js', 'js/weather.js', 'js/drawer-currency.js',
+  'js/travel-checklist.js', 'js/data-about.js', 'js/app-boot.js'];   // travel-checklist.js and data-about.js were missing — added after both those tabs shipped without this list being updated
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -43,30 +44,35 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (PASSTHROUGH_HOSTS.includes(url.hostname)) return;
 
-  // icons/apps/*.png, and the About South Africa tab's images/about/*/icons/about/* (airline
-  // photos, telecom/stays logos, the socket photo, distance placeholders — all owner-uploadable
-  // the same way) are re-uploaded/regenerated to the *same* filename each time (so the reference
-  // on the page never has to change) — which is exactly the case stale-while-revalidate handles
-  // badly: it happily keeps serving last time's file instantly and only refreshes its cache in
-  // the background, so a normal reload right after replacing one can still show the old version.
-  // Treat these like the page itself: always try the network first (bypassing the browser's own
-  // HTTP cache too, via {cache:'no-store'}, in case the host sends cache headers), and only fall
-  // back to whatever's cached when there's truly no network.
-  const isUserReplaceableImage = url.origin === self.location.origin && /\/icons\/apps\/[^/]+\.png$|\/(images|icons)\/about\/[^/]+\.(png|jpe?g|svg)$/.test(url.pathname);
-  if (isNavigation(req) || isUserReplaceableImage || (url.origin === self.location.origin && url.pathname.endsWith('/index.html'))) {
+  // Same-origin = this app's own code and content: the page, css/styles.css, every js/*.js file,
+  // manifest.json, and every image under icons/ and images/ (including the owner-uploadable ones
+  // that get re-uploaded to the same filename — icons/apps/, images/about/, icons/about/). ALL of
+  // it is always network-first here now, not just the hand-picked paths this carve-out used to be
+  // limited to. That used to mean a *code* push (css/js, not just images) could sit served-stale
+  // for an entire extra reload after every single deploy — classic stale-while-revalidate always
+  // answers from whatever's already cached before it even checks the network, so the fresh version
+  // only ever lands in the cache for *next* time, which reads exactly like "pushing to main
+  // doesn't show up on refresh" from the outside. A personal site like this one gets redeployed far
+  // more often than it's ever read with no signal at all, so "what's live always matches what was
+  // actually pushed" matters more here than shaving a request via staleness. {cache:'no-store'}
+  // also bypasses the browser's own ordinary HTTP cache (and, in turn, whatever the GitHub Pages/
+  // Fastly CDN in front of this repo sends as cache headers) for this fetch, so an update is only
+  // ever actually missed if the request happened to land on a CDN edge that hadn't yet picked up
+  // the new deploy — a propagation delay outside this file's control, not a caching bug here.
+  if (url.origin === self.location.origin) {
     event.respondWith(
       fetch(req, { cache: 'no-store' }).then((res) => {
         const copy = res.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         return res;
-      }).catch(() => caches.match(req).then((res) => res || (isUserReplaceableImage ? undefined : caches.match('index.html'))))
+      }).catch(() => caches.match(req).then((res) => res || (isNavigation(req) ? caches.match('index.html') : undefined)))
     );
     return;
   }
 
-  // Everything else same-origin (icons, manifest, synced photos, photos/manifest.json) and the
-  // Leaflet/Google Fonts CDN files: serve from cache instantly if we have it, and refresh the
-  // cache in the background — classic stale-while-revalidate.
+  // Third-party CDN only now (Leaflet, Google Fonts) — these essentially never change, so they
+  // keep the classic stale-while-revalidate treatment: serve from cache instantly if we have it,
+  // and refresh the cache in the background.
   event.respondWith(
     caches.match(req).then((cached) => {
       const network = fetch(req).then((res) => {
