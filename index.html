@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#123840">
-<meta name="build-id" content="2026-09-23T15:04:52Z">
+<meta name="build-id" content="2026-10-03T16:00:00Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23123840%27/%3E%3Cpolygon points=%2732,10 36,32 32,54 28,32%27 fill=%27%23faf6ee%27/%3E%3Cpolygon points=%2710,32 32,28 54,32 32,36%27 fill=%27%23c9942f%27/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -15,10 +15,46 @@
 <meta name="mobile-web-app-capable" content="yes">
 <script>
 /* Offline support: register the service worker (no-ops harmlessly if the page is opened as a
-   local file:// rather than hosted — see README.txt for hosting it properly). */
+   local file:// rather than hosted — see README.txt for hosting it properly).
+
+   Why a normal refresh wasn't enough to see a new image/icon after this round's sw.js fix: that
+   fix only changed what the *active* service worker does once it's in control — but a browser
+   doesn't swap in a newly-changed sw.js mid-session just because the page reloaded. By default it:
+   1) notices sw.js's bytes changed (sometimes not even that, if its own fetch got served from the
+      browser's ordinary HTTP cache rather than a fresh request),
+   2) installs the new one in the background,
+   3) only actually hands it control on the *next* load after that — i.e. two refreshes, and only
+      if step 1 even happened promptly.
+   The two pieces below close that gap, reusing the exact pattern the page's own "am I stale?"
+   check further down already uses (immediately, every 10 min while open, and whenever the tab
+   becomes visible again) rather than waiting on the browser's own timing:
+   - The registration URL itself now carries the page's build-id as a query string, so whenever a
+     deploy bumps that meta tag, this becomes a *different* URL the browser has never cached and
+     must fetch fresh — sidestepping the "fetch of sw.js itself came from a stale HTTP cache so no
+     update was even noticed" failure mode.
+   - sw.js already calls skipWaiting()/clients.claim() once it installs; the controllerchange
+     listener below reloads the page the moment that handover actually happens, instead of waiting
+     for a second, unprompted refresh. It skips the reload if an onboarding/admin/add-place dialog
+     is open, so it never yanks the page out from under someone mid-entry — it catches up on the
+     next check instead.
+   None of this touches localStorage, so a visitor's own picks, trip plan and favourites are
+   completely unaffected either way — this is purely about which cached *files* get served. */
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('sw.js').catch(function(){});
+    var buildId = (document.querySelector('meta[name="build-id"]') || {}).content || '';
+    navigator.serviceWorker.register('sw.js?v=' + encodeURIComponent(buildId)).then(function(reg){
+      var reloading = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function(){
+        if(reloading) return;
+        if(document.querySelector('.pp-back:not([hidden])')) return; // don't interrupt an open dialog — next check catches it
+        reloading = true;
+        location.reload();
+      });
+      function checkForSwUpdate(){ reg.update().catch(function(){}); }
+      checkForSwUpdate();
+      setInterval(function(){ if(!document.hidden) checkForSwUpdate(); }, 10 * 60 * 1000);
+      document.addEventListener('visibilitychange', function(){ if(!document.hidden) checkForSwUpdate(); });
+    }).catch(function(){});
   });
 }
 </script>

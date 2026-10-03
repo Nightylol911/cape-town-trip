@@ -94,7 +94,7 @@ const SA_DISTANCES = [
    it: picked file is center-cropped client-side to that slot's exact box, then uploaded straight
    to this repo at the given path, same as photos/notes/checklist. Box sizes, so replacement images
    can be designed to fit with zero cropping:
-     - "icon" slots (Telecom, Stays) — 256×256, same as Useful Apps icons (shown at 40×40 here).
+     - "icon" slots (Telecom, Stays) — 256×256, same as Useful Apps icons (shown at 72×72 here).
      - "wide" slots (Airlines, Power sockets, Distances, Domestic flights) — 640×420. */
 function processImageToBox(file, W, H){
   return new Promise((resolve, reject)=>{
@@ -186,8 +186,7 @@ function renderAboutSA(){
   // file header comment for why. badgeCard() builds one .emg-card with the badge + text; falls
   // back to a plain .emg-card (no badge) when an entry has no slug (e.g. Federal Air). Pass
   // `uploadable:true` to add the 📤 owner-upload slot (256×256 box) over the badge, and `large:true`
-  // for the bigger 72×72 badge variant (Telecom — see its section comment below; Stays keeps the
-  // smaller 40×40 size).
+  // for the bigger 72×72 badge variant (Telecom and Stays both use it — see each section below).
   const badgeCard = (slug, name, line, extraStyle, uploadable, large) => slug
     ? `<div class="emg-card emg-card-ib${large?' emg-card-ib-lg':''}"${extraStyle?` style="${extraStyle}"`:''}${uploadable?` data-img-slot`:''}><img class="emg-badge" src="icons/about/${slug}.png" alt="${name}" width="${large?72:40}" height="${large?72:40}" loading="lazy">${uploadable?uploadSlot(`icons/about/${slug}.png`,256,256):''}<div><b>${name}</b><div class="emg-line">${line}</div></div></div>`
     : `<div class="emg-card"${extraStyle?` style="${extraStyle}"`:''}><b>${name}</b><div class="emg-line">${line}</div></div>`;
@@ -298,11 +297,12 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 9. Stays booking
+  // 9. Stays booking — same bigger 72×72 badge as Telecom. Only 2 entries, so the plain .emg-grid
+  // (auto-fit) already lays them out evenly side by side without needing a locked column count.
   html += `<div class="about-block">
     <h3>🏨 ${ar?'حجز السكن':'Booking your stay'}</h3>
     <div class="emg-grid">
-      ${SA_STAYS.map(s=>badgeCard(s.slug, s.name, ar?s.desc_ar:s.desc, null, true)).join('')}
+      ${SA_STAYS.map(s=>badgeCard(s.slug, s.name, ar?s.desc_ar:s.desc, null, true, true)).join('')}
     </div>
   </div>`;
 
