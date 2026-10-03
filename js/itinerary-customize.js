@@ -22,6 +22,78 @@ function resetItinDay(day, blocksLen){
   renderPlanItinerary();
   toast(tr('itinReset'));
 }
+
+/* ---------- MARK AS DONE (separate from the heart/pick system) ----------
+   Picking shortlists a place into the itinerary during planning; this tracks whether you've
+   actually been there once you're on the ground — a tap-to-cross-off, not a plan edit. Keyed by
+   the item's own name (not day+slot), since the same place staying "done" regardless of which day
+   it's scheduled under — or even if it gets moved — is exactly the point. Same sync model as the
+   Travel Checklist: localStorage-first for everyone, GitHub-synced to done.json only for the owner,
+   read-sha-merge-write so two devices crossing off different things never clobber each other. */
+let DONE_ITEMS = {};
+try{ DONE_ITEMS = JSON.parse(localStorage.getItem('ctgr_done_items') || '{}') || {}; }catch(e){}
+let doneDirty = new Set();
+try{ doneDirty = new Set(JSON.parse(localStorage.getItem('ctgr_done_dirty') || '[]')); }catch(e){}
+const saveDoneLocal = ()=>{ try{ localStorage.setItem('ctgr_done_items', JSON.stringify(DONE_ITEMS)); }catch(e){} };
+const saveDoneDirty = ()=>{ try{ localStorage.setItem('ctgr_done_dirty', JSON.stringify([...doneDirty])); }catch(e){} };
+function isItemDone(name){ return !!DONE_ITEMS[name]; }
+function toggleItemDone(name){
+  if(DONE_ITEMS[name]) delete DONE_ITEMS[name]; else DONE_ITEMS[name] = true;
+  saveDoneLocal();
+  doneDirty.add(name); saveDoneDirty();
+  if(ghConfig()) scheduleDoneSync();
+  renderPlanItinerary();
+}
+let doneSyncTimer = null, doneSyncBusy = false, doneSyncFails = 0;
+function scheduleDoneSync(delay){
+  if(doneSyncTimer) clearTimeout(doneSyncTimer);
+  doneSyncTimer = setTimeout(syncDoneNow, delay != null ? delay : 2500);
+}
+async function syncDoneNow(){
+  const cfg = ghConfig();
+  if(!cfg || doneDirty.size === 0 || doneSyncBusy) return;
+  doneSyncBusy = true;
+  const myDirty = [...doneDirty];
+  try{
+    const branch = (await ghJson(cfg, '')).default_branch || 'main';
+    let sha, remote = {};
+    const r = await ghFetch(cfg, '/contents/done.json?ref=' + encodeURIComponent(branch), {headers:{'Accept':'application/vnd.github+json'}});
+    if(r.ok){ const d = await r.json(); sha = d.sha; remote = JSON.parse(b64ToText(d.content)) || {}; }
+    else if(r.status !== 404){ throw Object.assign(new Error('GitHub ' + r.status), {status: r.status}); }
+    myDirty.forEach(k=>{ if(DONE_ITEMS[k]) remote[k] = true; else delete remote[k]; });
+    const sorted = Object.fromEntries(Object.entries(remote).sort((a,b)=>a[0].localeCompare(b[0])));
+    const content = await blobToB64(new Blob([JSON.stringify(sorted, null, 1)], {type:'application/json'}));
+    await ghJson(cfg, '/contents/done.json', {method:'PUT', body:{message:'Update done items', content, sha, branch}});
+    myDirty.forEach(k=>doneDirty.delete(k)); saveDoneDirty();
+    const stillDirty = {};
+    doneDirty.forEach(k=>{ if(DONE_ITEMS[k]) stillDirty[k] = true; });
+    DONE_ITEMS = Object.assign({}, sorted, stillDirty);
+    saveDoneLocal();
+    renderPlanItinerary();
+    doneSyncFails = 0;
+  }catch(e){
+    doneSyncFails++;
+    scheduleDoneSync(Math.min(60000, 4000 * Math.pow(1.8, doneSyncFails)) + Math.random() * 1000);
+  }finally{
+    doneSyncBusy = false;
+    if(doneDirty.size) scheduleDoneSync(2000);
+  }
+}
+async function loadDoneItems(){
+  try{
+    const r = await fetch('done.json?v=' + Date.now(), {cache:'no-store'});
+    if(r.ok){
+      const remote = await r.json() || {};
+      Object.keys(remote).forEach(k=>{ if(!doneDirty.has(k)) DONE_ITEMS[k] = true; });
+      saveDoneLocal();
+      renderPlanItinerary();
+    }
+  }catch(e){}
+  if(ghConfig() && doneDirty.size) scheduleDoneSync(1000);
+}
+window.addEventListener('ctgr-gh-changed', ()=>{
+  if(ghConfig() && doneDirty.size) scheduleDoneSync(1000);
+});
 function removeFromSlot(day, slot, name){
   const key = slotKey(day, slot);
   const o = ITIN_OVERRIDES[key] || {removed:[], added:[]};
@@ -181,7 +253,9 @@ function moveItinItem(fromDay, fromSlot, name, toDay, toSlot){
 }
 // Minimal weather nudge: a small rain badge on any day whose forecast (or, beyond the 16-day
 // forecast window, typical/historical odds) crosses 50% — nothing more elaborate than that.
-let PLAN_RAIN = {};
+// PLAN_WX keeps the full per-day object (not just .rain) so renderTodayStrip() below can reuse
+// the exact same fetch instead of asking Open-Meteo for the same dates a second time.
+let PLAN_RAIN = {}, PLAN_WX = {};
 async function loadPlanRainBadges(){
   const start = effectiveTripStart(), days = effectiveTripDays();
   try{
@@ -189,9 +263,33 @@ async function loadPlanRainBadges(){
     currentItinerary().forEach((day, i)=>{
       const src = (day.region === 'garden-route' || day.region === 'safari') ? gr[i] : ct[i];
       PLAN_RAIN[i] = (src && src.rain != null) ? src.rain : null;
+      PLAN_WX[i] = src || null;
     });
   }catch(e){ return; }
   applyPlanRainBadges();
+  renderTodayStrip();
+}
+// Compact "today" summary pinned at the top of the Plan tab — only while the trip is actually
+// live (today falls within the current itinerary's date range), so it never shows while still
+// planning weeks or months out. Combines what was previously two separate scrolls (Weather, then
+// all the way down to today's day card) into one glanceable line, which is the point on a phone
+// with patchy signal and no time to hunt through sections.
+function renderTodayStrip(){
+  const el = document.getElementById('todayStrip');
+  if(!el) return;
+  const start = effectiveTripStart(), days = effectiveTripDays(), todayIso = isoToday();
+  const itin = currentItinerary();
+  const dayIdx = itin.findIndex((_, i)=> isoPlusDays(start, i) === todayIso);
+  if(dayIdx < 0 || dayIdx >= days){ el.hidden = true; return; }
+  const day = itin[dayIdx];
+  const title = LANG==='ar' ? day.title_ar : day.title;
+  const dayLabel = LANG==='ar' ? `اليوم ${dayIdx+1}` : `Day ${dayIdx+1}`;
+  const wx = PLAN_WX[dayIdx];
+  const wxHtml = wx && wx.hi != null
+    ? `${wxIcon(wx.kind, 26)}<span class="today-strip-temp">${Math.round(wx.hi)}°C</span>${wx.rain!=null?`<span class="today-strip-rain">${Math.round(wx.rain)}% ${LANG==='ar'?'مطر':'rain'}</span>`:''}`
+    : `<span class="today-strip-wx-loading">${LANG==='ar'?'...الطقس':'weather…'}</span>`;
+  el.innerHTML = `<span class="today-strip-day">${LANG==='ar'?'اليوم':'TODAY'} · ${dayLabel}</span><span class="today-strip-title">${title}</span><span class="today-strip-wx">${wxHtml}</span><span class="today-strip-arrow">→</span>`;
+  el.hidden = false;
 }
 function applyPlanRainBadges(){
   document.querySelectorAll('.day-rain').forEach(elx=>{
@@ -232,8 +330,10 @@ function renderPlanItinerary(){
       const chips = items.map(ref=>{
         const chip = unifiedChip(ref);
         if(typeof ref !== 'string') return chip;
+        const done = isItemDone(ref);
+        const doneBtn = `<button type="button" class="itin-chip-done${done?' done':''}" data-donename="${escHtml(ref)}" aria-pressed="${done}" aria-label="${tr('markDone')}" title="${tr('markDone')}">${done?'✓':''}</button>`;
         const moveSel = `<select class="itin-chip-move" data-mvday="${i}" data-mvslot="${j}" data-mvname="${escHtml(ref)}" aria-label="${tr('itinMove')}" title="${tr('itinMove')}"><option value="">⇄</option>${moveOptionsHtml(i,j)}</select>`;
-        return `<span class="itin-chip-wrap">${chip}${moveSel}<button type="button" class="itin-chip-rm" data-rmday="${i}" data-rmslot="${j}" data-rmname="${escHtml(ref)}" aria-label="${tr('itinRemove')}" title="${tr('itinRemove')}">×</button></span>`;
+        return `<span class="itin-chip-wrap${done?' item-done':''}">${doneBtn}${chip}${moveSel}<button type="button" class="itin-chip-rm" data-rmday="${i}" data-rmslot="${j}" data-rmname="${escHtml(ref)}" aria-label="${tr('itinRemove')}" title="${tr('itinRemove')}">×</button></span>`;
       }).join('');
       html += `<div class="slot"><div class="slot-label">${slot}</div><div class="slot-items">${chips}<button type="button" class="itin-add-btn" data-addday="${i}" data-addslot="${j}">+ ${tr('itinAddBtn')}</button></div></div>`;
     });
@@ -243,6 +343,9 @@ function renderPlanItinerary(){
   applyPlanRainBadges();
   el.querySelectorAll('[data-rmday]').forEach(btn=>{
     btn.addEventListener('click', ()=> removeFromSlot(+btn.dataset.rmday, +btn.dataset.rmslot, btn.dataset.rmname));
+  });
+  el.querySelectorAll('[data-donename]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); toggleItemDone(btn.dataset.donename); });
   });
   el.querySelectorAll('[data-mvday]').forEach(sel=>{
     sel.addEventListener('change', ()=>{

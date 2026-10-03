@@ -211,13 +211,17 @@ function renderAboutSA(){
   // back to a plain .emg-card (no badge) when an entry has no slug (e.g. Federal Air). Pass
   // `uploadable:true` to add the 📤 owner-upload slot (256×256 box) over the badge, and `large:true`
   // for the bigger 72×72 badge variant (Telecom and Stays both use it — see each section below).
+  // escHtml(name) in the <img alt> specifically — "V&A Waterfront" (Best areas to stay) is the one
+  // place name on this whole page with a raw "&", which real browsers tolerate leniently inside an
+  // attribute but is technically invalid HTML; worth fixing properly rather than relying on that
+  // leniency. Not escaped in the <b> text node since that position doesn't need it either way.
   const badgeCard = (slug, name, line, extraStyle, uploadable, large) => slug
-    ? `<div class="emg-card emg-card-ib${large?' emg-card-ib-lg':''}"${extraStyle?` style="${extraStyle}"`:''}${uploadable?` data-img-slot`:''}><img class="emg-badge" src="icons/about/${slug}.png" alt="${name}" width="${large?72:40}" height="${large?72:40}" loading="lazy">${uploadable?uploadSlot(`icons/about/${slug}.png`,256,256):''}<div><b>${name}</b><div class="emg-line">${line}</div></div></div>`
+    ? `<div class="emg-card emg-card-ib${large?' emg-card-ib-lg':''}"${extraStyle?` style="${extraStyle}"`:''}${uploadable?` data-img-slot`:''}><img class="emg-badge" src="icons/about/${slug}.png" alt="${escHtml(name)}" width="${large?72:40}" height="${large?72:40}" loading="lazy">${uploadable?uploadSlot(`icons/about/${slug}.png`,256,256):''}<div><b>${name}</b><div class="emg-line">${line}</div></div></div>`
     : `<div class="emg-card"${extraStyle?` style="${extraStyle}"`:''}><b>${name}</b><div class="emg-line">${line}</div></div>`;
   // photoCard(): the landscape-photo variant (real photo on top, text below) used for top cities
   // and, where a real photo was found, airlines — see each data array's own sourcing comment. Pass
   // `uploadable:true` to add the 📤 owner-upload slot (640×420 box) over the photo.
-  const photoCard = (photo, name, line, uploadable) => `<div class="photo-card"${uploadable?` data-img-slot`:''}><img src="images/about/${photo}" alt="${name}" width="640" height="420" loading="lazy">${uploadable?uploadSlot(`images/about/${photo}`,640,420):''}<div class="photo-card-body"><b>${name}</b><div class="emg-line">${line}</div></div></div>`;
+  const photoCard = (photo, name, line, uploadable) => `<div class="photo-card"${uploadable?` data-img-slot`:''}><img src="images/about/${photo}" alt="${escHtml(name)}" width="640" height="420" loading="lazy">${uploadable?uploadSlot(`images/about/${photo}`,640,420):''}<div class="photo-card-body"><b>${name}</b><div class="emg-line">${line}</div></div></div>`;
 
   let html = '';
 

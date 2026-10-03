@@ -25,7 +25,7 @@ function setLang(lang){
   renderPackList();
   const searchEl = document.getElementById('searchInput');
   if(searchEl) searchEl.placeholder = UI[lang].searchPlaceholder;
-  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather(); renderApps(); renderTravelChecklist(); renderAboutSA();
+  renderFilters(); renderLegend(); renderAreas(); updateSelCount(); renderDrawer(); renderItinerary(); renderGardenRoute(); renderSafari(); renderGRItinerary(); renderTransport(); renderPlanItinerary(); updateBudget(); renderWeather(); renderApps(); renderTravelChecklist(); renderAboutSA(); renderTodayStrip();
   updateCountdown();
   updateDateDisplays();
   fxWidgetRefresh();
@@ -63,8 +63,75 @@ document.getElementById('statBooking').textContent = PLACES.filter(p=>p.book).le
 document.getElementById('mapCount').textContent = PLACES.length;
 
 const map = L.map('map',{scrollWheelZoom:false}).setView([-33.98,18.47],10.5);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors', maxZoom:18}).addTo(map);
+const OSM_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const OSM_SUBDOMAINS = ['a','b','c'];
+L.tileLayer(OSM_TILE_URL,{attribution:'&copy; OpenStreetMap contributors', maxZoom:18}).addTo(map);
 let markers = [];
+
+/* ---------- OFFLINE MAP TILES ----------
+   The map tiles themselves were never part of the offline support the service worker already
+   gives everything else — they're fetched live from OpenStreetMap and, while sw.js does cache
+   third-party responses opportunistically (stale-while-revalidate for any host not explicitly
+   passed through), that only covers tiles you've actually scrolled/zoomed to while online. This
+   button proactively fetches a tile grid around every neighbourhood in AREAS_META — including the
+   two dead-zone areas already called out elsewhere on this tab, Hout Bay/Chapman's Peak and Cape
+   Point — at two zoom levels (12: driving-between-areas detail, 15: walking-around-a-spot detail).
+   No service-worker changes needed: each successful fetch here is cached by the exact same
+   mechanism that already caches any tile you'd scroll to manually, just triggered in bulk instead
+   of one pan/zoom at a time. Standard slippy-map tile math (see e.g. OSM's own wiki for the
+   formula) — deliberately not using Leaflet's own tile-loading path, since that's tied to what's
+   currently visible on screen, not an arbitrary list of areas that may be nowhere near the current view. */
+function lonLatToTile(lon, lat, zoom){
+  const n = Math.pow(2, zoom);
+  const x = Math.floor((lon + 180) / 360 * n);
+  const latRad = lat * Math.PI / 180;
+  const y = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+  return [Math.max(0, Math.min(n - 1, x)), Math.max(0, Math.min(n - 1, y))];
+}
+function buildOfflineTileList(){
+  const tiles = new Set();
+  const zooms = [12, 15];
+  const radius = 1; // 1 => a 3x3 grid of tiles around each area's centre, per zoom level
+  Object.values(AREAS_META).forEach(area=>{
+    zooms.forEach(z=>{
+      const [cx, cy] = lonLatToTile(area.lng, area.lat, z);
+      for(let dx = -radius; dx <= radius; dx++){
+        for(let dy = -radius; dy <= radius; dy++){
+          tiles.add(`${z}/${cx + dx}/${cy + dy}`);
+        }
+      }
+    });
+  });
+  return [...tiles];
+}
+let offlineMapBusy = false;
+async function downloadOfflineMapTiles(){
+  if(offlineMapBusy) return;
+  offlineMapBusy = true;
+  const btn = document.getElementById('downloadMapBtn'), note = document.getElementById('offlineMapNote');
+  const tiles = buildOfflineTileList();
+  let done = 0, failed = 0;
+  btn.disabled = true;
+  note.hidden = false;
+  const CONCURRENCY = 6; // a handful at a time — fast enough, but doesn't flood the free OSM tile server
+  let idx = 0;
+  async function worker(){
+    while(idx < tiles.length){
+      const my = idx++;
+      const [z, x, y] = tiles[my].split('/');
+      const s = OSM_SUBDOMAINS[my % OSM_SUBDOMAINS.length];
+      const url = OSM_TILE_URL.replace('{s}', s).replace('{z}', z).replace('{x}', x).replace('{y}', y);
+      try{ const r = await fetch(url); if(!r.ok) failed++; }catch(e){ failed++; }
+      done++;
+      note.textContent = tr('offlineMapWorking').replace('{a}', done).replace('{b}', tiles.length);
+    }
+  }
+  await Promise.all(Array.from({length: CONCURRENCY}, worker));
+  note.textContent = failed ? tr('offlineMapFail') : tr('offlineMapDone');
+  btn.disabled = false;
+  offlineMapBusy = false;
+}
+document.getElementById('downloadMapBtn')?.addEventListener('click', downloadOfflineMapTiles);
 function renderMarkers(){
   markers.forEach(m=>map.removeLayer(m)); markers=[];
   PLACES.forEach((p,i)=>{

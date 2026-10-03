@@ -63,7 +63,7 @@ if(btnTheme) btnTheme.addEventListener('click', ()=> setTheme(THEME === 'dark' ?
 const TAB_IDS = ['about','plan','capetown','gardenroute','safari'];
 const tabFromHash = ()=>{ const m = location.hash.match(/^#\/?([a-z]+)$/); return (m && TAB_IDS.includes(m[1])) ? m[1] : null; };
 function activateTab(tab, opts){
-  if(!TAB_IDS.includes(tab)) tab = 'plan';
+  if(!TAB_IDS.includes(tab)) tab = 'about';
   document.querySelectorAll('.maintab').forEach(b=>b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('active', p.id === 'tab-' + tab));
   activeTab = tab;
@@ -79,6 +79,12 @@ function activateTab(tab, opts){
       if(resultsEl) resultsEl.style.display = 'none';
     }
   }
+  // Places curated / neighbourhoods / need pre-booking / countdown are all Cape Town itinerary
+  // stats — jarring as the very first thing a visitor sees now that About South Africa is the
+  // default landing tab, before they've reached anything those numbers describe. Hidden there,
+  // shown everywhere else (same pattern as the search box above).
+  const heroStats = document.querySelector('.hero-stats');
+  if(heroStats) heroStats.hidden = (tab === 'about');
   updateHeroTitle();
   if(tab === 'capetown' && typeof map !== 'undefined') setTimeout(()=>{ map.invalidateSize(); }, 50);
   if(!(opts && opts.noHash)){ try{ history.replaceState(history.state, '', '#/' + tab); }catch(e){} }
@@ -97,7 +103,7 @@ window.addEventListener('hashchange', ()=>{ const tb = tabFromHash(); if(tb && t
 let savedLang = 'en'; try{ savedLang = localStorage.getItem('ctgr_lang') === 'ar' ? 'ar' : 'en'; }catch(e){}
 setLang(savedLang);
 initCollapsibleSections();
-activateTab(tabFromHash() || 'plan', {noHash:true});
+activateTab(tabFromHash() || 'about', {noHash:true});
 loadPhotos();
 loadWeather();
 renderAboutSA();
@@ -106,6 +112,7 @@ renderSafari();
 fxLoad();
 loadNotes().then(()=>{ renderAreas(); renderGardenRoute(); });
 loadTravelChecklist();
+loadDoneItems();
 initAddPlace();
 initItinPicker();
 initFxWidget();
@@ -113,8 +120,8 @@ initOnboarding();
 initInstallPrompt();
 loadCustomPlaces();
 setInterval(updateCountdown, 60 * 60 * 1000);
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); if(!document.hidden && checklistDirty.size) scheduleChecklistSync(300); });
-window.addEventListener('online', ()=>{ if(notesDirty.size) scheduleNotesSync(300); if(checklistDirty.size) scheduleChecklistSync(300); });
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && notesDirty.size) scheduleNotesSync(300); if(!document.hidden && checklistDirty.size) scheduleChecklistSync(300); if(!document.hidden && doneDirty.size) scheduleDoneSync(300); });
+window.addEventListener('online', ()=>{ if(notesDirty.size) scheduleNotesSync(300); if(checklistDirty.size) scheduleChecklistSync(300); if(doneDirty.size) scheduleDoneSync(300); });
 
 /* ---------- GLOBAL SEARCH ---------- */
 function buildSearchIndex(){
@@ -199,4 +206,23 @@ if(searchInputEl){
   fabBottom.addEventListener('click', ()=> window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
   window.scrollFabsUpdate = requestUpdate;
   update();
+})();
+
+/* ---------- TRACK YOUR FLIGHT ----------
+   A deep link, not an embedded tracker — see the CSS comment on .flight-track-card for why no
+   live API is wired in directly. Remembers the last flight number typed (purely a convenience,
+   same spirit as everything else this site already keeps per-device) so checking the same return
+   flight again later doesn't mean retyping it. */
+(function(){
+  const form = document.getElementById('flightTrackForm');
+  if(!form) return;
+  const input = document.getElementById('flightTrackInput');
+  try{ const last = localStorage.getItem('ctgr_last_flight'); if(last) input.value = last; }catch(e){}
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const raw = input.value.trim().toUpperCase().replace(/\s+/g, '');
+    if(!raw){ toast(tr('flightTrackNeedNumber')); input.focus(); return; }
+    try{ localStorage.setItem('ctgr_last_flight', raw); }catch(e){}
+    window.open('https://www.flightradar24.com/data/flights/' + encodeURIComponent(raw.toLowerCase()), '_blank');
+  });
 })();

@@ -152,8 +152,8 @@ if('serviceWorker' in navigator){
 </div>
 
 <div class="maintabs">
-  <button class="maintab" data-tab="about"><span class="mt-num">1</span><span data-t="tabAbout"></span></button>
-  <button class="maintab active" data-tab="plan"><span class="mt-num">2</span><span data-t="tabPlan"></span></button>
+  <button class="maintab active" data-tab="about"><span class="mt-num">1</span><span data-t="tabAbout"></span></button>
+  <button class="maintab" data-tab="plan"><span class="mt-num">2</span><span data-t="tabPlan"></span></button>
   <button class="maintab" data-tab="capetown"><span class="mt-num">3</span><span data-t="tabCT"></span></button>
   <button class="maintab" data-tab="gardenroute"><span class="mt-num">4</span><span data-t="tabGR"></span></button>
   <button class="maintab" data-tab="safari"><span class="mt-num">5</span><span data-t="tabSafari"></span></button>
@@ -166,7 +166,7 @@ if('serviceWorker' in navigator){
   <div class="search-results" id="searchResults" style="display:none;"></div>
 </div>
 
-<div id="tab-about" class="tabpanel">
+<div id="tab-about" class="tabpanel active">
 <div class="about-card">
   <h2 data-t="aboutCardTitle"></h2>
   <p class="about-intro" data-t="aboutCardIntro"></p>
@@ -175,7 +175,8 @@ if('serviceWorker' in navigator){
 </div><!-- /tab-about -->
 
 
-<div id="tab-plan" class="tabpanel active">
+<div id="tab-plan" class="tabpanel">
+<a class="today-strip" id="todayStrip" href="#planTodayCard" hidden></a>
 <div class="weather">
   <div class="weather-head"><h2 data-t="weatherTitle"></h2><span class="weather-tag" data-t="weatherDate"></span><button type="button" class="wx-refresh" id="wxRefresh" data-t="wxRefreshBtn"></button></div>
   <p class="weather-cap" data-t="weatherCaption"></p>
@@ -226,6 +227,15 @@ if('serviceWorker' in navigator){
     <a href="https://www.emirates.com/sa/english/help/" target="_blank" class="tn-link">✉️ <span data-t="tnEmiratesContactForm"></span></a>
   </div>
   <p class="tn-cap" data-t="tnCaption"></p>
+</div>
+
+<div class="flight-track-card">
+  <div class="flight-track-head"><h2>🛫 <span data-t="flightTrackTitle"></span></h2></div>
+  <p class="flight-track-cap" data-t="flightTrackCaption"></p>
+  <form id="flightTrackForm" class="flight-track-form">
+    <input type="text" id="flightTrackInput" placeholder="QR1130" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" inputmode="text" aria-label="Flight number">
+    <button type="submit" class="pdf-btn no-ico" data-t="flightTrackBtn"></button>
+  </form>
 </div>
 
 <div class="fx-card">
@@ -280,7 +290,11 @@ if('serviceWorker' in navigator){
   <div class="section-title"><h2 data-t="mapTitle"></h2><span class="n" id="mapCount"></span></div>
   <p class="section-sub" data-t="mapSub"></p>
   <div id="map"></div>
-  <div class="map-legend" id="legend"></div>
+  <div class="map-row">
+    <div class="map-legend" id="legend"></div>
+    <button type="button" class="mini-link" id="downloadMapBtn">📥 <span data-t="offlineMapBtn"></span></button>
+  </div>
+  <p class="map-offline-note" id="offlineMapNote" hidden></p>
   <div id="areas"></div>
 </div>
 </div><!-- /tab-capetown -->

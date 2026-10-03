@@ -62,8 +62,16 @@ self.addEventListener('fetch', (event) => {
   if (url.origin === self.location.origin) {
     event.respondWith(
       fetch(req, { cache: 'no-store' }).then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+        // Only cache a genuinely successful response — this used to cache *everything*
+        // including a 404 (e.g. a brand-new owner-uploaded image requested in the brief window
+        // before it's actually deployed), which then sat in the offline fallback cache as if it
+        // were a real file. Network-first means a later successful fetch is still served
+        // correctly either way, but an offline visit in between would wrongly get served that
+        // stale 404 instead of nothing. if (res && res.ok) matches the third-party branch below.
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+        }
         return res;
       }).catch(() => caches.match(req).then((res) => res || (isNavigation(req) ? caches.match('index.html') : undefined)))
     );

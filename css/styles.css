@@ -26,6 +26,22 @@ body.ar .site-brand-text{font-family:'Tajawal',sans-serif;font-style:normal;}
 .notice{background:#fff6ea;border:1px solid #e8d3a8;border-radius:12px;padding:14px 18px;font-size:13.5px;color:#5c4a26;max-width:1120px;margin:20px auto 0;}
 .notice b{color:#3d3013;}
 
+/* TODAY STRIP — compact "today's weather + today's plan" summary, pinned at the top of the Plan
+   tab, only while the trip is actually live (renderTodayStrip() in itinerary-customize.js keeps
+   it [hidden] otherwise). Collapses the usual two-scroll trip (Weather section, then down to
+   today's day card) into one glanceable, tappable line. */
+.today-strip{display:flex;align-items:center;gap:12px;max-width:1120px;margin:14px auto 0;padding:12px 18px;background:var(--coral);color:#fff;border-radius:99px;text-decoration:none;box-shadow:var(--shadow);flex-wrap:wrap;}
+.today-strip[hidden]{display:none;}
+.today-strip-day{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.22);padding:4px 10px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+.today-strip-title{font-weight:700;font-size:14.5px;flex:1;min-width:120px;}
+.today-strip-wx{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.today-strip-wx .wx-svg{display:block;filter:brightness(0) invert(1);opacity:.92;}
+.today-strip-temp{font-weight:700;font-size:14px;}
+.today-strip-rain{font-size:11.5px;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:99px;white-space:nowrap;}
+.today-strip-wx-loading{font-size:12px;opacity:.85;}
+.today-strip-arrow{font-size:16px;flex-shrink:0;opacity:.9;}
+@media(max-width:560px){.today-strip{border-radius:16px;}.today-strip-title{flex-basis:100%;order:3;}}
+
 /* WEATHER PANEL */
 .weather{max-width:1120px;margin:20px auto 0;background:linear-gradient(135deg,#fff,#fdf7ea);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);}
 .weather-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
@@ -51,6 +67,7 @@ body.ar .wstat .wv{font-family:'Tajawal',sans-serif;}
 .hero h1 em{font-style:italic;color:#f6c98f;font-weight:400;}
 .hero p.lead{max-width:660px;font-size:16.5px;color:#dfeeec;margin:0 0 24px;}
 .hero-stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:14px;}
+.hero-stats[hidden]{display:none;}
 .hstat b{display:block;font-family:'Fraunces',serif;font-size:26px;font-weight:600;}
 body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .hstat span{font-size:12px;color:#bcdcd8;text-transform:uppercase;letter-spacing:.08em;}
@@ -70,7 +87,10 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .section-sub{color:#6b6157;font-size:14.5px;margin:0 0 20px;max-width:660px;}
 
 #map{height:420px;border-radius:var(--radius);border:1px solid var(--line);margin:24px 0 8px;box-shadow:var(--shadow);position:relative;isolation:isolate;z-index:0;}
-.map-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:#6b6157;margin-bottom:10px;}
+.map-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px;}
+.map-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:#6b6157;margin:0;}
+.map-offline-note{font-size:12px;color:#8a7f70;margin:-4px 0 10px;}
+.map-offline-note[hidden]{display:none;}
 .map-legend span{display:inline-flex;align-items:center;gap:6px;}
 .map-legend i{width:9px;height:9px;border-radius:50%;display:inline-block;}
 
@@ -110,6 +130,14 @@ body.ar .hstat b{font-family:'Tajawal',sans-serif;}
 .day-rain{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#e3ecf5;color:#1f5f6b;padding:3px 9px;border-radius:99px;white-space:nowrap;}
 .itin-chip-move{appearance:none;-webkit-appearance:none;border:none;background:var(--paper-2);color:#8a7f70;width:16px;height:16px;border-radius:50%;font-size:9px;line-height:1;cursor:pointer;text-align:center;text-align-last:center;padding:0;margin-inline-start:3px;}
 .itin-chip-move:hover{background:var(--paper-2);color:var(--ocean-deep);}
+/* "Mark as done" — separate from the heart/pick system (shortlisting into the itinerary during
+   planning); this is for crossing an item off once you've actually been there. An empty ring
+   normally, filled sage-green with a check once tapped, with the item's own chip dimmed +
+   struck through so a half-done day is easy to scan at a glance. */
+.itin-chip-done{border:1.5px solid var(--line);background:var(--white);color:transparent;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-inline-end:4px;flex-shrink:0;}
+.itin-chip-done:hover{border-color:var(--sage);}
+.itin-chip-done.done{background:var(--sage);border-color:var(--sage);color:#fff;}
+.itin-chip-wrap.item-done .itin-chip{opacity:.55;text-decoration:line-through;}
 .itin-reset-btn{border:none;background:none;color:#8a7f70;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:6px;line-height:1;}
 .itin-reset-btn:hover{background:var(--paper-2);color:var(--ocean-deep);}
 .area-head{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:18px;}
@@ -361,6 +389,21 @@ body.ar .signature{font-family:'Tajawal',sans-serif;font-style:normal;}
 .tn-link{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #c8d8e2;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;}
 .tn-link:hover{background:#dceaf1;}
 .tn-cap{font-size:11.5px;color:#5c6b73;margin:4px 0 0;}
+
+/* TRACK YOUR FLIGHT — a deep link to FlightRadar24's own public tracker, not an embedded live
+   feed. Real-time flight data APIs (FlightRadar24, FlightAware) are commercial/paid with no free
+   keyless tier, and this is a static site with no backend — any API key baked into the page's own
+   JS would just be sitting there in the page source for anyone to take and run up charges on, the
+   same problem that ruled out embedding a paid API anywhere else on this site. Opening their own
+   site with the flight number already filled in gets the same end result (live position, gate,
+   delay) with no key, no cost and no exposure. */
+.flight-track-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
+.flight-track-head h2{margin:0;font-size:20px;}
+.flight-track-cap{font-size:13px;color:#8a7f70;margin:6px 0 14px;}
+.flight-track-form{display:flex;gap:10px;flex-wrap:wrap;}
+.flight-track-form input{flex:1;min-width:140px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font:600 15px 'JetBrains Mono',monospace;text-transform:uppercase;background:var(--white);color:var(--ink);box-sizing:border-box;}
+.flight-track-form input:focus{outline:none;border-color:var(--ocean);}
+.flight-track-form .pdf-btn{flex-shrink:0;width:auto;padding:11px 20px;}
 
 /* CURRENCY CONVERTER */
 .fx-card{max-width:1120px;margin:16px auto 0;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);}
