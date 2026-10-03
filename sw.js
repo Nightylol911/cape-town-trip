@@ -8,7 +8,7 @@
 
    Bump CACHE_NAME (e.g. v1 -> v2) whenever you want to force everyone's cached copy dropped —
    otherwise this file only needs to be touched if the caching *strategy* changes. */
-const CACHE_NAME = 'ctgr-cache-v3';   // bumped: index.html was split into css/styles.css + 16 js/*.js files (was one file) — a new cache version makes sure everyone's app shell list below actually gets pre-cached instead of silently keeping the old single-file entry
+const CACHE_NAME = 'ctgr-cache-v4';   // bumped: images/about/ and icons/about/ (About South Africa tab) are re-uploaded to the same filename, same stale-cache problem icons/apps/ already had below — this version bump also clears out any already-stale cached copies from before that carve-out existed
 const APP_SHELL = ['./', 'index.html', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png', 'css/styles.css',
   'js/photo-storage.js', 'js/i18n.js', 'js/data-places.js', 'js/notes-and-places.js', 'js/photos.js',
   'js/render-map.js', 'js/data-garden-route.js', 'js/data-safari.js', 'js/data-apps.js', 'js/data-itinerary.js',
@@ -43,21 +43,23 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (PASSTHROUGH_HOSTS.includes(url.hostname)) return;
 
-  // icons/apps/*.png are user-uploaded and re-uploaded to the *same* filename each time (so the
-  // reference on the page never has to change) — which is exactly the case stale-while-revalidate
-  // handles badly: it happily keeps serving last time's file instantly and only refreshes its
-  // cache in the background, so a normal reload right after uploading a new icon can still show
-  // the old one. Treat these like the page itself: always try the network first (bypassing the
-  // browser's own HTTP cache too, via {cache:'no-store'}, in case the host sends cache headers),
-  // and only fall back to whatever's cached when there's truly no network.
-  const isAppIcon = url.origin === self.location.origin && /\/icons\/apps\/[^/]+\.png$/.test(url.pathname);
-  if (isNavigation(req) || isAppIcon || (url.origin === self.location.origin && url.pathname.endsWith('/index.html'))) {
+  // icons/apps/*.png, and the About South Africa tab's images/about/*/icons/about/* (airline
+  // photos, telecom/stays logos, the socket photo, distance placeholders — all owner-uploadable
+  // the same way) are re-uploaded/regenerated to the *same* filename each time (so the reference
+  // on the page never has to change) — which is exactly the case stale-while-revalidate handles
+  // badly: it happily keeps serving last time's file instantly and only refreshes its cache in
+  // the background, so a normal reload right after replacing one can still show the old version.
+  // Treat these like the page itself: always try the network first (bypassing the browser's own
+  // HTTP cache too, via {cache:'no-store'}, in case the host sends cache headers), and only fall
+  // back to whatever's cached when there's truly no network.
+  const isUserReplaceableImage = url.origin === self.location.origin && /\/icons\/apps\/[^/]+\.png$|\/(images|icons)\/about\/[^/]+\.(png|jpe?g|svg)$/.test(url.pathname);
+  if (isNavigation(req) || isUserReplaceableImage || (url.origin === self.location.origin && url.pathname.endsWith('/index.html'))) {
     event.respondWith(
       fetch(req, { cache: 'no-store' }).then((res) => {
         const copy = res.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         return res;
-      }).catch(() => caches.match(req).then((res) => res || (isAppIcon ? undefined : caches.match('index.html'))))
+      }).catch(() => caches.match(req).then((res) => res || (isUserReplaceableImage ? undefined : caches.match('index.html'))))
     );
     return;
   }
