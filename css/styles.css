@@ -468,6 +468,20 @@ body.ar .store-btn{font-family:'Tajawal',sans-serif;}
    comment — otherwise a generated monogram) next to the text instead of just the text. */
 .emg-card-ib{position:relative;display:flex;align-items:center;gap:12px;}
 .emg-card-ib .emg-badge{width:40px;height:40px;border-radius:9px;flex-shrink:0;object-fit:cover;}
+/* Telecom companies: bigger logos (72×72) than the default badge size above, in a grid locked to
+   3 columns — there are exactly 3 telecoms, and a plain auto-fit grid could drop to 2 per row
+   once the badges got wider, which is what "large" is specifically trying to avoid. Narrow/mobile
+   still collapses to 1 column so the bigger logos stay legible instead of being squeezed. */
+.telecom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:560px){.telecom-grid{grid-template-columns:1fr;}}
+.emg-card-ib-lg{gap:14px;}
+.emg-card-ib-lg .emg-badge{width:72px;height:72px;border-radius:14px;}
+.emg-card-ib-lg b{font-size:14.5px;}
+/* .emg-card-ib-lg's own padding override is further down this file, right after .emg-card's own
+   padding rule — .emg-card.emg-card-ib-lg (2 classes) already out-specifies plain .emg-card
+   (1 class) regardless of order, but placing it after too means it also wins on source order in
+   case anything (a browser quirk, a dev tool) ever treats the two as tied — belt and braces,
+   same reasoning as .weather-head .section-toggle earlier in this file. */
 /* .photo-card: the photoCard() variant — a landscape photo on top, text below — used for top
    cities, airlines and distances (real CC-licensed Commons photos where found, a generated tile
    or placeholder otherwise; see each data array's own sourcing comment in data-about.js), instead
@@ -607,6 +621,7 @@ body.ar .expense-form input,body.ar .expense-form select,body.ar .expense-form b
 /* EMERGENCY */
 .emg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px;}
 .emg-card{background:var(--paper-2);border-radius:10px;padding:12px 14px;}
+.emg-card.emg-card-ib-lg{padding:16px;}
 .emg-card b{font-size:13.5px;display:block;margin-bottom:4px;}
 .emg-card .emg-line{font-size:12.5px;color:#4d453c;line-height:1.6;}
 .emg-nums{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}

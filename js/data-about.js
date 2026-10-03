@@ -185,9 +185,11 @@ function renderAboutSA(){
   // Generated brand-colour monogram badges (tools/make-about-icons.js) — not real logos, see the
   // file header comment for why. badgeCard() builds one .emg-card with the badge + text; falls
   // back to a plain .emg-card (no badge) when an entry has no slug (e.g. Federal Air). Pass
-  // `uploadable:true` to add the 📤 owner-upload slot (256×256 box) over the badge.
-  const badgeCard = (slug, name, line, extraStyle, uploadable) => slug
-    ? `<div class="emg-card emg-card-ib"${extraStyle?` style="${extraStyle}"`:''}${uploadable?` data-img-slot`:''}><img class="emg-badge" src="icons/about/${slug}.png" alt="${name}" width="40" height="40" loading="lazy">${uploadable?uploadSlot(`icons/about/${slug}.png`,256,256):''}<div><b>${name}</b><div class="emg-line">${line}</div></div></div>`
+  // `uploadable:true` to add the 📤 owner-upload slot (256×256 box) over the badge, and `large:true`
+  // for the bigger 72×72 badge variant (Telecom — see its section comment below; Stays keeps the
+  // smaller 40×40 size).
+  const badgeCard = (slug, name, line, extraStyle, uploadable, large) => slug
+    ? `<div class="emg-card emg-card-ib${large?' emg-card-ib-lg':''}"${extraStyle?` style="${extraStyle}"`:''}${uploadable?` data-img-slot`:''}><img class="emg-badge" src="icons/about/${slug}.png" alt="${name}" width="${large?72:40}" height="${large?72:40}" loading="lazy">${uploadable?uploadSlot(`icons/about/${slug}.png`,256,256):''}<div><b>${name}</b><div class="emg-line">${line}</div></div></div>`
     : `<div class="emg-card"${extraStyle?` style="${extraStyle}"`:''}><b>${name}</b><div class="emg-line">${line}</div></div>`;
   // photoCard(): the landscape-photo variant (real photo on top, text below) used for top cities
   // and, where a real photo was found, airlines — see each data array's own sourcing comment. Pass
@@ -286,11 +288,13 @@ function renderAboutSA(){
     <p class="about" style="margin-top:10px;">${ar?'أفضل الفصول لمسافري الخليج: <b>الربيع والخريف</b> لاعتدال الطقس وجمال الطبيعة، و<b>الشتاء</b> خيار جيد لمن يبحث عن الهروب من حرارة الخليج العالية رغم الأمطار.':"Best seasons for Gulf travellers: <b>Spring and Autumn</b> for mild weather and scenery, and <b>Winter</b> is a solid option if you're mainly after an escape from Gulf summer heat, rain aside."}</p>
   </div>`;
 
-  // 8. Telecoms
+  // 8. Telecoms — bigger logos than the other icon-badge sections (Stays), fixed at 3 per row
+  // (there are exactly 3 telecoms, so .telecom-grid locks the column count instead of the usual
+  // auto-fit, which could otherwise drop to 2 once the badges got wider).
   html += `<div class="about-block">
     <h3>📶 ${ar?'شركات الاتصالات':'Telecom companies'}</h3>
-    <div class="emg-grid">
-      ${SA_TELECOMS.map(t=>badgeCard(t.slug, t.name, ar?t.desc_ar:t.desc, null, true)).join('')}
+    <div class="telecom-grid">
+      ${SA_TELECOMS.map(t=>badgeCard(t.slug, t.name, ar?t.desc_ar:t.desc, null, true, true)).join('')}
     </div>
   </div>`;
 
