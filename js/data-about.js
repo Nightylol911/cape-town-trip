@@ -62,21 +62,25 @@ const SA_STAYS = [
 //  - Knysna: "Knysna Waterfront.jpg" (CC BY-SA, general Commons licence)
 //  - Plettenberg Bay: "Plettenberg Bay's Lookout - South Africa (2417712635).jpg" (CC BY 2.0,
 //    originally posted to Flickr by South African Tourism)
+//  - Mossel Bay: "Mossel Bay & Harbour (1542795633).jpg" (CC BY-SA 2.0)
 const SA_TOP_CITIES = [
   {photo:"city-capetown.jpg", name:"Cape Town", desc:"A vibrant city blending nature, beaches and world-famous landmarks.", desc_ar:"مدينة نابضة بالحياة تجمع بين الطبيعة الخلابة والشواطئ الساحرة والمعالم السياحية العالمية."},
   {photo:"city-stellenbosch.jpg", name:"Stellenbosch", desc:"South Africa's wine capital — lush vineyards, historic old farms, refined restaurants.", desc_ar:"عاصمة النبيذ في جنوب أفريقيا، تشتهر بالكروم الخضراء والمزارع القديمة والمطاعم الراقية."},
   {photo:"city-hermanus.jpg", name:"Hermanus", desc:"The place for close-up whale watching, with calm bays and beautiful views.", desc_ar:"وجهة مثالية لمشاهدة الحيتان عن قرب، إلى جانب أجوائها الهادئة وإطلالاتها الجميلة على المحيط."},
+  {photo:"city-mosselbay.jpg", name:"Mossel Bay", desc:"A historic harbour town on the Garden Route, known for its mild year-round climate, whale watching and the Bartolomeu Dias Museum.", desc_ar:"بلدة ميناء تاريخية على طريق الحدائق، تشتهر بمناخها المعتدل طوال العام ومشاهدة الحيتان ومتحف بارتولوميو دياز."},
   {photo:"city-wilderness.jpg", name:"Wilderness", desc:"A quiet coastal village known for long beaches, untouched nature and outdoor activities.", desc_ar:"قرية ساحلية هادئة تتميز بشواطئها الطويلة وطبيعتها البكر والأنشطة الخارجية الممتعة."},
   {photo:"city-knysna.jpg", name:"Knysna", desc:"A coastal town on the Knysna lagoon, known for wild scenery, forests and waterfront restaurants.", desc_ar:"مدينة ساحلية تقع على بحيرة نايزنا، تشتهر بطبيعتها الخلابة والغابات والمطاعم المطلة على الواجهة البحرية."},
   {photo:"city-plettenbergbay.jpg", name:"Plettenberg Bay", desc:"A stylish beach town on the Garden Route, known for Robberg Nature Reserve, golden beaches and nearby elephant and monkey sanctuaries.", desc_ar:"بلدة ساحلية أنيقة على طريق الحدائق، تشتهر بمحمية روبرغ الطبيعية والشواطئ الذهبية وملاذات الأفيال والقرود القريبة."},
 ];
+// photo: a plain "no image yet" placeholder (tools/make-about-placeholders.js) for every entry, same
+// as Distances started with — uploadable, see each section's own call to photoCard() below.
 const SA_BEST_AREAS_CT = [
-  {name:"Sea Point", desc:"Beautiful sea views, close to restaurants/cafés and the beachfront promenade.", desc_ar:"إطلالة بحرية رائعة، قريبة من المطاعم والمقاهي والشاطئ."},
-  {name:"Green Point", desc:"Central and convenient, close to the Waterfront and the lively city centre.", desc_ar:"موقع مركزي وهادئ، قريبة من الواتر فرونت والوسط الحيوي."},
-  {name:"V&A Waterfront", desc:"Luxury, close to restaurants, shopping and the main landmarks.", desc_ar:"فخامة ورفاهية، قريبة من المطاعم والتسوق والمعالم."},
-  {name:"Camps Bay", desc:"Upscale atmosphere, beautiful beach, fancy restaurants and stunning sunset views.", desc_ar:"أجواء راقية وشاطئ جميل، مطاعم فاخرة وإطلالات ساحرة على الغروب."},
-  {name:"Bloubergstrand", desc:"A wide beach with the iconic Table Mountain view, a kitesurfing hub, calm atmosphere.", desc_ar:"شاطئ واسع وإطلالات خلابة على جبل الطاولة، أجواء هادئة."},
-  {name:"CBD (City Bowl)", desc:"Close to businesses, services and transport — ideal for business travellers.", desc_ar:"قريبة من الشركات والخدمات والمواصلات، مثالية لرجال الأعمال."},
+  {photo:"area-sea-point.jpg", name:"Sea Point", desc:"Beautiful sea views, close to restaurants/cafés and the beachfront promenade.", desc_ar:"إطلالة بحرية رائعة، قريبة من المطاعم والمقاهي والشاطئ."},
+  {photo:"area-green-point.jpg", name:"Green Point", desc:"Central and convenient, close to the Waterfront and the lively city centre.", desc_ar:"موقع مركزي وهادئ، قريبة من الواتر فرونت والوسط الحيوي."},
+  {photo:"area-v-a-waterfront.jpg", name:"V&A Waterfront", desc:"Luxury, close to restaurants, shopping and the main landmarks.", desc_ar:"فخامة ورفاهية، قريبة من المطاعم والتسوق والمعالم."},
+  {photo:"area-camps-bay.jpg", name:"Camps Bay", desc:"Upscale atmosphere, beautiful beach, fancy restaurants and stunning sunset views.", desc_ar:"أجواء راقية وشاطئ جميل، مطاعم فاخرة وإطلالات ساحرة على الغروب."},
+  {photo:"area-bloubergstrand.jpg", name:"Bloubergstrand", desc:"A wide beach with the iconic Table Mountain view, a kitesurfing hub, calm atmosphere.", desc_ar:"شاطئ واسع وإطلالات خلابة على جبل الطاولة، أجواء هادئة."},
+  {photo:"area-cbd.jpg", name:"CBD (City Bowl)", desc:"Close to businesses, services and transport — ideal for business travellers.", desc_ar:"قريبة من الشركات والخدمات والمواصلات، مثالية لرجال الأعمال."},
 ];
 // photo: a plain "no image yet" placeholder (tools/make-about-placeholders.js) for every entry —
 // unlike the sections above, there was no real photo to start from here at all. Each one is its
@@ -84,7 +88,7 @@ const SA_BEST_AREAS_CT = [
 const SA_DISTANCES = [
   {slug:"stellenbosch", photo:"distance-stellenbosch.jpg", name:"Stellenbosch", name_ar:"ستيلينبوش", km:51, time:"~45 min", time_ar:"~٤٥ دقيقة"},
   {slug:"hermanus", photo:"distance-hermanus.jpg", name:"Hermanus", name_ar:"هيرمانوس", km:123, time:"~1h 45m", time_ar:"~١ س ٤٥ د"},
-  {slug:"mossel-bay", photo:"distance-mossel-bay.jpg", name:"Mossel Bay", name_ar:"موسل باي", km:388, time:"~4h 15m", time_ar:"~٤ س ١٥ د"},
+  {slug:"mossel-bay", photo:"distance-mossel-bay.jpg", name:"Mossel Bay", name_ar:"موسل باي", km:387, time:"~4h 19m", time_ar:"~٤ س ١٩ د"},
   {slug:"george", photo:"distance-george.jpg", name:"George", name_ar:"جورج", km:435, time:"~4h 45m", time_ar:"~٤ س ٤٥ د"},
   {slug:"wilderness", photo:"distance-wilderness.jpg", name:"Wilderness", name_ar:"وايلدرنس", km:441, time:"~4h 50m", time_ar:"~٤ س ٥٠ د"},
   {slug:"knysna", photo:"distance-knysna.jpg", name:"Knysna", name_ar:"نايزنا", km:488, time:"~5h 30m", time_ar:"~٥ س ٣٠ د"},
@@ -99,7 +103,7 @@ const SA_DISTANCES = [
    to this repo at the given path, same as photos/notes/checklist. Box sizes, so replacement images
    can be designed to fit with zero cropping:
      - "icon" slots (Telecom, Stays) — 256×256, same as Useful Apps icons (shown at 72×72 here).
-     - "wide" slots (Airlines, Distances, Domestic flights, Top tourist cities) — 640×420, letterboxed to that exact
+     - "wide" slots (Airlines, Distances, Domestic flights, Top tourist cities, Best areas to stay) — 640×420, letterboxed to that exact
        box/ratio — fine for a uniform photo grid, where every card needs to be the same shape.
      - the single Power sockets photo is NOT forced into a fixed ratio (`preserveAspect:true`) —
        it's one standalone image, not a grid of same-shaped cards, so forcing a landscape 640×420
@@ -241,6 +245,12 @@ function renderAboutSA(){
   </div>`;
 
   // 3. Saudi Embassy
+  // Emergency number: no distinct embassy-specific emergency line could be verified to exist (re-
+  // confirmed again this round, same as the earlier correction to this section's phone number) —
+  // Saudi MOFA's domestic "920" numbers only dial from inside Saudi Arabia, so one of those would
+  // actually be useless/misleading here rather than merely redundant. What genuinely works from a
+  // South African phone for any real emergency is the number already used in the Emergency Info
+  // tab: 112, reachable from any South African cellphone, even locked or with no airtime.
   const embAddr = "711 Jan Shoba Street, Hatfield, Pretoria, 0028, South Africa";
   html += `<div class="about-block">
     <h3>🕌 ${ar?'السفارة السعودية في جنوب أفريقيا':'Saudi Embassy in South Africa'}</h3>
@@ -249,12 +259,13 @@ function renderAboutSA(){
       <div class="emg-num">${ar?'هاتف السفارة':'Embassy phone'}: <b>+27 12 362 4230</b></div>
       <div class="emg-num">${ar?'البريد الإلكتروني':'Email'}: <b>zaemb@mofa.gov.sa</b></div>
       <div class="emg-num">X/Twitter: <b>@KSAembassyZA</b></div>
+      <div class="emg-num">🚨 ${ar?'طوارئ عامة (أي جوال في جنوب أفريقيا)':'General emergency (any South African phone)'}: <b>112</b></div>
     </div>
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
       <a class="mini-link primary" href="${mapsLink(embAddr)}" target="_blank">📍 ${ar?'فتح في خرائط قوقل':'Open in Google Maps'}</a>
       <a class="mini-link verified" href="https://za.saudiembassy.sa/" target="_blank">🌐 ${ar?'الموقع الرسمي':'Official site'}</a>
     </div>
-    <p style="margin-top:10px;font-size:12px;color:#8a7f70;">${ar?'العنوان: 711 شارع جان شوبا، هاتفيلد، بريتوريا، 2028. تحققا من أرقام التواصل عبر الموقع الرسمي قبل السفر — بيانات الاتصال قد تتغير.':'Address: 711 Jan Shoba Street, Hatfield, Pretoria, 0028. Double-check contact details on the official site before you travel — they can change.'}</p>
+    <p style="margin-top:10px;font-size:12px;color:#8a7f70;">${ar?'العنوان: 711 شارع جان شوبا، هاتفيلد، بريتوريا، 2028. تحققا من أرقام التواصل عبر الموقع الرسمي قبل السفر — بيانات الاتصال قد تتغير. لا يوجد خط طوارئ منفصل تابع للسفارة تحديدًا، لذا رقم ١١٢ هو الأسرع في أي حالة طارئة فعلية.':"Address: 711 Jan Shoba Street, Hatfield, Pretoria, 0028. Double-check contact details on the official site before you travel — they can change. There's no separate embassy-specific emergency line, so 112 is the fastest option for any real emergency."}</p>
   </div>`;
 
   // 4. Niqab
@@ -263,15 +274,7 @@ function renderAboutSA(){
     <p class="about">${ar?'مسموح به بالكامل قانونيًا، ولا توجد أي قيود أو قوانين حكومية تمنع ارتداءه. يتميز المجتمع هناك بتنوعه الثقافي والديني، ويتقبل الناس ارتداء الحجاب والنقاب دون أي مضايقات أو استنكار.':'Fully legal, with no government restrictions or bans on wearing it. South African society is culturally and religiously diverse, and wearing the hijab or niqab is accepted without hassle or stares.'}</p>
   </div>`;
 
-  // 5. International airlines — real aircraft photos (see SA_AIRLINES_INTL's sourcing comment)
-  html += `<div class="about-block">
-    <h3>✈️ ${ar?'خطوط الطيران التي تصل إلى كيب تاون':'Airlines flying to Cape Town'}</h3>
-    <div class="photo-grid">
-      ${SA_AIRLINES_INTL.map(a=>photoCard(a.photo, ar?a.name_ar:a.name, ar?a.hub_ar:a.hub, true)).join('')}
-    </div>
-  </div>`;
-
-  // 6. Power sockets — real photo "M plug.jpg" (public domain, Wikimedia Commons; author released it
+  // 5. Power sockets — real photo "M plug.jpg" (public domain, Wikimedia Commons; author released it
   // PD worldwide). An earlier attempt here used a file wrongly labelled as a Type M diagram that
   // turned out, once actually rendered, to be an unrelated world map — this one was verified first.
   // No width/height attributes on the <img> here (unlike every other image on this page) — this
@@ -295,7 +298,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 7. Seasons
+  // 6. Seasons
   const seasons = [
     {name:ar?'الصيف':'Summer', months:ar?'ديسمبر · يناير · فبراير':'Dec · Jan · Feb', desc:ar?'طقس دافئ إلى حار وأيام مشمسة':'Warm to hot, sunny days', icon:'☀️'},
     {name:ar?'الخريف':'Autumn', months:ar?'مارس · أبريل · مايو':'Mar · Apr · May', desc:ar?'طقس معتدل ومريح وألوان طبيعية خلابة':'Mild and comfortable, lovely autumn colours', icon:'🍂'},
@@ -310,22 +313,30 @@ function renderAboutSA(){
     <p class="about" style="margin-top:10px;">${ar?'أفضل الفصول لمسافري الخليج: <b>الربيع والخريف</b> لاعتدال الطقس وجمال الطبيعة، و<b>الشتاء</b> خيار جيد لمن يبحث عن الهروب من حرارة الخليج العالية رغم الأمطار.':"Best seasons for Gulf travellers: <b>Spring and Autumn</b> for mild weather and scenery, and <b>Winter</b> is a solid option if you're mainly after an escape from Gulf summer heat, rain aside."}</p>
   </div>`;
 
-  // 8. Telecoms — bigger logos than the other icon-badge sections (Stays), fixed at 3 per row
+  // 7. International airlines — real aircraft photos (see SA_AIRLINES_INTL's sourcing comment)
+  html += `<div class="about-block">
+    <h3>✈️ ${ar?'خطوط الطيران التي تصل إلى كيب تاون':'Airlines flying to Cape Town'}</h3>
+    <div class="photo-grid">
+      ${SA_AIRLINES_INTL.map(a=>photoCard(a.photo, ar?a.name_ar:a.name, ar?a.hub_ar:a.hub, true)).join('')}
+    </div>
+  </div>`;
+
+  // 8. Stays booking — same bigger 72×72 badge as Telecom. Only 2 entries, so the plain .emg-grid
+  // (auto-fit) already lays them out evenly side by side without needing a locked column count.
+  html += `<div class="about-block">
+    <h3>🏨 ${ar?'حجز السكن':'Booking your stay'}</h3>
+    <div class="emg-grid">
+      ${SA_STAYS.map(s=>badgeCard(s.slug, s.name, ar?s.desc_ar:s.desc, null, true, true)).join('')}
+    </div>
+  </div>`;
+
+  // 9. Telecoms — bigger logos than the other icon-badge sections (Stays), fixed at 3 per row
   // (there are exactly 3 telecoms, so .telecom-grid locks the column count instead of the usual
   // auto-fit, which could otherwise drop to 2 once the badges got wider).
   html += `<div class="about-block">
     <h3>📶 ${ar?'شركات الاتصالات':'Telecom companies'}</h3>
     <div class="telecom-grid">
       ${SA_TELECOMS.map(t=>badgeCard(t.slug, t.name, ar?t.desc_ar:t.desc, null, true, true)).join('')}
-    </div>
-  </div>`;
-
-  // 9. Stays booking — same bigger 72×72 badge as Telecom. Only 2 entries, so the plain .emg-grid
-  // (auto-fit) already lays them out evenly side by side without needing a locked column count.
-  html += `<div class="about-block">
-    <h3>🏨 ${ar?'حجز السكن':'Booking your stay'}</h3>
-    <div class="emg-grid">
-      ${SA_STAYS.map(s=>badgeCard(s.slug, s.name, ar?s.desc_ar:s.desc, null, true, true)).join('')}
     </div>
   </div>`;
 
@@ -344,7 +355,16 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 11. Distances from Cape Town — photo-card layout (same 640×420 box as everywhere else), with
+  // 11. Top tourist cities — real photos to start from (see SA_TOP_CITIES' header comment for
+  // sourcing/licensing), each also uploadable now like every other photo section on this page.
+  html += `<div class="about-block">
+    <h3>🏙️ ${ar?'أهم المدن السياحية في جنوب أفريقيا':'Best tourist cities in South Africa'}</h3>
+    <div class="photo-grid">
+      ${SA_TOP_CITIES.map(c=>photoCard(c.photo, c.name, ar?c.desc_ar:c.desc, true)).join('')}
+    </div>
+  </div>`;
+
+  // 12. Distances from Cape Town — photo-card layout (same 640×420 box as everywhere else), with
   // an uploadable placeholder per destination (see SA_DISTANCES' header comment).
   html += `<div class="about-block">
     <h3>🧭 ${ar?'المسافات من كيب تاون':'Distances from Cape Town'}</h3>
@@ -354,7 +374,16 @@ function renderAboutSA(){
     <p class="about" style="margin-top:10px;">${ar?'الطريق الرئيسي هو N2 — طريق ساحلي سريع ومُصان جيدًا يربط كيب تاون بكل طريق الحدائق، ورسوم الطرق عليه قليلة. تأكدا من تعبئة الوقود قبل المسافات الطويلة والقيادة الآمنة أولاً.':'The main road is the N2 — a well-maintained coastal highway linking Cape Town to the whole Garden Route, with minimal tolls. Fill up before long stretches, and safe driving comes first.'}</p>
   </div>`;
 
-  // 12. Domestic flights — real photos for FlySafair/Airlink/SAA; LIFT/CemAir/Federal Air use a
+  // 13. Best areas to stay in Cape Town — photo-card layout, each uploadable, same as every other
+  // photo section (see SA_BEST_AREAS_CT's header comment — these started as plain placeholders).
+  html += `<div class="about-block">
+    <h3>📍 ${ar?'أفضل مناطق الإقامة في كيب تاون':'Best areas to stay in Cape Town'}</h3>
+    <div class="photo-grid">
+      ${SA_BEST_AREAS_CT.map(a=>photoCard(a.photo, a.name, ar?a.desc_ar:a.desc, true)).join('')}
+    </div>
+  </div>`;
+
+  // 14. Domestic flights — real photos for FlySafair/Airlink/SAA; LIFT/CemAir/Federal Air use a
   // generated tile instead (see SA_DOMESTIC_AIRLINES' sourcing comment — no free photo confirmed).
   html += `<div class="about-block">
     <h3>🛫 ${ar?'الرحلات الداخلية':'Domestic flights'}</h3>
@@ -363,16 +392,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 13. Top tourist cities — real photos to start from (see SA_TOP_CITIES' header comment for
-  // sourcing/licensing), each also uploadable now like every other photo section on this page.
-  html += `<div class="about-block">
-    <h3>🏙️ ${ar?'أهم المدن السياحية في جنوب أفريقيا':'Best tourist cities in South Africa'}</h3>
-    <div class="photo-grid">
-      ${SA_TOP_CITIES.map(c=>photoCard(c.photo, c.name, ar?c.desc_ar:c.desc, true)).join('')}
-    </div>
-  </div>`;
-
-  // 14. Driving in South Africa
+  // 15. Driving in South Africa
   html += `<div class="about-block">
     <h3>🚗 ${ar?'القيادة في جنوب أفريقيا':'Driving in South Africa'}</h3>
     <p class="about">${ar?'القيادة هناك معكوسة عن السعودية — المقود على الجانب الأيمن من السيارة، والسير على الجهة اليسرى من الطريق.':"Driving there is the reverse of KSA — the steering wheel is on the right side of the car, and you drive on the left side of the road."}</p>
@@ -386,14 +406,6 @@ function renderAboutSA(){
         <li>${ar?'اختارا أماكن وقوف آمنة ومراقَبة':'Choose safe, attended parking spots'}</li>
         <li>${ar?'لا تتركا أغراضكما ظاهرة داخل السيارة':"Don't leave belongings visible inside the car"}</li>
       </ul></div>
-    </div>
-  </div>`;
-
-  // 15. Best areas to stay in Cape Town
-  html += `<div class="about-block">
-    <h3>📍 ${ar?'أفضل مناطق الإقامة في كيب تاون':'Best areas to stay in Cape Town'}</h3>
-    <div class="emg-grid">
-      ${SA_BEST_AREAS_CT.map(a=>`<div class="emg-card"><b>${a.name}</b><div class="emg-line">${ar?a.desc_ar:a.desc}</div></div>`).join('')}
     </div>
   </div>`;
 
