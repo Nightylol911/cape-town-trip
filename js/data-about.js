@@ -44,8 +44,8 @@ const SA_DOMESTIC_AIRLINES = [
 // freely-licensed version on Commons is their pre-2017 logo (with the globe), and the current one
 // is only hosted as Wikipedia's own non-free/fair-use media, not reusable here.
 const SA_TELECOMS = [
-  {slug:"mtn", name:"MTN", desc:"Wide coverage across most of South Africa, with varied data/call bundles.", desc_ar:"تغطية واسعة في معظم أنحاء جنوب أفريقيا، مع باقات متنوعة للإنترنت والمكالمات."},
   {slug:"vodacom", name:"Vodacom", desc:"The strongest and fastest network, with flexible deals.", desc_ar:"أقوى وأسرع شبكة، مع عروض مرنة."},
+  {slug:"mtn", name:"MTN", desc:"Wide coverage across most of South Africa, with varied data/call bundles.", desc_ar:"تغطية واسعة في معظم أنحاء جنوب أفريقيا، مع باقات متنوعة للإنترنت والمكالمات."},
   {slug:"telkom", name:"Telkom", desc:"Excellent coverage in cities and rural areas, with affordable economical plans.", desc_ar:"تغطية ممتازة في المدن والمناطق الريفية، مع باقات اقتصادية بأسعار مناسبة."},
 ];
 const SA_STAYS = [
@@ -99,7 +99,7 @@ const SA_DISTANCES = [
    to this repo at the given path, same as photos/notes/checklist. Box sizes, so replacement images
    can be designed to fit with zero cropping:
      - "icon" slots (Telecom, Stays) — 256×256, same as Useful Apps icons (shown at 72×72 here).
-     - "wide" slots (Airlines, Distances, Domestic flights) — 640×420, letterboxed to that exact
+     - "wide" slots (Airlines, Distances, Domestic flights, Top tourist cities) — 640×420, letterboxed to that exact
        box/ratio — fine for a uniform photo grid, where every card needs to be the same shape.
      - the single Power sockets photo is NOT forced into a fixed ratio (`preserveAspect:true`) —
        it's one standalone image, not a grid of same-shaped cards, so forcing a landscape 640×420
@@ -363,11 +363,12 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 13. Top tourist cities — real photos (see SA_TOP_CITIES' header comment for sourcing/licensing)
+  // 13. Top tourist cities — real photos to start from (see SA_TOP_CITIES' header comment for
+  // sourcing/licensing), each also uploadable now like every other photo section on this page.
   html += `<div class="about-block">
     <h3>🏙️ ${ar?'أهم المدن السياحية في جنوب أفريقيا':'Best tourist cities in South Africa'}</h3>
     <div class="photo-grid">
-      ${SA_TOP_CITIES.map(c=>photoCard(c.photo, c.name, ar?c.desc_ar:c.desc)).join('')}
+      ${SA_TOP_CITIES.map(c=>photoCard(c.photo, c.name, ar?c.desc_ar:c.desc, true)).join('')}
     </div>
   </div>`;
 
