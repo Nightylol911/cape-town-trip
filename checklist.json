@@ -1,7 +1,9 @@
 {
  "clothing:0": true,
  "clothing:1": true,
+ "clothing:10": true,
  "clothing:11": true,
+ "clothing:13": true,
  "clothing:2": true,
  "clothing:3": true,
  "clothing:4": true,
@@ -9,6 +11,7 @@
  "clothing:6": true,
  "clothing:7": true,
  "clothing:8": true,
+ "clothing:9": true,
  "documents:0": true,
  "documents:1": true,
  "documents:10": true,
