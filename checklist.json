@@ -32,5 +32,11 @@
  "electronics:5": true,
  "electronics:6": true,
  "electronics:7": true,
- "shoes:0": true
+ "shoes:0": true,
+ "shoes:2": true,
+ "toiletries:0": true,
+ "toiletries:1": true,
+ "toiletries:2": true,
+ "toiletries:3": true,
+ "toiletries:7": true
 }
