@@ -581,6 +581,9 @@ const PLACES = [
 {n:"The Honey Room", n_ar:"ذا هَني روم", c:"shop", a:"southern-suburbs", g:"https://maps.app.goo.gl/3GKA8TjYYR9EtEe3A", lat:-33.9701333,lng:18.457225,rating:5.0,ratingCount:43,price:0, phone:"+27 81 681 5986",
  about:"A hidden-away Newlands honey shop with tastings of local honeys (Constantia fynbos, West Coast wildflower, cinnamon-infused) and honey-based cosmetics.", about_ar:"متجر عسل مخفي في نيولاندز بتذوق عسل محلي (فينبوس كونستانتيا، زهور برية الساحل الغربي، عسل بالقرفة) ومستحضرات تجميل بالعسل.",
  best:"Any time", best_ar:"أي وقت", dur:"20 minutes", dur_ar:"٢٠ دقيقة", wear:"Casual.", wear_ar:"ملابس عادية.", book:null},
+{n:"Wedgewood Nougat", n_ar:"ويدجوود نوجا", c:"shop", a:"waterfront", g:"https://maps.app.goo.gl/5cK6bY5AGDupbJJG8", lat:-33.9055554,lng:18.4107817,rating:4.7,ratingCount:87,price:0,
+ about:"A 25-year-old South African family business — a beautifully designed boutique selling handmade macadamia honey nougat, chocolates and sweets in gift-ready packaging.", about_ar:"عمل عائلي جنوب أفريقي عمره ٢٥ عامًا — متجر بوتيك أنيق التصميم يبيع نوجا العسل والمكاداميا المصنوعة يدويًا، والشوكولاتة والحلويات بتغليف مناسب للهدايا.",
+ best:"Any time", best_ar:"أي وقت", dur:"15–20 minutes", dur_ar:"١٥-٢٠ دقيقة", wear:"Casual.", wear_ar:"ملابس عادية.", book:null},
 ];
 
 /* ================= SUGGESTED ITINERARY ================= */

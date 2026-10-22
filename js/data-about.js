@@ -94,6 +94,15 @@ const SA_DISTANCES = [
   {slug:"knysna", photo:"distance-knysna.jpg", name:"Knysna", name_ar:"نايزنا", km:488, time:"~5h 30m", time_ar:"~٥ س ٣٠ د"},
   {slug:"plettenberg-bay", photo:"distance-plettenberg-bay.jpg", name:"Plettenberg Bay", name_ar:"بليتنبرغ باي", km:522, time:"~6h", time_ar:"~٦ س"},
 ];
+// photo: placeholders (tools/make-about-bank-placeholders.js) — uploadable, same as Distances/Best
+// Areas started with. FNB's NFC/tap-to-withdraw support (Apple Pay/Google Pay at the ATM screen,
+// no physical card needed) is specific enough to call out in its own line rather than folding it
+// into a generic description shared with the other two banks.
+const SA_BANKS = [
+  {photo:"bank-nedbank.jpg", name:"Nedbank", desc:"Wide ATM network across malls, airports and petrol stations nationwide.", desc_ar:"شبكة واسعة من أجهزة الصراف الآلي في المولات والمطارات ومحطات الوقود في جميع أنحاء البلاد."},
+  {photo:"bank-standard-bank.jpg", name:"Standard Bank", desc:"One of South Africa's largest banks, with reliable ATM coverage even in smaller towns along the Garden Route.", desc_ar:"أحد أكبر بنوك جنوب أفريقيا، بتغطية موثوقة لأجهزة الصراف حتى في البلدات الصغيرة على طريق الحدائق."},
+  {photo:"bank-fnb.jpg", name:"FNB (First National Bank)", desc:"Supports NFC — withdraw cash by tapping your phone (Apple Pay/Google Pay) at the ATM, no physical card needed.", desc_ar:"يدعم تقنية NFC — اسحبا النقد بتقريب الجوال (Apple Pay/Google Pay) من جهاز الصراف، دون الحاجة لبطاقة فعلية."},
+];
 
 /* ---------- OWNER IMAGE UPLOADS ----------
    Generalizes the Useful Apps icon-upload pattern (js/data-apps.js: processAppIcon/uploadAppIcon/
@@ -248,7 +257,45 @@ function renderAboutSA(){
     <p class="about" style="margin-top:8px;">${ar?'تأكدا من صلاحية الجواز 6 أشهر على الأقل، واحتفظا بنسخة من ختم الدخول/بطاقة الصعود.':"Keep the passport valid for 6+ months, and keep a copy of your entry stamp/boarding pass."}</p>
   </div>`;
 
-  // 3. Saudi Embassy
+  // 3. Banks & ATM withdrawals
+  html += `<div class="about-block">
+    <h3>🏧 ${ar?'أفضل البنوك للسحب':'Best banks to withdraw from'}</h3>
+    <p class="about" style="margin-bottom:10px;">${ar?'الحد الأقصى للسحب من الصراف الآلي الواحد عادة حوالي <b>9,900 راند</b> (≈ <b>2,261.89 ريال سعودي</b>) لكل عملية — قد يختلف قليلًا حسب البنك وحدود البطاقة الخاصة بكما.':"The typical single-withdrawal maximum at an ATM is around <b>R9,900</b> (≈ <b>SAR 2,261.89</b>) per transaction — can vary slightly by bank and your own card's limits."}</p>
+    <div class="photo-grid">
+      ${SA_BANKS.map(b=>photoCard(b.photo, b.name, ar?b.desc_ar:b.desc, true)).join('')}
+    </div>
+  </div>`;
+
+  // 4. VAT / tax refund
+  html += `<div class="about-block">
+    <h3>🧾 ${ar?'استرجاع ضريبة القيمة المضافة (VAT)':'VAT refund in South Africa'}</h3>
+    <ol class="about" style="padding-inline-start:20px;margin:0 0 12px;line-height:1.9;">
+      ${ar ? `
+      <li>🛍️ <b>عند الشراء:</b> اطلبا Tax Invoice واحتفظا بجميع الفواتير.</li>
+      <li>🧳 <b>المشتريات:</b> يجب أن تكون بضائع ستخرجان بها من جنوب أفريقيا.</li>
+      <li>📱 <b>Online Traveller Declaration:</b> أكملا الإقرار الإلكتروني وصرّحا بالمشتريات.</li>
+      <li>✈️ <b>في المطار:</b> اذهبا إلى Customs ومعكما الجواز + الفواتير + المشتريات لفحصها واعتمادها.</li>
+      <li>🛂 <b>بعد ختم الجواز (ختم الخروج) من الجوازات:</b> أرسلا إيميلًا إلى <b>vracapetown@gmail.com</b> للاستفسار عن Claim Number الخاص بكما، مع صورة من الجواز بختم الخروج. عنوان الإيميل: <b>VRA Claim Number</b>.</li>
+      <li>💰 بعد اعتماد المطالبة، تُستكمل إجراءات VAT Refund مع VAT Refund Administrator.</li>
+      <li>💳 يُحوَّل/يُصرف المبلغ المستحق بعد خصم رسوم الاسترداد.</li>
+      ` : `
+      <li>🛍️ <b>When you buy:</b> Ask for a Tax Invoice and keep every receipt.</li>
+      <li>🧳 <b>Your purchases:</b> Must be goods you're taking out of South Africa with you.</li>
+      <li>📱 <b>Online Traveller Declaration:</b> Complete the online declaration and declare your purchases.</li>
+      <li>✈️ <b>At the airport:</b> Go to Customs with your passport + invoices + purchases for inspection and approval.</li>
+      <li>🛂 <b>After your passport is stamped (exit stamp) at passport control:</b> Email <b>vracapetown@gmail.com</b> asking for your Claim Number, with a photo of your passport's exit stamp. Email subject: <b>VRA Claim Number</b>.</li>
+      <li>💰 Once the claim is approved, the VAT Refund is processed with the VAT Refund Administrator.</li>
+      <li>💳 The amount owed is transferred/paid out, after refund fees are deducted.</li>
+      `}
+    </ol>
+    <div style="margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="mini-link" href="https://www.taxrefunds.co.za" target="_blank">🔗 ${ar?'معلومات واسترداد VAT — Tax Refund Administrators':'VAT info & refunds — Tax Refund Administrators'}</a>
+      <a class="mini-link" href="https://www.sars.gov.za/travellerdeclaration" target="_blank">🔗 ${ar?'Online Traveller Declaration — SARS':'Online Traveller Declaration — SARS'}</a>
+    </div>
+    <p style="margin-top:10px;font-size:12px;color:var(--muted);">⚠️ ${ar?'مهم: احتفظا بالمشتريات والفواتير معكما حتى انتهاء إجراءات الـVAT في المطار، ولا تشحناها قبل أن تتأكدا من عدم الحاجة لفحصها.':"Important: keep your purchases and invoices with you until VAT procedures at the airport are complete — don't check them into luggage before confirming they won't need to be inspected."}</p>
+  </div>`;
+
+  // 5. Saudi Embassy
   const embAddr = "711 Jan Shoba Street, Hatfield, Pretoria, 0028, South Africa";
   html += `<div class="about-block">
     <h3>🕌 ${ar?'السفارة السعودية في جنوب أفريقيا':'Saudi Embassy in South Africa'}</h3>
@@ -266,13 +313,13 @@ function renderAboutSA(){
     <p style="margin-top:10px;font-size:12px;color:#8a7f70;">${ar?'العنوان: 711 شارع جان شوبا، هاتفيلد، بريتوريا، 2028. تحققا من أرقام التواصل عبر الموقع الرسمي قبل السفر — بيانات الاتصال قد تتغير.':"Address: 711 Jan Shoba Street, Hatfield, Pretoria, 0028. Double-check contact details on the official site before you travel — they can change."}</p>
   </div>`;
 
-  // 4. Niqab
+  // 6. Niqab
   html += `<div class="about-block">
     <h3>🧕 ${ar?'النقاب في جنوب أفريقيا':'The niqab in South Africa'}</h3>
     <p class="about">${ar?'مسموح به بالكامل قانونيًا، ولا توجد أي قيود أو قوانين حكومية تمنع ارتداءه. يتميز المجتمع هناك بتنوعه الثقافي والديني، ويتقبل الناس ارتداء الحجاب والنقاب دون أي مضايقات أو استنكار.':'Fully legal, with no government restrictions or bans on wearing it. South African society is culturally and religiously diverse, and wearing the hijab or niqab is accepted without hassle or stares.'}</p>
   </div>`;
 
-  // 5. Power sockets — real photo "M plug.jpg" (public domain, Wikimedia Commons; author released it
+  // 7. Power sockets — real photo "M plug.jpg" (public domain, Wikimedia Commons; author released it
   // PD worldwide). An earlier attempt here used a file wrongly labelled as a Type M diagram that
   // turned out, once actually rendered, to be an unrelated world map — this one was verified first.
   // No width/height attributes on the <img> here (unlike every other image on this page) — this
@@ -296,7 +343,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 6. Seasons
+  // 8. Seasons
   const seasons = [
     {name:ar?'الصيف':'Summer', months:ar?'ديسمبر · يناير · فبراير':'Dec · Jan · Feb', desc:ar?'طقس دافئ إلى حار وأيام مشمسة':'Warm to hot, sunny days', icon:'☀️'},
     {name:ar?'الخريف':'Autumn', months:ar?'مارس · أبريل · مايو':'Mar · Apr · May', desc:ar?'طقس معتدل ومريح وألوان طبيعية خلابة':'Mild and comfortable, lovely autumn colours', icon:'🍂'},
@@ -311,7 +358,7 @@ function renderAboutSA(){
     <p class="about" style="margin-top:10px;">${ar?'أفضل الفصول لمسافري الخليج: <b>الربيع والخريف</b> لاعتدال الطقس وجمال الطبيعة، و<b>الشتاء</b> خيار جيد لمن يبحث عن الهروب من حرارة الخليج العالية رغم الأمطار.':"Best seasons for Gulf travellers: <b>Spring and Autumn</b> for mild weather and scenery, and <b>Winter</b> is a solid option if you're mainly after an escape from Gulf summer heat, rain aside."}</p>
   </div>`;
 
-  // 7. International airlines — real aircraft photos (see SA_AIRLINES_INTL's sourcing comment)
+  // 9. International airlines — real aircraft photos (see SA_AIRLINES_INTL's sourcing comment)
   html += `<div class="about-block">
     <h3>✈️ ${ar?'خطوط الطيران التي تصل إلى كيب تاون':'Airlines flying to Cape Town'}</h3>
     <div class="photo-grid">
@@ -319,7 +366,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 8. Stays booking — same bigger 72×72 badge as Telecom. Only 2 entries, so the plain .emg-grid
+  // 10. Stays booking — same bigger 72×72 badge as Telecom. Only 2 entries, so the plain .emg-grid
   // (auto-fit) already lays them out evenly side by side without needing a locked column count.
   html += `<div class="about-block">
     <h3>🏨 ${ar?'حجز السكن':'Booking your stay'}</h3>
@@ -328,7 +375,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 9. Telecoms — bigger logos than the other icon-badge sections (Stays), fixed at 3 per row
+  // 11. Telecoms — bigger logos than the other icon-badge sections (Stays), fixed at 3 per row
   // (there are exactly 3 telecoms, so .telecom-grid locks the column count instead of the usual
   // auto-fit, which could otherwise drop to 2 once the badges got wider).
   html += `<div class="about-block">
@@ -338,7 +385,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 10. Safety tips
+  // 12. Safety tips
   const dos = ar
     ? ["احمل جواز سفرك وتأكد من صلاحيته لأكثر من 6 أشهر","احصل على تأمين سفر شامل لتغطية أي طارئ صحي أو فقدان أمتعة","استخدم البطاقات البنكية الموثوقة في الأماكن، واحفظ بعض النقد (راند أفريقي)","اشترِ شريحة اتصال محلية (MTN أو Vodacom) للبقاء متصلاً","خطط لرحلاتك واحجز الإقامة مسبقًا والأنشطة في المواسم","استخدم تطبيقات النقل الموثوقة مثل Bolt وUber وتأكد من تفاصيل الرحلة","احفظ مقتنياتك الثمينة في الخزنة أو منتهيا في الأماكن العامة","استمتع بالطبيعة البرية واحترم واتبع تعليمات المرشدين","تعلم بعض العبارات الأساسية باللغة الإنجليزية فهي اللغة الأكثر استخدامًا"]
     : ["Carry your passport and keep it valid 6+ months","Get comprehensive travel insurance for any health emergency or lost luggage","Use trusted bank cards in shops, and keep some cash (South African Rand) on hand","Get a local SIM (MTN or Vodacom) to stay connected","Plan your route and book accommodation/activities ahead, especially in peak season","Use trusted ride-hailing apps like Bolt and Uber, and confirm ride details","Keep valuables in the safe or hotel locker, not out in public","Enjoy the wildlife and nature, and follow your guides' instructions","Learn a few basic English phrases — it's the most widely used language"];
@@ -353,7 +400,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 11. Top tourist cities — real photos to start from (see SA_TOP_CITIES' header comment for
+  // 13. Top tourist cities — real photos to start from (see SA_TOP_CITIES' header comment for
   // sourcing/licensing), each also uploadable now like every other photo section on this page.
   html += `<div class="about-block">
     <h3>🏙️ ${ar?'أهم المدن السياحية في جنوب أفريقيا':'Best tourist cities in South Africa'}</h3>
@@ -362,7 +409,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 12. Distances from Cape Town — photo-card layout (same 640×420 box as everywhere else), with
+  // 14. Distances from Cape Town — photo-card layout (same 640×420 box as everywhere else), with
   // an uploadable placeholder per destination (see SA_DISTANCES' header comment).
   html += `<div class="about-block">
     <h3>🧭 ${ar?'المسافات من كيب تاون':'Distances from Cape Town'}</h3>
@@ -372,7 +419,7 @@ function renderAboutSA(){
     <p class="about" style="margin-top:10px;">${ar?'الطريق الرئيسي هو N2 — طريق ساحلي سريع ومُصان جيدًا يربط كيب تاون بكل طريق الحدائق، ورسوم الطرق عليه قليلة. تأكدا من تعبئة الوقود قبل المسافات الطويلة والقيادة الآمنة أولاً.':'The main road is the N2 — a well-maintained coastal highway linking Cape Town to the whole Garden Route, with minimal tolls. Fill up before long stretches, and safe driving comes first.'}</p>
   </div>`;
 
-  // 13. Best areas to stay in Cape Town — photo-card layout, each uploadable, same as every other
+  // 15. Best areas to stay in Cape Town — photo-card layout, each uploadable, same as every other
   // photo section (see SA_BEST_AREAS_CT's header comment — these started as plain placeholders).
   html += `<div class="about-block">
     <h3>📍 ${ar?'أفضل مناطق الإقامة في كيب تاون':'Best areas to stay in Cape Town'}</h3>
@@ -381,7 +428,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 14. Domestic flights — real photos for FlySafair/Airlink/SAA; LIFT/CemAir/Federal Air use a
+  // 16. Domestic flights — real photos for FlySafair/Airlink/SAA; LIFT/CemAir/Federal Air use a
   // generated tile instead (see SA_DOMESTIC_AIRLINES' sourcing comment — no free photo confirmed).
   html += `<div class="about-block">
     <h3>🛫 ${ar?'الرحلات الداخلية':'Domestic flights'}</h3>
@@ -390,7 +437,7 @@ function renderAboutSA(){
     </div>
   </div>`;
 
-  // 15. Driving in South Africa
+  // 17. Driving in South Africa
   html += `<div class="about-block">
     <h3>🚗 ${ar?'القيادة في جنوب أفريقيا':'Driving in South Africa'}</h3>
     <p class="about">${ar?'القيادة هناك معكوسة عن السعودية — المقود على الجانب الأيمن من السيارة، والسير على الجهة اليسرى من الطريق.':"Driving there is the reverse of KSA — the steering wheel is on the right side of the car, and you drive on the left side of the road."}</p>
